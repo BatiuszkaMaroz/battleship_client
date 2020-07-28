@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Redirect, Switch } from 'react-router-dom';
 
-import Board from './components/Game/Board/Board';
+import Game from './components/Game/Game';
 import Connect from './components/Auth/Connect/Connect';
 import Join from './components/Auth/Join/Join';
 import Spinner from './shared/components/Spinner/Spinner';
@@ -55,7 +55,7 @@ function App() {
   return (
     <div>
       {/* <Switch>{routes}</Switch> */}
-      <Board />
+      <Game />
     </div>
   );
 }

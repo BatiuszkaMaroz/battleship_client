@@ -1,15 +1,26 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import ReactDOM from 'react-dom';
+import { useDispatch } from 'react-redux';
 
 import useTypedSelector from '../../../shared/hooks/useTypedSelector';
+import { setCurrentCell } from '../../../store/actions/ships';
 
 import styles from './Ship.module.scss';
 
-const Ship: React.FC = () => {
-  const [unlocked, setUnlocked] = useState<boolean>(false);
-  const [curCell, setCurCell] = useState<null | HTMLDivElement>(null);
-  const shipRef = useRef<HTMLDivElement | null>(null);
+interface Props {
+  id: string;
+  homeCell?: HTMLDivElement;
+}
+
+const Ship: React.FC<Props> = ({ id, homeCell }) => {
+  const dispatch = useDispatch();
+  const [inMotion, setInMotion] = useState<boolean>(false);
+  const shipRef = useRef<null | HTMLDivElement>(null);
+
   const board = useTypedSelector((state) => state.board);
+  const { currentCell, orientation, settled, size } = useTypedSelector(
+    (state) => state.ships.find((ship) => ship.id === id)!,
+  );
 
   const [clickCoords, setClickCoords] = useState<{
     left: number | null;
@@ -19,8 +30,8 @@ const Ship: React.FC = () => {
     top: null,
   });
 
-  const dragStart = (e: React.MouseEvent) => {
-    setUnlocked(true);
+  const motionStart = (e: React.MouseEvent) => {
+    setInMotion(true);
 
     const ship = shipRef.current!;
 
@@ -37,13 +48,13 @@ const Ship: React.FC = () => {
     setClickCoords({ left, top });
   };
 
-  const dragEnd = useCallback(() => {
-    setUnlocked(false);
-  }, [setUnlocked]);
+  const motionEnd = useCallback(() => {
+    setInMotion(false);
+  }, [setInMotion]);
 
   const moveShip = useCallback(
     (e: MouseEvent) => {
-      if (!unlocked) return;
+      if (!inMotion) return;
 
       const ship = shipRef.current!;
       const { clientX, clientY } = e;
@@ -65,40 +76,64 @@ const Ship: React.FC = () => {
         ship.style.top = top + 'px';
         ship.style.left = left + 'px';
 
-        setCurCell(cell);
+        dispatch(setCurrentCell(id, cell));
       } else {
-        setCurCell(null);
+        dispatch(setCurrentCell(id, homeCell!));
       }
     },
-    [unlocked, clickCoords.left, clickCoords.top, board],
+    [inMotion, clickCoords.left, clickCoords.top, dispatch, id, homeCell],
   );
 
   useEffect(() => {
-    if (unlocked) {
+    if (inMotion) {
       shipRef.current!.style.pointerEvents = 'none';
       window.addEventListener('mousemove', moveShip);
-      window.addEventListener('mouseup', dragEnd);
+      window.addEventListener('mouseup', motionEnd);
     } else {
-      shipRef.current!.style.top = 0 + 'px';
-      shipRef.current!.style.left = 0 + 'px';
-
-      curCell?.append(shipRef.current!);
-
+      shipRef.current!.style.top = '';
+      shipRef.current!.style.left = '';
       shipRef.current!.style.pointerEvents = '';
     }
 
     return () => {
       window.removeEventListener('mousemove', moveShip);
-      window.removeEventListener('mouseup', dragEnd);
+      window.removeEventListener('mouseup', motionEnd);
     };
-  }, [unlocked, moveShip, dragEnd, curCell]);
+  }, [inMotion, moveShip, motionEnd]);
+
+  useEffect(() => {
+    if (currentCell && !inMotion) {
+      currentCell.append(shipRef.current!);
+    }
+  }, [currentCell, inMotion]);
+
+  useEffect(() => {
+    if (orientation === 'horizontal') {
+      shipRef.current!.style.flexFlow = 'row';
+    } else {
+      shipRef.current!.style.flexFlow = 'column';
+    }
+  }, [orientation]);
+
+  useEffect(() => {
+    dispatch(setCurrentCell(id, homeCell!));
+  }, [dispatch, homeCell, id]);
+
+  const segments = () => {
+    const shipBody: any[] = [];
+
+    for (let i = 0; i < size; i++) {
+      shipBody.push(<div key={i} className={styles.Segment}></div>);
+    }
+
+    return shipBody;
+  };
 
   return ReactDOM.createPortal(
-    <div ref={shipRef} onMouseDown={dragStart} className={styles.Ship}>
-      <div className={styles.Segment}>1</div>
-      <div className={styles.Segment}>2</div>
+    <div onMouseDown={motionStart} ref={shipRef} className={styles.Ship}>
+      {segments()}
     </div>,
-    document.querySelector('body')!,
+    document.body,
   );
 };
 

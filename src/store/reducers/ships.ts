@@ -1,31 +1,38 @@
 import { Action, Reducer } from 'redux';
+import * as AT from '../actions/actionTypes';
 
 class Ship {
-  orientation: 'horizontal' | 'vertical';
+  id: string;
+  orientation: 'horizontal' | 'vertical' = 'horizontal';
+  currentCell: null | HTMLDivElement = null;
+  settled: boolean = false;
 
-  constructor(public id: number | string, public size: number) {
-    this.orientation = 'horizontal';
+  constructor(id: number, public size: number) {
+    this.id = `ship-${id}`;
   }
 }
 
 const ships = [
-  new Ship(1, 4),
+  new Ship(0, 4),
+  new Ship(1, 3),
   new Ship(2, 3),
-  new Ship(3, 3),
+  new Ship(3, 2),
   new Ship(4, 2),
   new Ship(5, 2),
-  new Ship(6, 2),
+  new Ship(6, 1),
   new Ship(7, 1),
   new Ship(8, 1),
   new Ship(9, 1),
-  new Ship(10, 1),
 ];
 
 //--------------------------------------------------//
 
 type ShipsState = Ship[];
 
-interface ShipsAction extends Action {}
+interface ShipsAction extends Action {
+  shipId?: string;
+  newCell?: HTMLDivElement;
+}
 
 const initialState = ships;
 
@@ -34,6 +41,14 @@ const shipsReducer: Reducer<ShipsState, ShipsAction> = (
   action,
 ) => {
   switch (action.type) {
+    case AT.SET_CURRENT_CELL:
+      return state.map((ship) => {
+        if (ship.id === action.shipId) {
+          ship.currentCell = action.newCell!;
+        }
+
+        return ship;
+      });
     default:
       return state;
   }

@@ -1,8 +1,6 @@
 import React from 'react';
 
-import Card from '../../../shared/components/Card/Card';
 import Cell from '../Cell/Cell';
-import Ship from '../Ship/Ship';
 
 import useTypedSelector from '../../../shared/hooks/useTypedSelector';
 import styles from './Board.module.scss';
@@ -25,12 +23,7 @@ const Board: React.FC = () => {
       </ul>
     ));
 
-  return (
-    <Card className={styles.Board} center>
-      {boardElement()}
-      <Ship />
-    </Card>
-  );
+  return <div className={styles.Board}>{boardElement()}</div>;
 };
 
 export default Board;

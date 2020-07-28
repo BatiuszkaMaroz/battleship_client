@@ -1,8 +1,8 @@
 .Ship {
+  z-index: 300;
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 300;
   user-select: none;
 
   background-color: orangered;
@@ -11,7 +11,7 @@
   flex-flow: column;
 
   .Segment {
-    border: 1px solid black;
+    border: 2px solid black;
     height: var(--cellSize);
     width: var(--cellSize);
   }

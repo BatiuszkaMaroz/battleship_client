@@ -1,0 +1,74 @@
+.Button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 5rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: var(--main1);
+  overflow: hidden;
+  outline: none !important;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+
+  .Text {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    font-size: 2rem;
+
+    background-color: orange;
+    color: white;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .Icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 30%;
+
+    background-color: orangered;
+
+    svg {
+      --size: 3rem;
+      width: var(--size);
+      height: var(--size);
+      fill: white;
+    }
+  }
+
+  .Ripple__Container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.Ripple {
+  --rippleSize: 300px;
+  position: absolute;
+  border-radius: 100%;
+  background-color: rgba(black, 0.2);
+  animation: Ripple 0.5s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes Ripple {
+  0% {
+    height: 0px;
+    width: 0px;
+    opacity: 1;
+  }
+  100% {
+    height: var(--rippleSize);
+    width: var(--rippleSize);
+    transform: translateX(calc(var(--rippleSize) / 2 * -1))
+      translateY(calc(var(--rippleSize) / 2 * -1));
+    opacity: 0;
+  }
+}

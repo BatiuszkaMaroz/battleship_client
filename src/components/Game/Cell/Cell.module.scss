@@ -1,0 +1,6 @@
+.Cell {
+  position: relative;
+  width: var(--cellSize);
+  height: var(--cellSize);
+  border: 1px solid black;
+}

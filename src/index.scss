@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
+
+:root {
+  --main1: white;
+  --shadow1: 2px 2px 8px rgba(0, 0, 0, 0.25);
+  --cellSize: 50px;
+}
+
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: inherit;
+  font: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 62.5%;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 400;
+}
+
+body {
+  $gradient: linear-gradient(
+    100deg,
+    rgba(white, 0.65) 70%,
+    rgba(white, 0.75) 30%
+  );
+
+  // $gradient: linear-gradient(rgba(white, 0.75), rgba(lightskyblue, 0.75));
+
+  font-size: 1.6rem;
+  background-attachment: fixed;
+  background-image: $gradient, url('./shared/images/bg.jpg');
+  background-position: left top;
+  background-size: cover;
+}

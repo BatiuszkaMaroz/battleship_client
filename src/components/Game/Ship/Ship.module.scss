@@ -1,0 +1,18 @@
+.Ship {
+  z-index: 300;
+  position: absolute;
+  top: 0;
+  left: 0;
+  user-select: none;
+
+  background-color: orangered;
+  border-radius: 2px;
+  display: flex;
+  flex-flow: column;
+
+  .Segment {
+    border: 2px solid black;
+    height: var(--cellSize);
+    width: var(--cellSize);
+  }
+}

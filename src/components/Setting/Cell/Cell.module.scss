@@ -1,0 +1,24 @@
+.Cell {
+  position: relative;
+  width: var(--cellSize);
+  height: var(--cellSize);
+  user-select: none;
+}
+
+.Animated {
+  animation-duration: 500ms;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
+  animation-name: Animate;
+}
+
+@keyframes Animate {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1, 1);
+    opacity: 1;
+  }
+}

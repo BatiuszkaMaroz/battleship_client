@@ -1,0 +1,27 @@
+.Ship {
+  z-index: 300;
+  position: absolute;
+  top: 0;
+  left: 0;
+  user-select: none;
+  cursor: move;
+
+  background-color: rgba(blue, 0.5);
+  display: flex;
+
+  .Segment {
+    &:first-child {
+      border-left: 1px solid black;
+    }
+
+    &:last-child {
+      border-right: 1px solid black;
+    }
+
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+
+    height: var(--cellSize);
+    width: var(--cellSize);
+  }
+}

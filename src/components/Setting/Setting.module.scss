@@ -1,0 +1,12 @@
+.Setting {
+  &__Container {
+    display: flex;
+    flex-flow: row;
+  }
+
+  &__Controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 5rem;
+  }
+}

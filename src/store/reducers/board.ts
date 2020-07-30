@@ -1,4 +1,5 @@
 import { Action, Reducer } from 'redux';
+import * as AT from '../actions/actionTypes';
 
 class Cell {
   id: string;
@@ -21,17 +22,57 @@ const board = rows.map((row) => {
 
 //--------------------------------------------------//
 
-type boardState = Cell[][];
+type BoardState = Cell[][];
 
-interface boardAction extends Action {}
+export interface BoardAction extends Action {
+  shipId?: string;
+  shipSize?: number;
+  i?: number;
+  j?: number;
+  orientation?: 'vertical' | 'horizontal';
+}
 
 const initialState = board;
 
-const boardReducer: Reducer<boardState, boardAction> = (
+const boardReducer: Reducer<BoardState, BoardAction> = (
   state = initialState,
   action,
 ) => {
   switch (action.type) {
+    case AT.SET_SHIP: {
+      const stateCopy = state.map((row) => {
+        return row.map((cell) => {
+          if (cell.shipId === action.shipId) {
+            cell.shipId = null;
+          }
+
+          return cell;
+        });
+      });
+
+      if (action.orientation === 'horizontal') {
+        for (let l = 0; l < action.shipSize!; l++) {
+          stateCopy[action.i!][action.j! + l].shipId = action.shipId!;
+        }
+      } else if (action.orientation === 'vertical') {
+        for (let l = 0; l < action.shipSize!; l++) {
+          stateCopy[action.i! + l][action.j!].shipId = action.shipId!;
+        }
+      }
+
+      return stateCopy;
+    }
+    case AT.UNSET_SHIP: {
+      return state.map((row) => {
+        return row.map((cell) => {
+          if (cell.shipId === action.shipId) {
+            cell.shipId = null;
+          }
+
+          return cell;
+        });
+      });
+    }
     default:
       return state;
   }

@@ -10,6 +10,12 @@
   outline: none !important;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+  background-color: white;
+
+  &:disabled {
+    background-color: gray;
+    cursor: default;
+  }
 
   .Text {
     height: 100%;
@@ -19,10 +25,14 @@
     flex-grow: 1;
     font-size: 2rem;
 
-    background-color: orange;
     color: white;
     letter-spacing: 1px;
     text-transform: uppercase;
+
+    // !!! ONLY FOR NOW !!! //
+    color: black;
+    padding: 0 1rem;
+    border: 2px solid black;
   }
 
   .Icon {

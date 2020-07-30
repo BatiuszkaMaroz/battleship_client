@@ -2,4 +2,5 @@ export const ESTABLISH_CONNECTION = 'ESTABLISH_CONNECTION';
 export const CONNECT_PLAYER = 'CONNECT_PLAYER';
 export const JOIN_PLAYER = 'JOIN_PLAYER';
 
-export const SET_CURRENT_CELL = 'SET_CURRENT_CELL';
+export const SET_SHIP = 'SET_SHIP';
+export const UNSET_SHIP = 'UNSET_SHIP';

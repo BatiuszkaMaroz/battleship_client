@@ -1,0 +1,57 @@
+const canRotate = (
+  i: number,
+  j: number,
+  board: any[][],
+  size: number,
+  shipId: string,
+  newOrientation: 'horizontal' | 'vertical',
+) => {
+  if (newOrientation === 'vertical') {
+    for (let k = i; k < i + size; k++) {
+      if (
+        !board[k] ||
+        !board[k][j] ||
+        (board[k][j].shipId !== shipId && board[k][j].shipId !== null)
+      ) {
+        return false;
+      }
+    }
+
+    for (let k = i - 1; k < i + size + 1; k++) {
+      for (let l = j - 1; l < j + 2; l++) {
+        if (
+          board[k] &&
+          board[k][l] &&
+          board[k][l].shipId !== shipId &&
+          board[k][l].shipId !== null
+        ) {
+          return false;
+        }
+      }
+    }
+  } else if (newOrientation === 'horizontal') {
+    for (let k = j; k < j + size; k++) {
+      if (
+        !board[i][k] ||
+        (board[i][k].shipId !== shipId && board[i][k].shipId !== null)
+      ) {
+        return false;
+      }
+    }
+
+    for (let k = j - 1; k < j + size + 1; k++) {
+      for (let l = i - 1; l < i + 2; l++) {
+        if (
+          board[l] &&
+          board[l][k] &&
+          board[l][k].shipId !== shipId &&
+          board[l][k].shipId !== null
+        ) {
+          return false;
+        }
+      }
+    }
+  }
+
+  return true;
+};

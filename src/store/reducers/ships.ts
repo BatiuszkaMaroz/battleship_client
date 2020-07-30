@@ -1,10 +1,7 @@
 import { Action, Reducer } from 'redux';
 import * as AT from '../actions/actionTypes';
-
 class Ship {
   id: string;
-  orientation: 'horizontal' | 'vertical' = 'horizontal';
-  currentCell: null | HTMLDivElement = null;
   settled: boolean = false;
 
   constructor(id: number, public size: number) {
@@ -29,9 +26,8 @@ const ships = [
 
 type ShipsState = Ship[];
 
-interface ShipsAction extends Action {
+export interface ShipsAction extends Action {
   shipId?: string;
-  newCell?: HTMLDivElement;
 }
 
 const initialState = ships;
@@ -41,10 +37,18 @@ const shipsReducer: Reducer<ShipsState, ShipsAction> = (
   action,
 ) => {
   switch (action.type) {
-    case AT.SET_CURRENT_CELL:
+    case AT.SET_SHIP:
       return state.map((ship) => {
         if (ship.id === action.shipId) {
-          ship.currentCell = action.newCell!;
+          ship.settled = true;
+        }
+
+        return ship;
+      });
+    case AT.UNSET_SHIP:
+      return state.map((ship) => {
+        if (ship.id === action.shipId) {
+          ship.settled = false;
         }
 
         return ship;

@@ -37,6 +37,12 @@ const shipsReducer: Reducer<ShipsState, ShipsAction> = (
   action,
 ) => {
   switch (action.type) {
+    case AT.RESET_BOARD: {
+      return initialState.map((ship) => {
+        ship.settled = false;
+        return ship;
+      });
+    }
     case AT.SET_SHIP:
       return state.map((ship) => {
         if (ship.id === action.shipId) {
@@ -53,6 +59,7 @@ const shipsReducer: Reducer<ShipsState, ShipsAction> = (
 
         return ship;
       });
+
     default:
       return state;
   }

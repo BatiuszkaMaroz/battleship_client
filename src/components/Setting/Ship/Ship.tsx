@@ -95,14 +95,8 @@ const Ship: React.FC<Props> = ({ dock, shipId }) => {
 
       dispatch(setShip(id, size, i, j, orientation.current));
     } else {
-      orientation.current = 'horizontal';
-      shipRef.current!.style.flexFlow = 'row';
       dispatch(unsetShip(id));
     }
-
-    curPlace.current.append(shipRef.current!);
-    shipRef.current!.style.left = '0px';
-    shipRef.current!.style.top = '0px';
 
     inMotion.current = false;
     clickCoords.current = { left: null, top: null };
@@ -171,27 +165,58 @@ const Ship: React.FC<Props> = ({ dock, shipId }) => {
   }, [moveShip, dropShip, render]);
 
   useEffect(() => {
-    // let currentCell: any;
+    let boardCell: any;
 
-    // board.forEach((row) => {
-    //   if (currentCell) return;
+    board.forEach((row) => {
+      if (boardCell) return;
 
-    //   row.forEach((cell) => {
-    //     if (currentCell) return;
+      row.forEach((cell) => {
+        if (boardCell) return;
 
-    //     if (cell.shipId === shipId) {
-    //       currentCell = cell;
-    //     }
-    //   });
-    // });
+        if (cell.shipId === shipId) {
+          boardCell = cell;
+        }
+      });
+    });
 
-    // console.log(orientation.current);
-    // console.log(currentCell);
-    // const cell = document.querySelector(`#cell-${currentCell?.id}`);
-    // console.log(cell);
+    shipRef.current!.style.left = '0px';
+    shipRef.current!.style.top = '0px';
 
-    console.log(shipId, 'RENDER');
-  }, [board, shipId]);
+    if (!boardCell) {
+      if (shipRef.current!.parentElement !== dock) {
+        orientation.current = 'horizontal';
+        shipRef.current!.style.flexFlow = 'row';
+        dock.append(shipRef.current!);
+      }
+      return;
+    }
+
+    if (
+      size !== 1 &&
+      board[boardCell.row + 1] &&
+      board[boardCell.row + 1][boardCell.col] &&
+      board[boardCell.row + 1][boardCell.col].shipId === shipId
+    ) {
+      orientation.current = 'vertical';
+      shipRef.current!.style.flexFlow = 'column';
+    }
+
+    const cell = document.querySelector(`#cell-${boardCell.id}`);
+
+    if (cell) {
+      curPlace.current = cell as HTMLDivElement;
+
+      if (shipRef.current!.parentElement !== cell) {
+        cell.append(shipRef.current!);
+      }
+    } else {
+      if (shipRef.current!.parentElement !== dock) {
+        orientation.current = 'horizontal';
+        shipRef.current!.style.flexFlow = 'row';
+        dock.append(shipRef.current!);
+      }
+    }
+  }, [board, shipId, dock, size]);
 
   const shipBody = useMemo(() => {
     const body = [];

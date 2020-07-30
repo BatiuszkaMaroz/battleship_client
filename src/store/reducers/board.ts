@@ -1,12 +1,15 @@
 import { Action, Reducer } from 'redux';
 import * as AT from '../actions/actionTypes';
 
+import EXO from './RANDOMIZER';
+
 class Cell {
   id: string;
   shipId: string | null;
 
   constructor(public row: number, public col: number) {
     this.id = `${row}${col}`;
+
     this.shipId = null;
   }
 }
@@ -32,13 +35,22 @@ export interface BoardAction extends Action {
   orientation?: 'vertical' | 'horizontal';
 }
 
-const initialState = board;
+// const initialState = board;
+const initialState = EXO;
 
 const boardReducer: Reducer<BoardState, BoardAction> = (
   state = initialState,
   action,
 ) => {
   switch (action.type) {
+    case AT.RESET_BOARD: {
+      return state.map((row) => {
+        return row.map((cell) => {
+          cell.shipId = null;
+          return cell;
+        });
+      });
+    }
     case AT.SET_SHIP: {
       const stateCopy = state.map((row) => {
         return row.map((cell) => {
@@ -73,6 +85,7 @@ const boardReducer: Reducer<BoardState, BoardAction> = (
         });
       });
     }
+
     default:
       return state;
   }

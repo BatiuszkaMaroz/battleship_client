@@ -2,7 +2,7 @@ import * as AT from './actionTypes';
 import { BoardAction } from '../reducers/board';
 import { ShipsAction } from '../reducers/ships';
 
-type SettingAction = BoardAction;
+type SettingAction = BoardAction & ShipsAction;
 
 export const setShip = (
   shipId: string,
@@ -17,3 +17,5 @@ export const setShip = (
 export const unsetShip = (shipId: string): SettingAction => {
   return { type: AT.UNSET_SHIP, shipId };
 };
+
+export const resetBoard = () => ({ type: AT.RESET_BOARD });

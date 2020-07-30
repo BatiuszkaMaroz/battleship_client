@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 import Modal from '../../shared/components/Modal/Modal';
 import Button from '../../shared/components/Button/Button';
@@ -9,8 +10,10 @@ import Harbor from './Harbor/Harbor';
 import useSocket from '../../shared/hooks/useSocket';
 import useTypedSelector from '../../shared/hooks/useTypedSelector';
 import styles from './Setting.module.scss';
+import { resetBoard } from '../../store/actions/setting';
 
 const Setting: React.FC = () => {
+  const dispatch = useDispatch();
   const { emitter, data, unlocker, acceptError, error } = useSocket(
     'apply-setting',
   );
@@ -31,11 +34,15 @@ const Setting: React.FC = () => {
   );
 
   const applySetting = useCallback(() => {
-    if (allShipsSettled) {
-      emitter(board);
-      unlocker();
-    }
+    // if (allShipsSettled) {
+    emitter(board);
+    unlocker();
+    // }
   }, [allShipsSettled, board, emitter, unlocker]);
+
+  const resetSetting = useCallback(() => {
+    dispatch(resetBoard());
+  }, [dispatch]);
 
   useEffect(() => {
     console.log(data);
@@ -50,9 +57,13 @@ const Setting: React.FC = () => {
           <Board />
         </div>
         <div className={styles.Setting__Controls}>
-          <Button disabled={!allShipsSettled} onClick={applySetting}>
+          <Button
+            // disabled={!allShipsSettled}
+            onClick={applySetting}
+          >
             Done
           </Button>
+          <Button onClick={resetSetting}>Reset</Button>
         </div>
       </Card>
     </>

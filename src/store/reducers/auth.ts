@@ -1,5 +1,5 @@
-import * as AT from '../actions/actionTypes';
 import { Action, Reducer } from 'redux';
+import * as AT from '../actions/actionTypes';
 
 interface IAuthState {
   io: null | SocketIOClient.Socket;

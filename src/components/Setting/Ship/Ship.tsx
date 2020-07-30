@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import { useDispatch } from 'react-redux';
 
+import isPlaceFree from '../../../shared/utils/isPlaceFree';
 import useTypedSelector from '../../../shared/hooks/useTypedSelector';
 import { setShip, unsetShip } from '../../../store/actions/setting';
 
@@ -45,7 +46,7 @@ const Ship: React.FC<Props> = ({ dock, shipId }) => {
       const ship = shipRef.current!;
 
       if (orientation.current === 'horizontal') {
-        if (isFree(i, j, board, size, shipId, 'vertical')) {
+        if (isPlaceFree(i, j, board, size, shipId, 'vertical')) {
           orientation.current = 'vertical';
           ship.style.flexFlow = 'column';
           dispatch(setShip(shipId, size, i, j, 'vertical'));
@@ -53,7 +54,7 @@ const Ship: React.FC<Props> = ({ dock, shipId }) => {
           console.log('SHIT');
         }
       } else if (orientation.current === 'vertical') {
-        if (isFree(i, j, board, size, shipId, 'horizontal')) {
+        if (isPlaceFree(i, j, board, size, shipId, 'horizontal')) {
           orientation.current = 'horizontal';
           ship.style.flexFlow = 'row';
           dispatch(setShip(shipId, size, i, j, 'horizontal'));
@@ -123,7 +124,7 @@ const Ship: React.FC<Props> = ({ dock, shipId }) => {
 
         if (
           curPlace.current === cell ||
-          isFree(i, j, board, size, id, orientation.current)
+          isPlaceFree(i, j, board, size, id, orientation.current)
         ) {
           const { top, left } = cell.getBoundingClientRect();
 
@@ -199,6 +200,9 @@ const Ship: React.FC<Props> = ({ dock, shipId }) => {
     ) {
       orientation.current = 'vertical';
       shipRef.current!.style.flexFlow = 'column';
+    } else {
+      orientation.current = 'horizontal';
+      shipRef.current!.style.flexFlow = 'row';
     }
 
     const cell = document.querySelector(`#cell-${boardCell.id}`);
@@ -211,8 +215,6 @@ const Ship: React.FC<Props> = ({ dock, shipId }) => {
       }
     } else {
       if (shipRef.current!.parentElement !== dock) {
-        orientation.current = 'horizontal';
-        shipRef.current!.style.flexFlow = 'row';
         dock.append(shipRef.current!);
       }
     }
@@ -239,63 +241,3 @@ const Ship: React.FC<Props> = ({ dock, shipId }) => {
 };
 
 export default Ship;
-
-const isFree = (
-  i: number,
-  j: number,
-  board: any[][],
-  size: number,
-  shipId: string,
-  orientation: 'horizontal' | 'vertical',
-) => {
-  if (orientation === 'horizontal') {
-    for (let k = j; k < size + j; k++) {
-      if (
-        !board[i][k] ||
-        (board[i][k].shipId !== shipId && board[i][k].shipId !== null)
-      ) {
-        return false;
-      }
-    }
-
-    for (let k = i - 1; k < i + 2; k++) {
-      for (let l = j - 1; l < j + size + 1; l++) {
-        if (
-          board[k] &&
-          board[k][l] &&
-          board[k][l].shipId !== null &&
-          board[k] &&
-          board[k][l] &&
-          board[k][l].shipId !== shipId
-        ) {
-          return false;
-        }
-      }
-    }
-  } else if (orientation === 'vertical') {
-    for (let k = i; k < i + size; k++) {
-      if (
-        !board[k] ||
-        !board[k][j] ||
-        (board[k][j].shipId !== shipId && board[k][j].shipId !== null)
-      ) {
-        return false;
-      }
-    }
-
-    for (let k = i - 1; k < i + size + 1; k++) {
-      for (let l = j - 1; l < j + 2; l++) {
-        if (
-          board[k] &&
-          board[k][l] &&
-          board[k][l].shipId !== shipId &&
-          board[k][l].shipId !== null
-        ) {
-          return false;
-        }
-      }
-    }
-  }
-
-  return true;
-};

@@ -1,1 +1,0 @@
-Refaktor statku do reagowania na danye wejściowe

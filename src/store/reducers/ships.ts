@@ -9,19 +9,23 @@ class Ship {
   }
 }
 
-const ships = [
-  new Ship(0, 4),
-  new Ship(1, 3),
-  new Ship(2, 3),
-  new Ship(3, 2),
-  new Ship(4, 2),
-  new Ship(5, 2),
-  new Ship(6, 1),
-  new Ship(7, 1),
-  new Ship(8, 1),
-  new Ship(9, 1),
-];
+export const createShips = () => {
+  return [
+    new Ship(0, 4),
+    new Ship(1, 3),
+    new Ship(2, 3),
+    new Ship(3, 2),
+    new Ship(4, 2),
+    new Ship(5, 2),
+    new Ship(6, 1),
+    new Ship(7, 1),
+    new Ship(8, 1),
+    new Ship(9, 1),
+  ];
+};
 
+//--------------------------------------------------//
+//--------------------------------------------------//
 //--------------------------------------------------//
 
 type ShipsState = Ship[];
@@ -30,20 +34,23 @@ export interface ShipsAction extends Action {
   shipId?: string;
 }
 
-const initialState = ships;
-
 const shipsReducer: Reducer<ShipsState, ShipsAction> = (
-  state = initialState,
+  state = createShips(),
   action,
 ) => {
   switch (action.type) {
     case AT.RESET_BOARD: {
-      return initialState.map((ship) => {
-        ship.settled = false;
+      return createShips();
+    }
+
+    case AT.RANDOMIZE_BOARD: {
+      return state.map((ship) => {
+        ship.settled = true;
         return ship;
       });
     }
-    case AT.SET_SHIP:
+
+    case AT.SET_SHIP: {
       return state.map((ship) => {
         if (ship.id === action.shipId) {
           ship.settled = true;
@@ -51,7 +58,9 @@ const shipsReducer: Reducer<ShipsState, ShipsAction> = (
 
         return ship;
       });
-    case AT.UNSET_SHIP:
+    }
+
+    case AT.UNSET_SHIP: {
       return state.map((ship) => {
         if (ship.id === action.shipId) {
           ship.settled = false;
@@ -59,9 +68,11 @@ const shipsReducer: Reducer<ShipsState, ShipsAction> = (
 
         return ship;
       });
+    }
 
-    default:
+    default: {
       return state;
+    }
   }
 };
 

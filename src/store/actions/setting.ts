@@ -19,3 +19,4 @@ export const unsetShip = (shipId: string): SettingAction => {
 };
 
 export const resetBoard = () => ({ type: AT.RESET_BOARD });
+export const randomizeBoard = () => ({ type: AT.RANDOMIZE_BOARD });

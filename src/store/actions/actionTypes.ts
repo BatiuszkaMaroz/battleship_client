@@ -4,4 +4,6 @@ export const JOIN_PLAYER = 'JOIN_PLAYER';
 
 export const SET_SHIP = 'SET_SHIP';
 export const UNSET_SHIP = 'UNSET_SHIP';
+
 export const RESET_BOARD = 'RESET_BOARD';
+export const RANDOMIZE_BOARD = 'RANDOMIZE_BOARD';

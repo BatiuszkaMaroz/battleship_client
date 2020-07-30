@@ -1,7 +1,5 @@
 import { combineReducers } from 'redux';
 
-import './RANDOMIZER';
-
 import auth from './auth';
 import board from './board';
 import ships from './ships';

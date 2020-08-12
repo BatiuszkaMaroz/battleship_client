@@ -41,23 +41,23 @@ const Ship: React.FC<Props> = ({ dock, shipId }) => {
       e.preventDefault();
       if (curPlace.current === dock || size === 1) return;
 
-      const i = +curPlace.current.getAttribute('data-row')!;
-      const j = +curPlace.current.getAttribute('data-col')!;
+      const row = +curPlace.current.getAttribute('data-row')!;
+      const col = +curPlace.current.getAttribute('data-col')!;
       const ship = shipRef.current!;
 
       if (orientation.current === 'horizontal') {
-        if (isPlaceFree(i, j, board, size, shipId, 'vertical')) {
+        if (isPlaceFree(row, col, board, size, shipId, 'vertical')) {
           orientation.current = 'vertical';
           ship.style.flexFlow = 'column';
-          dispatch(setShip(shipId, size, i, j, 'vertical'));
+          dispatch(setShip(shipId, size, row, col, 'vertical'));
         } else {
           console.log('SHIT');
         }
       } else if (orientation.current === 'vertical') {
-        if (isPlaceFree(i, j, board, size, shipId, 'horizontal')) {
+        if (isPlaceFree(row, col, board, size, shipId, 'horizontal')) {
           orientation.current = 'horizontal';
           ship.style.flexFlow = 'row';
-          dispatch(setShip(shipId, size, i, j, 'horizontal'));
+          dispatch(setShip(shipId, size, row, col, 'horizontal'));
         } else {
           console.log('SHIT');
         }
@@ -69,7 +69,6 @@ const Ship: React.FC<Props> = ({ dock, shipId }) => {
   const pickUpShip = useCallback((e: React.MouseEvent) => {
     if (e.button !== 0) return;
 
-    setRender((prev) => !prev);
     inMotion.current = true;
 
     const ship = shipRef.current!;
@@ -85,22 +84,24 @@ const Ship: React.FC<Props> = ({ dock, shipId }) => {
     ship.style.top = clientY - top + 'px';
 
     clickCoords.current = { left, top };
+
+    setRender((prev) => !prev);
   }, []);
 
   const dropShip = useCallback(() => {
-    setRender((prev) => !prev);
-
     if (curPlace.current !== dock) {
-      const i = +curPlace.current.getAttribute('data-row')!;
-      const j = +curPlace.current.getAttribute('data-col')!;
+      const row = +curPlace.current.getAttribute('data-row')!;
+      const col = +curPlace.current.getAttribute('data-col')!;
 
-      dispatch(setShip(id, size, i, j, orientation.current));
+      dispatch(setShip(id, size, row, col, orientation.current));
     } else {
       dispatch(unsetShip(id));
     }
 
     inMotion.current = false;
     clickCoords.current = { left: null, top: null };
+
+    setRender((prev) => !prev);
   }, [dispatch, id, size, dock]);
 
   const moveShip = useCallback(
@@ -119,12 +120,12 @@ const Ship: React.FC<Props> = ({ dock, shipId }) => {
         ?.closest('.cell') as HTMLDivElement;
 
       if (cell) {
-        const i = +cell.getAttribute('data-row')!;
-        const j = +cell.getAttribute('data-col')!;
+        const row = +cell.getAttribute('data-row')!;
+        const col = +cell.getAttribute('data-col')!;
 
         if (
           curPlace.current === cell ||
-          isPlaceFree(i, j, board, size, id, orientation.current)
+          isPlaceFree(row, col, board, size, id, orientation.current)
         ) {
           const { top, left } = cell.getBoundingClientRect();
 
@@ -205,10 +206,13 @@ const Ship: React.FC<Props> = ({ dock, shipId }) => {
       shipRef.current!.style.flexFlow = 'row';
     }
 
-    const cell = document.querySelector(`#cell-${boardCell.id}`);
+    const cell = document.querySelector(
+      `#cell-${boardCell.id}`,
+    ) as HTMLDivElement | null;
 
     if (cell) {
-      curPlace.current = cell as HTMLDivElement;
+      curPlace.current = cell;
+      cell.style.zIndex = '100';
 
       if (shipRef.current!.parentElement !== cell) {
         cell.append(shipRef.current!);
@@ -218,6 +222,12 @@ const Ship: React.FC<Props> = ({ dock, shipId }) => {
         dock.append(shipRef.current!);
       }
     }
+
+    return () => {
+      if (cell) {
+        cell.style.zIndex = '';
+      }
+    };
   }, [board, shipId, dock, size]);
 
   const shipBody = useMemo(() => {

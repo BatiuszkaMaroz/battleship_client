@@ -10,7 +10,7 @@ function randomizeBoard() {
   const cells = board[0].length;
   let orientation: 'horizontal' | 'vertical';
 
-  const firstDraw = Math.round(Math.random());
+  const firstDraw = !!Math.round(Math.random());
 
   if (firstDraw) {
     orientation = 'horizontal';
@@ -26,17 +26,17 @@ function randomizeBoard() {
     }
 
     if (orientation === 'horizontal') {
-      const maxI = rows - 1;
-      const maxJ = cells - ship.size;
+      const maxRow = rows - 1;
+      const maxCol = cells - ship.size;
 
-      let positionI = Math.floor(Math.random() * (maxI + 1));
-      let positionJ = Math.floor(Math.random() * (maxJ + 1));
+      let positionRow = Math.floor(Math.random() * (maxRow + 1));
+      let positionCol = Math.floor(Math.random() * (maxCol + 1));
 
       while (true) {
         if (
           isPlaceFree(
-            positionI,
-            positionJ,
+            positionRow,
+            positionCol,
             board,
             ship.size,
             ship.id,
@@ -44,35 +44,35 @@ function randomizeBoard() {
           )
         ) {
           for (let j = 0; j < ship.size; j++) {
-            board[positionI][positionJ + j].shipId = ship.id;
+            board[positionRow][positionCol + j].shipId = ship.id;
           }
 
           break;
         } else {
-          positionI++;
+          positionRow++;
 
-          if (positionI > maxI) {
-            positionJ++;
-            positionI = 0;
+          if (positionRow > maxRow) {
+            positionCol++;
+            positionRow = 0;
           }
 
-          if (positionJ > maxJ) {
-            positionJ = 0;
+          if (positionCol > maxCol) {
+            positionCol = 0;
           }
         }
       }
     } else if (orientation === 'vertical') {
-      const maxI = rows - ship.size;
-      const maxJ = cells - 1;
+      const maxRow = rows - ship.size;
+      const maxCol = cells - 1;
 
-      let positionI = Math.floor(Math.random() * (maxI + 1));
-      let positionJ = Math.floor(Math.random() * (maxJ + 1));
+      let positionRow = Math.floor(Math.random() * (maxRow + 1));
+      let positionCol = Math.floor(Math.random() * (maxCol + 1));
 
       while (true) {
         if (
           isPlaceFree(
-            positionI,
-            positionJ,
+            positionRow,
+            positionCol,
             board,
             ship.size,
             ship.id,
@@ -80,20 +80,20 @@ function randomizeBoard() {
           )
         ) {
           for (let i = 0; i < ship.size; i++) {
-            board[positionI + i][positionJ].shipId = ship.id;
+            board[positionRow + i][positionCol].shipId = ship.id;
           }
 
           break;
         } else {
-          positionJ++;
+          positionCol++;
 
-          if (positionJ > maxJ) {
-            positionJ = 0;
-            positionI++;
+          if (positionCol > maxCol) {
+            positionCol = 0;
+            positionRow++;
           }
 
-          if (positionI > maxI) {
-            positionI = 0;
+          if (positionRow > maxRow) {
+            positionRow = 0;
           }
         }
       }

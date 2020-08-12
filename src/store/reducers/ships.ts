@@ -9,6 +9,9 @@ class Ship {
   }
 }
 
+//***
+//EDITABLE
+//***
 export const createShips = () => {
   return [
     new Ship(0, 4),

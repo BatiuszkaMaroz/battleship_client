@@ -2,17 +2,20 @@ import { Action, Reducer } from 'redux';
 import * as AT from '../actions/actionTypes';
 import randomizeBoard from '../../shared/utils/randomizeBoard';
 
-class Cell {
+export class Cell {
   id: string;
   shipId: string | null;
 
   constructor(public row: number, public col: number) {
-    this.id = `${row}${col}`;
+    this.id = `${row * cols.length + col}`;
 
     this.shipId = null;
   }
 }
 
+//***
+// EDITABLE
+//***
 const rows = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 const cols = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 

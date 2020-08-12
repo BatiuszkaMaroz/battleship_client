@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Redirect, Switch } from 'react-router-dom';
 
@@ -9,7 +9,6 @@ import Spinner from './shared/components/Spinner/Spinner';
 
 import useTypedSelector from './shared/hooks/useTypedSelector';
 import { establishConnection } from './store/actions/auth';
-import src from '*.bmp';
 
 function App() {
   const dispatch = useDispatch();
@@ -19,49 +18,26 @@ function App() {
     dispatch(establishConnection());
   }, [dispatch]);
 
-  let routes: React.ReactNode | null = null;
+  const renderContent = useMemo(() => {
+    switch (true) {
+      case io && !player:
+        return <Connect />;
 
-  if (!io) {
-    routes = (
-      <>
-        <Route path='/' exact>
-          <Spinner />
-        </Route>
-        <Redirect to='/' />
-      </>
-    );
-  }
+      case io && !!player:
+        return <Setting />;
 
-  // if (io && !player) {
-  //   routes = (
-  //     <>
-  //       <Route path='/' exact>
-  //         <Connect />
-  //       </Route>
-  //     </>
-  //   );
-  // }
-
-  // if (player) {
-  //   routes = (
-  //     <>
-  //       <Route path='/' exact>
-  //         <div>HELLO {player?.name}</div>
-  //         <Join />
-  //       </Route>
-  //     </>
-  //   );
-  // }
-
-  if (io) {
-    routes = <Setting />;
-  }
+      default:
+        return <Spinner />;
+    }
+  }, [io, player]);
 
   return (
-    <div>
-      {/* <Switch>{routes}</Switch> */}
-      {routes}
-    </div>
+    <Switch>
+      <Route path='/' exact>
+        {renderContent}
+      </Route>
+      <Redirect to='/' />
+    </Switch>
   );
 }
 

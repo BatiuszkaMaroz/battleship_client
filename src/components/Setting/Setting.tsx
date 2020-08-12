@@ -62,7 +62,7 @@ const Setting: React.FC = () => {
         </div>
         <div className={styles.Setting__Controls}>
           <Button disabled={!allShipsSettled} onClick={applySetting}>
-            Done
+            Play
           </Button>
           <Button onClick={resetSetting}>Reset</Button>
           <Button onClick={randomizeSetting}>Randomize</Button>

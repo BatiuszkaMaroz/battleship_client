@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import Card from '../../../shared/components/Card/Card';
+import Spinner from '../../../shared/components/Spinner/Spinner';
 import Modal from '../../../shared/components/Modal/Modal';
 
 import { joinRoom } from '../../../store/actions/auth';
@@ -35,9 +35,7 @@ const Join: React.FC = () => {
   return (
     <>
       {error && <Modal onClick={acceptError}>{error}</Modal>}
-      <Card center className={styles.Join}>
-        <button onClick={clickHandler}>JOIN</button>
-      </Card>
+      <Spinner />
     </>
   );
 };

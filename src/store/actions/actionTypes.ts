@@ -6,3 +6,5 @@ export const RESET_BOARD = 'RESET_BOARD';
 export const RANDOMIZE_BOARD = 'RANDOMIZE_BOARD';
 export const SET_SHIP = 'SET_SHIP';
 export const UNSET_SHIP = 'UNSET_SHIP';
+
+export const SET_GAME_BOARD = 'SET_GAME_BOARD';

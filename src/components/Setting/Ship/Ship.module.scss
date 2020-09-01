@@ -10,18 +10,17 @@
   display: flex;
 
   .Segment {
-    &:first-child {
-      border-left: 1px solid black;
-    }
-
-    &:last-child {
-      border-right: 1px solid black;
-    }
-
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
-
     height: var(--cellSize);
     width: var(--cellSize);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 3px solid rgba(navy, 0.5);
   }
 }

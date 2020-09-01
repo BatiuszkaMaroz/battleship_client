@@ -1,11 +1,11 @@
 import React, { useEffect, useState, FormEvent } from 'react';
 import { useDispatch } from 'react-redux';
 
-import Modal from '../../../shared/components/Modal/Modal';
-import Card from '../../../shared/components/Card/Card';
+import Modal from '../../shared/components/Modal/Modal';
+import Card from '../../shared/components/Card/Card';
 
-import useSocket from '../../../shared/hooks/useSocket';
-import { connectPlayer } from '../../../store/actions/auth';
+import useSocket from '../../shared/hooks/useSocket';
+import { connectPlayer } from '../../store/actions/auth';
 import styles from './Connect.module.scss';
 
 interface IResponse {
@@ -35,6 +35,16 @@ const Connect: React.FC = () => {
       unlocker();
     }
   }, [data, dispatch, unlocker]);
+
+  //**************************************************
+  //**************************************************
+  //**************************************************
+  useEffect(() => {
+    emitter('TEST USER');
+  }, [emitter]);
+  //**************************************************
+  //**************************************************
+  //**************************************************
 
   return (
     <>

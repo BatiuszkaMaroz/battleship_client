@@ -3,8 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Route, Redirect, Switch } from 'react-router-dom';
 
 import Setting from './components/Setting/Setting';
-import Connect from './components/Auth/Connect/Connect';
-import Join from './components/Auth/Join/Join';
+import Connect from './components/Connect/Connect';
 import Spinner from './shared/components/Spinner/Spinner';
 
 import useTypedSelector from './shared/hooks/useTypedSelector';

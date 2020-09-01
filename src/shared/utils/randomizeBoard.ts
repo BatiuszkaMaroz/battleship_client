@@ -1,6 +1,6 @@
 import isPlaceFree from './isPlaceFree';
-import { createBoard } from '../../store/reducers/board';
-import { createShips } from '../../store/reducers/ships';
+import { createBoard } from '../../models/Board';
+import { createShips } from '../../models/Ship';
 
 function randomizeBoard() {
   const board = createBoard();

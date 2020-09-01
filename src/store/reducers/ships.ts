@@ -1,43 +1,13 @@
 import { Action, Reducer } from 'redux';
+
 import * as AT from '../actions/actionTypes';
-class Ship {
-  id: string;
-  settled: boolean = false;
-
-  constructor(id: number, public size: number) {
-    this.id = `ship-${id}`;
-  }
-}
-
-//***
-//EDITABLE
-//***
-export const createShips = () => {
-  return [
-    new Ship(0, 4),
-    new Ship(1, 3),
-    new Ship(2, 3),
-    new Ship(3, 2),
-    new Ship(4, 2),
-    new Ship(5, 2),
-    new Ship(6, 1),
-    new Ship(7, 1),
-    new Ship(8, 1),
-    new Ship(9, 1),
-  ];
-};
-
-//--------------------------------------------------//
-//--------------------------------------------------//
-//--------------------------------------------------//
-
-type ShipsState = Ship[];
+import { Ships, createShips } from '../../models/Ship';
 
 export interface ShipsAction extends Action {
   shipId?: string;
 }
 
-const shipsReducer: Reducer<ShipsState, ShipsAction> = (
+const shipsReducer: Reducer<Ships, ShipsAction> = (
   state = createShips(),
   action,
 ) => {

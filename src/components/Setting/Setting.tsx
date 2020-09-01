@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import Modal from '../../shared/components/Modal/Modal';
@@ -11,12 +11,14 @@ import useSocket from '../../shared/hooks/useSocket';
 import useTypedSelector from '../../shared/hooks/useTypedSelector';
 import styles from './Setting.module.scss';
 import { resetBoard, randomizeBoard } from '../../store/actions/setting';
+import { setGameBoard } from '../../store/actions/game';
 
 const Setting: React.FC = () => {
   const dispatch = useDispatch();
-  const { emitter, data, unlocker, acceptError, error } = useSocket(
-    'apply-setting',
-  );
+  const { emitter, data, unlocker, acceptError, error } = useSocket<{
+    board: any;
+    message: string;
+  }>('apply-setting');
 
   const board = useTypedSelector((state) => state.board);
   const allShipsSettled = useTypedSelector((state) =>
@@ -49,8 +51,28 @@ const Setting: React.FC = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log(data);
-  }, [data]);
+    if (data.board && data.message) {
+      console.log(data.message);
+      dispatch(setGameBoard(data.board));
+    }
+  }, [dispatch, data]);
+
+  //**************************************************
+  //**************************************************
+  //**************************************************
+  const [ready, setReady] = useState<boolean>(false);
+  useEffect(() => {
+    dispatch(randomizeBoard());
+    setReady(true);
+  }, [dispatch]);
+  useEffect(() => {
+    if (ready) {
+      emitter(board);
+    }
+  }, [ready, board, emitter]);
+  //**************************************************
+  //**************************************************
+  //**************************************************
 
   return (
     <>

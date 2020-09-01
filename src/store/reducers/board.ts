@@ -1,39 +1,8 @@
 import { Action, Reducer } from 'redux';
+
 import * as AT from '../actions/actionTypes';
+import { Board, createBoard } from '../../models/Board';
 import randomizeBoard from '../../shared/utils/randomizeBoard';
-
-export class Cell {
-  id: string;
-  shipId: string | null;
-
-  constructor(public row: number, public col: number) {
-    this.id = `${row * cols.length + col}`;
-
-    this.shipId = null;
-  }
-}
-
-//***
-// EDITABLE
-//***
-const rows = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-const cols = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-export const createBoard = () => {
-  const board = rows.map((row) => {
-    return cols.map((col) => {
-      return new Cell(row, col);
-    });
-  });
-
-  return board;
-};
-
-//--------------------------------------------------//
-//--------------------------------------------------//
-//--------------------------------------------------//
-
-type BoardState = Cell[][];
 
 export interface BoardAction extends Action {
   shipId?: string;
@@ -43,7 +12,7 @@ export interface BoardAction extends Action {
   orientation?: 'vertical' | 'horizontal';
 }
 
-const boardReducer: Reducer<BoardState, BoardAction> = (
+const boardReducer: Reducer<Board, BoardAction> = (
   state = createBoard(),
   action,
 ) => {

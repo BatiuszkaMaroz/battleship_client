@@ -8,7 +8,7 @@ import styles from './Board.module.scss';
 const Board: React.FC = () => {
   const board = useTypedSelector((state) => state.board);
 
-  const spawnBoard = () =>
+  const renderBoard = () =>
     board.map((row, idx) => (
       <ul className={styles.Row} key={idx}>
         {row.map((cell) => (
@@ -23,7 +23,7 @@ const Board: React.FC = () => {
       </ul>
     ));
 
-  return <div className={styles.Board}>{spawnBoard()}</div>;
+  return <div className={styles.Board}>{renderBoard()}</div>;
 };
 
 export default Board;

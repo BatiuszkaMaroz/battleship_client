@@ -7,16 +7,16 @@ import randomizeBoard from '../../../shared/utils/randomizeBoard';
 export type BoardAction = Action & {
   shipId?: string;
   shipSize?: number;
-  i?: number;
-  j?: number;
+  row?: number;
+  col?: number;
   orientation?: 'vertical' | 'horizontal';
 };
 
 const boardReducer: Reducer<Board, BoardAction> = (
   state = createBoard(),
-  action,
+  { type, col, orientation, row, shipId, shipSize },
 ) => {
-  switch (action.type) {
+  switch (type) {
     case AT.RESET_BOARD: {
       return createBoard();
     }
@@ -29,7 +29,7 @@ const boardReducer: Reducer<Board, BoardAction> = (
       //Clears old position
       const stateCopy = state.map((row) => {
         return row.map((cell) => {
-          if (cell.shipId === action.shipId) {
+          if (cell.shipId === shipId) {
             cell.shipId = null;
           }
 
@@ -37,13 +37,13 @@ const boardReducer: Reducer<Board, BoardAction> = (
         });
       });
 
-      if (action.orientation === 'horizontal') {
-        for (let l = 0; l < action.shipSize!; l++) {
-          stateCopy[action.i!][action.j! + l].shipId = action.shipId!;
+      if (orientation === 'horizontal') {
+        for (let l = 0; l < shipSize!; l++) {
+          stateCopy[row!][col! + l].shipId = shipId!;
         }
-      } else if (action.orientation === 'vertical') {
-        for (let l = 0; l < action.shipSize!; l++) {
-          stateCopy[action.i! + l][action.j!].shipId = action.shipId!;
+      } else if (orientation === 'vertical') {
+        for (let l = 0; l < shipSize!; l++) {
+          stateCopy[row! + l][col!].shipId = shipId!;
         }
       }
 
@@ -54,7 +54,7 @@ const boardReducer: Reducer<Board, BoardAction> = (
       //Clears old position
       return state.map((row) => {
         return row.map((col) => {
-          if (col.shipId === action.shipId) {
+          if (col.shipId === shipId) {
             col.shipId = null;
           }
 

@@ -75,7 +75,7 @@ const Setting: React.FC = () => {
 
   return (
     <>
-      {error && <Modal onClick={acceptError}>{error}</Modal>}
+      {error && <Modal onClose={acceptError}>{error}</Modal>}
       <Card center className={styles.Setting}>
         <div className={styles.Setting__Container}>
           <Harbor />

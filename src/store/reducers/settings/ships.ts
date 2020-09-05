@@ -9,9 +9,9 @@ export type ShipsAction = Action & {
 
 const shipsReducer: Reducer<Ships, ShipsAction> = (
   state = createShips(),
-  action,
+  { type, shipId },
 ) => {
-  switch (action.type) {
+  switch (type) {
     case AT.RESET_BOARD: {
       return createShips();
     }
@@ -25,7 +25,7 @@ const shipsReducer: Reducer<Ships, ShipsAction> = (
 
     case AT.SET_SHIP: {
       return state.map((ship) => {
-        if (ship.id === action.shipId) {
+        if (ship.id === shipId) {
           ship.settled = true;
         }
 
@@ -35,7 +35,7 @@ const shipsReducer: Reducer<Ships, ShipsAction> = (
 
     case AT.UNSET_SHIP: {
       return state.map((ship) => {
-        if (ship.id === action.shipId) {
+        if (ship.id === shipId) {
           ship.settled = false;
         }
 

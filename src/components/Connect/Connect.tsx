@@ -49,7 +49,7 @@ const Connect: React.FC = () => {
 
   return (
     <>
-      {error && <Modal onClick={acceptError}>{error}</Modal>}
+      {error && <Modal onClose={acceptError}>{error}</Modal>}
       <Card center className={styles.Connect}>
         <form onSubmit={submitHandler}>
           <label htmlFor='room'>Type the your name: </label>

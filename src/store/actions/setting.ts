@@ -7,11 +7,11 @@ type SettingAction = BoardAction & ShipsAction;
 export const setShip = (
   shipId: string,
   shipSize: number,
-  i: number,
-  j: number,
+  row: number,
+  col: number,
   orientation: 'horizontal' | 'vertical',
 ): SettingAction => {
-  return { type: AT.SET_SHIP, shipId, shipSize, i, j, orientation };
+  return { type: AT.SET_SHIP, shipId, shipSize, row, col, orientation };
 };
 
 export const unsetShip = (shipId: string): SettingAction => {

@@ -15,14 +15,14 @@ import { setGameBoard } from '../../store/actions/game';
 
 const Setting: React.FC = () => {
   const dispatch = useDispatch();
-  const { emitter, data, unlocker, acceptError, error } = useSocket<{
+  const { emitter, data, acceptError, error } = useSocket<{
     board: any;
     message: string;
   }>('apply-setting');
 
-  const board = useTypedSelector((state) => state.board);
+  const board = useTypedSelector((state) => state.settings.board);
   const allShipsSettled = useTypedSelector((state) =>
-    state.ships.reduce((prev, cur) => {
+    state.settings.ships.reduce((prev, cur) => {
       if (prev) {
         if (cur && cur.settled) {
           return true;
@@ -38,9 +38,8 @@ const Setting: React.FC = () => {
   const applySetting = useCallback(() => {
     if (allShipsSettled) {
       emitter(board);
-      unlocker();
     }
-  }, [allShipsSettled, board, emitter, unlocker]);
+  }, [allShipsSettled, board, emitter]);
 
   const resetSetting = useCallback(() => {
     dispatch(resetBoard());

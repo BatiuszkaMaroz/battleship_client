@@ -4,6 +4,8 @@
   --main1: white;
   --shadow1: 2px 2px 8px rgba(0, 0, 0, 0.25);
   --cellSize: 50px;
+
+  --backdropIndex: 100;
 }
 
 *,
@@ -28,8 +30,6 @@ body {
     rgba(white, 0.65) 70%,
     rgba(white, 0.75) 30%
   );
-
-  // $gradient: linear-gradient(rgba(white, 0.75), rgba(lightskyblue, 0.75));
 
   font-size: 1.6rem;
   background-attachment: fixed;

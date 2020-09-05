@@ -23,9 +23,9 @@ const Ship: React.FC<Props> = ({ dock, shipId }) => {
   const [render, setRender] = useState<boolean>(false);
 
   const { id, size } = useTypedSelector((state) =>
-    state.ships.find((ship) => ship.id === shipId),
+    state.settings.ships.find((ship) => ship.id === shipId),
   )!;
-  const board = useTypedSelector((state) => state.board);
+  const board = useTypedSelector((state) => state.settings.board);
 
   const orientation = useRef<'horizontal' | 'vertical'>('horizontal');
   const shipRef = useRef<HTMLDivElement | null>(null);
@@ -191,6 +191,7 @@ const Ship: React.FC<Props> = ({ dock, shipId }) => {
         orientation.current = 'horizontal';
         shipRef.current!.style.flexFlow = 'row';
         dock.append(shipRef.current!);
+        curPlace.current = dock;
       }
       return;
     }

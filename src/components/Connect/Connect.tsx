@@ -5,18 +5,19 @@ import Modal from '../../shared/components/Modal/Modal';
 import Card from '../../shared/components/Card/Card';
 
 import useSocket from '../../shared/hooks/useSocket';
-import { connectPlayer } from '../../store/actions/auth';
+import { connectPlayer } from '../../store/actions/connect';
+import { Player } from '../../models/Player';
 import styles from './Connect.module.scss';
 
-interface IResponse {
+type Response = {
   message?: string;
-  player?: object;
-}
+  player?: Player;
+};
 
 const Connect: React.FC = () => {
   const dispatch = useDispatch();
   const [name, setName] = useState<string>('');
-  const { data, emitter, unlocker, error, acceptError } = useSocket<IResponse>(
+  const { data, emitter, unlocker, error, acceptError } = useSocket<Response>(
     'connect-player',
   );
 

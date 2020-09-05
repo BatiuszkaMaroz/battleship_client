@@ -1,11 +1,11 @@
 import { Action, Reducer } from 'redux';
 
-import * as AT from '../actions/actionTypes';
-import { Ships, createShips } from '../../models/Ship';
+import * as AT from '../../actions/actionTypes';
+import { Ships, createShips } from '../../../models/Ship';
 
-export interface ShipsAction extends Action {
+export type ShipsAction = Action & {
   shipId?: string;
-}
+};
 
 const shipsReducer: Reducer<Ships, ShipsAction> = (
   state = createShips(),

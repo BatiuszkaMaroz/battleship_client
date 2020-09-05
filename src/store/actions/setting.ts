@@ -1,6 +1,6 @@
 import * as AT from './actionTypes';
-import { BoardAction } from '../reducers/board';
-import { ShipsAction } from '../reducers/ships';
+import { BoardAction } from '../reducers/settings/board';
+import { ShipsAction } from '../reducers/settings/ships';
 
 type SettingAction = BoardAction & ShipsAction;
 

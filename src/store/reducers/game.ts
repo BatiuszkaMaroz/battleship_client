@@ -1,20 +1,16 @@
 import { Action, Reducer } from 'redux';
+
 import { GameBoard, createGameBoard } from '../../models/Board';
 import * as AT from '../actions/actionTypes';
 
-// interface GameCell extends Cell {
-interface GameCell {
-  hit: boolean;
-}
-
-interface GameState {
+type GameState = {
   playerBoard: GameBoard | null;
   enemyBoard: GameBoard | null;
-}
+};
 
-export interface GameAction extends Action {
+export type GameAction = Action & {
   board?: GameBoard;
-}
+};
 
 const initialState: GameState = {
   playerBoard: null,
@@ -23,11 +19,15 @@ const initialState: GameState = {
 
 const gameReducer: Reducer<GameState, GameAction> = (
   state = initialState,
-  action,
+  { type, board },
 ) => {
-  switch (action.type) {
+  switch (type) {
     case AT.SET_GAME_BOARD:
-      return { enemyBoard: createGameBoard(), playerBoard: action.board! };
+      return { enemyBoard: createGameBoard(), playerBoard: board! };
+
+    case AT.UNSET_GAME_BOARD:
+      return { enemyBoard: null, playerBoard: null };
+
     default: {
       return state;
     }

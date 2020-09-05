@@ -1,11 +1,11 @@
 import socketio from 'socket.io-client';
-
-import * as AT from './actionTypes';
 import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
-import { IAuthAction } from '../reducers/auth';
+import * as AT from './actionTypes';
+import { ConnectAction } from '../reducers/connect';
 import { RootState } from '../reducers';
+import { Player } from '../../models/Player';
 
 export const establishConnection = (): ThunkAction<
   void,
@@ -17,12 +17,7 @@ export const establishConnection = (): ThunkAction<
   dispatch({ type: AT.ESTABLISH_CONNECTION, io });
 };
 
-export const connectPlayer = (player: any): IAuthAction => ({
+export const connectPlayer = (player: Player): ConnectAction => ({
   type: AT.CONNECT_PLAYER,
-  player,
-});
-
-export const joinRoom = (player: any): IAuthAction => ({
-  type: AT.JOIN_PLAYER,
   player,
 });

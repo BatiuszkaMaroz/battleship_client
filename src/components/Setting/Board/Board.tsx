@@ -6,7 +6,7 @@ import useTypedSelector from '../../../shared/hooks/useTypedSelector';
 import styles from './Board.module.scss';
 
 const Board: React.FC = () => {
-  const board = useTypedSelector((state) => state.board);
+  const board = useTypedSelector((state) => state.settings.board);
 
   const renderBoard = () =>
     board.map((row, idx) => (

@@ -1,31 +1,34 @@
 import { Action, Reducer } from 'redux';
-import * as AT from '../actions/actionTypes';
 
-interface IAuthState {
+import * as AT from '../actions/actionTypes';
+import { Player } from '../../models/Player';
+
+type ConnectState = {
   io: null | SocketIOClient.Socket;
   player: null | any;
-}
+};
 
-export interface IAuthAction extends Action {
+export type ConnectAction = Action & {
   io?: SocketIOClient.Socket;
-  player?: null | any;
-}
+  player?: null | Player;
+};
 
-const initialState: IAuthState = {
+const initialState: ConnectState = {
   io: null,
   player: null,
 };
 
-const connectReducer: Reducer<IAuthState, IAuthAction> = (
+const connectReducer: Reducer<ConnectState, ConnectAction> = (
   state = initialState,
-  action,
+  { type, io, player },
 ) => {
-  switch (action.type) {
-    case AT.JOIN_PLAYER:
+  switch (type) {
     case AT.CONNECT_PLAYER:
-      return { ...state, player: action.player };
+      return { ...state, player: player! };
+
     case AT.ESTABLISH_CONNECTION:
-      return { ...state, io: action.io } as IAuthState;
+      return { ...state, io: io! };
+
     default:
       return state;
   }

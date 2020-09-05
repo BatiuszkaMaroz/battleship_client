@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 
-import auth from './auth';
-import board from './board';
-import ships from './ships';
+import status from './status';
+import connect from './connect';
+import settings from './settings/settings';
 import game from './game';
 
-const rootReducer = combineReducers({ auth, board, ships, game });
+const rootReducer = combineReducers({ status, connect, settings, game });
 
 export type RootState = ReturnType<typeof rootReducer>;
 export default rootReducer;

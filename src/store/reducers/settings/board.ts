@@ -1,16 +1,16 @@
 import { Action, Reducer } from 'redux';
 
-import * as AT from '../actions/actionTypes';
-import { Board, createBoard } from '../../models/Board';
-import randomizeBoard from '../../shared/utils/randomizeBoard';
+import * as AT from '../../actions/actionTypes';
+import { Board, createBoard } from '../../../models/Board';
+import randomizeBoard from '../../../shared/utils/randomizeBoard';
 
-export interface BoardAction extends Action {
+export type BoardAction = Action & {
   shipId?: string;
   shipSize?: number;
   i?: number;
   j?: number;
   orientation?: 'vertical' | 'horizontal';
-}
+};
 
 const boardReducer: Reducer<Board, BoardAction> = (
   state = createBoard(),

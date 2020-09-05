@@ -6,7 +6,7 @@ import useTypedSelector from '../../../shared/hooks/useTypedSelector';
 import styles from './Harbor.module.scss';
 
 const Harbor: React.FC = () => {
-  const ships = useTypedSelector((state) => state.ships);
+  const ships = useTypedSelector((state) => state.settings.ships);
 
   return (
     <div className={styles.Harbor}>

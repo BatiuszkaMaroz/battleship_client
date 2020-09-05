@@ -5,7 +5,7 @@ const useSocket = <T extends object = {}>(endpoint: string) => {
   const [data, setData] = useState<T | {}>({});
   const [error, setError] = useState<any | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const io = useTypedSelector((state) => state.auth.io)!;
+  const io = useTypedSelector((state) => state.connect.io)!;
 
   const emitter = useCallback(
     (...args: any[]) => {

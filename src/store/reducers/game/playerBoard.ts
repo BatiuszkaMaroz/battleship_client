@@ -18,8 +18,8 @@ const playerBoardReducer: Reducer<PlayerBoardState, PlayerBoardAction> = (
     case AT.SET_GAME_BOARDS:
       return board!;
 
-    case AT.UNSET_GAME_BOARDS:
-      return null;
+    case AT.RESET_GAME_FULL:
+      return initialState;
 
     default: {
       return state;

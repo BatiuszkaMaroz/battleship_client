@@ -9,32 +9,32 @@ import Spinner from './shared/components/Spinner/Spinner';
 
 import useTypedSelector from './shared/hooks/useTypedSelector';
 import { establishConnection } from './store/actions/connect';
-import { STATUS } from './store/reducers/status';
+import { STAGE } from './store/reducers/stages';
 
 function App() {
   const dispatch = useDispatch();
-  const status = useTypedSelector((state) => state.status);
+  const stage = useTypedSelector((state) => state.stage);
 
   useEffect(() => {
     dispatch(establishConnection());
   }, [dispatch]);
 
   const renderContent = useMemo(() => {
-    switch (status) {
-      case STATUS.CONNECT_STAGE:
+    switch (stage) {
+      case STAGE.CONNECT_STAGE:
         return <Connect />;
 
-      case STATUS.SETTING_STAGE:
+      case STAGE.SETTING_STAGE:
         return <Setting />;
 
-      case STATUS.MATCHMAKING_STAGE:
-      case STATUS.GAME_STAGE:
+      case STAGE.MATCHMAKING_STAGE:
+      case STAGE.GAME_STAGE:
         return <Game />;
 
       default:
         return <Spinner />;
     }
-  }, [status]);
+  }, [stage]);
 
   return (
     <Switch>

@@ -41,7 +41,9 @@ const Connect: React.FC = () => {
   //**************************************************
   //**************************************************
   useEffect(() => {
-    emitter('TEST USER');
+    emitter(
+      `USER ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
+    );
   }, [emitter]);
   //**************************************************
   //**************************************************
@@ -49,7 +51,11 @@ const Connect: React.FC = () => {
 
   return (
     <>
-      {error && <Modal onClose={acceptError}>{error}</Modal>}
+      {error && (
+        <Modal onClose={acceptError} onCloseText='Retry'>
+          {error}
+        </Modal>
+      )}
       <Card center className={styles.Connect}>
         <form onSubmit={submitHandler}>
           <label htmlFor='room'>Type the your name: </label>

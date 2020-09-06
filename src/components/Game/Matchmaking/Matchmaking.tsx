@@ -8,14 +8,13 @@ import {
   settingStage,
   matchmakingStage,
   gameStage,
-} from '../../../store/actions/status';
-import { unsetGameBoard } from '../../../store/actions/game';
+} from '../../../store/actions/stages';
 
 const Matchmaking: React.FC = () => {
   const dispatch = useDispatch();
   const [userDisconnected, setUserDisconnected] = useState<boolean>(false);
 
-  const { emitter, data, error, unlocker } = useSocket<{
+  const { emitter, data, error, unlocker, acceptError } = useSocket<{
     message?: string;
     readyToPlay?: boolean;
     playerLeft?: boolean;
@@ -36,18 +35,11 @@ const Matchmaking: React.FC = () => {
   }, [data, dispatch]);
 
   useEffect(() => {
-    if (error) {
-      console.error(error);
-      dispatch(settingStage());
-      dispatch(unsetGameBoard());
-    }
-  }, [error, dispatch]);
-
-  useEffect(() => {
     emitter();
   }, [emitter, unlocker]);
 
   const onProceed = () => {
+    acceptError();
     unlocker();
     emitter();
     dispatch(matchmakingStage());
@@ -55,12 +47,11 @@ const Matchmaking: React.FC = () => {
   };
 
   const onReject = () => {
-    dispatch(unsetGameBoard());
     dispatch(settingStage());
   };
 
-  const disconnectionModal = () => {
-    if (userDisconnected) {
+  const connectionErrorModal = () => {
+    if (userDisconnected || error) {
       return (
         <Modal
           onProceed={onProceed}
@@ -68,7 +59,7 @@ const Matchmaking: React.FC = () => {
           onReject={onReject}
           onRejectText='Back to settings'
         >
-          What would you like to do now?
+          {error ? error : 'What would you like to do now?'}
         </Modal>
       );
     } else {
@@ -79,7 +70,7 @@ const Matchmaking: React.FC = () => {
   return (
     <>
       {data.readyToPlay ? null : <Spinner />}
-      {disconnectionModal()}
+      {connectionErrorModal()}
     </>
   );
 };

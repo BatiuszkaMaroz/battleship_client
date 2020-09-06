@@ -50,9 +50,12 @@ const Setting: React.FC = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (data.board && data.message) {
+    if (data.message) {
       console.log(data.message);
-      dispatch(setGameBoard(data.board));
+    }
+
+    if (data.board) {
+      dispatch(setGameBoard(data.board, true));
     }
   }, [dispatch, data]);
 

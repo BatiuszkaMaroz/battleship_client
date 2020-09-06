@@ -51,8 +51,6 @@ const Ship: React.FC<Props> = ({ dock, shipId }) => {
           ship.style.flexFlow = 'column';
 
           dispatch(setShip(shipId, size, row, col, 'vertical'));
-        } else {
-          console.log('SHIT');
         }
       } else if (orientation.current === 'vertical') {
         if (isPlaceFree(row, col, board, size, shipId, 'horizontal')) {
@@ -60,8 +58,6 @@ const Ship: React.FC<Props> = ({ dock, shipId }) => {
           ship.style.flexFlow = 'row';
 
           dispatch(setShip(shipId, size, row, col, 'horizontal'));
-        } else {
-          console.log('SHIT');
         }
       }
     },

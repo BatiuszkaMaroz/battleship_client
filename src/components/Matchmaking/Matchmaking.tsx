@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
+import Turn from './Turn/Turn';
 import Spinner from '../../shared/components/Spinner/Spinner';
 import Modal from '../../shared/components/Modal/Modal';
 import useSocket from '../../shared/hooks/useSocket';
@@ -55,6 +56,7 @@ const Matchmaking: React.FC = () => {
   };
 
   const onReject = () => {
+    dispatch(unsetGameBoard());
     dispatch(settingStage());
   };
 
@@ -79,6 +81,7 @@ const Matchmaking: React.FC = () => {
     <>
       {data.readyToPlay ? null : <Spinner />}
       {disconnectionModal()}
+      <Turn />
     </>
   );
 };

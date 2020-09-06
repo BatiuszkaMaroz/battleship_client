@@ -38,7 +38,11 @@ const Button: React.FC<Props> = ({
   return (
     <button className={`${styles.Button} ${className}`} {...rest}>
       <div onClick={animate} className={styles.Ripple__Container}></div>
-      <div className={styles.Icon}>{Icon && <Icon />}</div>
+      {Icon && (
+        <div className={styles.Icon}>
+          <Icon />
+        </div>
+      )}
       <div className={styles.Text}>{children}</div>
     </button>
   );

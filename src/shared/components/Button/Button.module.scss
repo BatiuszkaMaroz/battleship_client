@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   height: 5rem;
-  border: none;
+  border: 2px solid black;
   border-radius: 0.5rem;
   background-color: var(--main1);
   overflow: hidden;
@@ -26,13 +26,11 @@
     font-size: 2rem;
 
     color: white;
-    letter-spacing: 1px;
     text-transform: uppercase;
 
     // !!! ONLY FOR NOW !!! //
     color: black;
     padding: 0 1rem;
-    border: 2px solid black;
   }
 
   .Icon {

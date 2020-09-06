@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400&display=swap');
 
 :root {
   --main1: white;
@@ -6,6 +6,7 @@
   --cellSize: 50px;
 
   --backdropIndex: 100;
+  --modalIndex: 200;
 }
 
 *,
@@ -20,7 +21,7 @@
 html {
   box-sizing: border-box;
   font-size: 62.5%;
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-weight: 400;
 }
 

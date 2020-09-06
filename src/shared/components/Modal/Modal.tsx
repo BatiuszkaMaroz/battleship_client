@@ -1,7 +1,8 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 
 import Backdrop from '../Backdrop/Backdrop';
+import Button from '../Button/Button';
 import Card from '../Card/Card';
 
 import styles from './Modal.module.scss';
@@ -28,10 +29,24 @@ const Modal: React.FC<Props> = ({
     <>
       <Backdrop onClick={onClose} />
       <Card center className={styles.Modal}>
-        <p>{children}</p>
-        {onClose && <button onClick={onClose}>{onCloseText}</button>}
-        {onProceed && <button onClick={onProceed}>{onProceedText}</button>}
-        {onReject && <button onClick={onReject}>{onRejectText}</button>}
+        <h1 className={styles.Text}>{children}</h1>
+        <div className={styles.Controls}>
+          {onClose && (
+            <Button className={styles.Button} onClick={onClose}>
+              {onCloseText}
+            </Button>
+          )}
+          {onProceed && (
+            <Button className={styles.Button} onClick={onProceed}>
+              {onProceedText}
+            </Button>
+          )}
+          {onReject && (
+            <Button className={styles.Button} onClick={onReject}>
+              {onRejectText}
+            </Button>
+          )}
+        </div>
       </Card>
     </>,
     document.getElementById('modal-hook')!,

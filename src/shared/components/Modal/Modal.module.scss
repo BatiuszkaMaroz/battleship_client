@@ -1,5 +1,25 @@
 .Modal {
-  z-index: 200;
+  z-index: var(--modalIndex);
   position: fixed;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  padding: 2rem;
+  min-width: 30rem;
   background-color: var(--main1);
+
+  .Text {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+  }
+
+  .Controls {
+    display: flex;
+
+    .Button {
+      &:not(:last-child) {
+        margin-right: 1rem;
+      }
+    }
+  }
 }

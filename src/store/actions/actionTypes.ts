@@ -15,5 +15,6 @@ export const RANDOMIZE_BOARD = 'RANDOMIZE_BOARD';
 export const RESET_BOARD = 'RESET_BOARD';
 
 //GAME
-export const SET_GAME_BOARD = 'SET_GAME_BOARD';
-export const UNSET_GAME_BOARD = 'UNSET_GAME_BOARD';
+export const SET_GAME_BOARDS = 'SET_GAME_BOARDS';
+export const UNSET_GAME_BOARDS = 'UNSET_GAME_BOARDS';
+export const SET_TURN_ID = 'SET_TURN_ID';

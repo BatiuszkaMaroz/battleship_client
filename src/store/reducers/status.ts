@@ -23,7 +23,7 @@ const statusReducer: Reducer<STATUS, Action> = (
     case AT.SETTING_STAGE:
       return STATUS.SETTING_STAGE;
 
-    case AT.SET_GAME_BOARD:
+    case AT.SET_GAME_BOARDS:
     case AT.MATCHMAKING_STAGE:
       return STATUS.MATCHMAKING_STAGE;
 

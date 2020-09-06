@@ -4,7 +4,6 @@ import { Route, Redirect, Switch } from 'react-router-dom';
 
 import Setting from './components/Setting/Setting';
 import Connect from './components/Connect/Connect';
-import Matchmaking from './components/Matchmaking/Matchmaking';
 import Game from './components/Game/Game';
 import Spinner from './shared/components/Spinner/Spinner';
 
@@ -29,15 +28,8 @@ function App() {
         return <Setting />;
 
       case STATUS.MATCHMAKING_STAGE:
-        return <Matchmaking />;
-
       case STATUS.GAME_STAGE:
-        return (
-          <>
-            <Matchmaking />
-            <Game />
-          </>
-        );
+        return <Game />;
 
       default:
         return <Spinner />;

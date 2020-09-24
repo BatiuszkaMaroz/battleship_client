@@ -1,31 +1,24 @@
 import { Action, Reducer } from 'redux';
 
-import * as AT from '../actions/actionTypes';
+import { STAGES } from 'store/actions/actionTypes';
+export { STAGES } from 'store/actions/actionTypes';
 
-export enum STAGE {
-  INITIALIZED = 'INITIALIZED',
-  CONNECT_STAGE = 'CONNECT_STAGE',
-  SETTING_STAGE = 'SETTING_STAGE',
-  MATCHMAKING_STAGE = 'MATCHMAKING_STAGE',
-  GAME_STAGE = 'GAME_STAGE',
-}
-
-const stagesReducer: Reducer<STAGE, Action> = (
-  state = STAGE.INITIALIZED,
+const stagesReducer: Reducer<STAGES, Action> = (
+  state = STAGES.INIT,
   { type },
 ) => {
   switch (type) {
-    case AT.CONNECT_STAGE:
-      return STAGE.CONNECT_STAGE;
+    case STAGES.CONNECT:
+      return STAGES.CONNECT;
 
-    case AT.SETTING_STAGE:
-      return STAGE.SETTING_STAGE;
+    case STAGES.SETTING:
+      return STAGES.SETTING;
 
-    case AT.MATCHMAKING_STAGE:
-      return STAGE.MATCHMAKING_STAGE;
+    case STAGES.MATCHMAKING:
+      return STAGES.MATCHMAKING;
 
-    case AT.GAME_STAGE:
-      return STAGE.GAME_STAGE;
+    case STAGES.GAME:
+      return STAGES.GAME;
 
     default:
       return state;

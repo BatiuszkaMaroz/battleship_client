@@ -1,11 +1,11 @@
 import { Action, Reducer } from 'redux';
 
-import * as AT from '../actions/actionTypes';
+import { CONNECT } from '../actions/actionTypes';
 import { Player } from '../../models/Player';
 
 type ConnectState = {
   io: null | SocketIOClient.Socket;
-  player: null | any;
+  player: null | Player;
 };
 
 export type ConnectAction = Action & {
@@ -23,10 +23,10 @@ const connectReducer: Reducer<ConnectState, ConnectAction> = (
   { type, io, player },
 ) => {
   switch (type) {
-    case AT.CONNECT_PLAYER:
+    case CONNECT.PLAYER:
       return { ...state, player: player! };
 
-    case AT.ESTABLISH_CONNECTION:
+    case CONNECT.ESTABLISH:
       return { ...state, io: io! };
 
     default:

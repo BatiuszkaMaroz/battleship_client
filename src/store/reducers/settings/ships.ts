@@ -1,6 +1,6 @@
 import { Action, Reducer } from 'redux';
 
-import * as AT from '../../actions/actionTypes';
+import { SETTING } from '../../actions/actionTypes';
 import { Ships, createShips } from '../../../models/Ship';
 
 export type ShipsAction = Action & {
@@ -12,18 +12,18 @@ const shipsReducer: Reducer<Ships, ShipsAction> = (
   { type, shipId },
 ) => {
   switch (type) {
-    case AT.RESET_BOARD: {
+    case SETTING.RESET_BOARD: {
       return createShips();
     }
 
-    case AT.RANDOMIZE_BOARD: {
+    case SETTING.RANDOMIZE_BOARD: {
       return state.map((ship) => {
         ship.settled = true;
         return ship;
       });
     }
 
-    case AT.SET_SHIP: {
+    case SETTING.SET_SHIP: {
       return state.map((ship) => {
         if (ship.id === shipId) {
           ship.settled = true;
@@ -33,7 +33,7 @@ const shipsReducer: Reducer<Ships, ShipsAction> = (
       });
     }
 
-    case AT.UNSET_SHIP: {
+    case SETTING.UNSET_SHIP: {
       return state.map((ship) => {
         if (ship.id === shipId) {
           ship.settled = false;

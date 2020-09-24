@@ -1,7 +1,7 @@
 import { Action, Reducer } from 'redux';
 
 import { EnemyBoard, createEnemyBoard } from '../../../models/Board';
-import * as AT from '../../actions/actionTypes';
+import { GAME } from '../../actions/actionTypes';
 
 type EnemyBoardState = EnemyBoard;
 export type EnemyBoardAction = Action & {};
@@ -13,8 +13,8 @@ const gameReducer: Reducer<EnemyBoardState, EnemyBoardAction> = (
   { type },
 ) => {
   switch (type) {
-    case AT.RESET_GAME:
-    case AT.RESET_GAME_FULL:
+    case GAME.RESET:
+    case GAME.RESET_FULL:
       return createEnemyBoard();
 
     default: {

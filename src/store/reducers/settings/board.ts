@@ -1,6 +1,6 @@
 import { Action, Reducer } from 'redux';
 
-import * as AT from '../../actions/actionTypes';
+import { SETTING } from '../../actions/actionTypes';
 import { SettingBoard, createSettingBoard } from '../../../models/Board';
 import randomizeBoard from '../../../shared/utils/randomizeBoard';
 
@@ -17,15 +17,15 @@ const boardReducer: Reducer<SettingBoard, BoardAction> = (
   { type, col, orientation, row, shipId, shipSize },
 ) => {
   switch (type) {
-    case AT.RESET_BOARD: {
+    case SETTING.RESET_BOARD: {
       return createSettingBoard();
     }
 
-    case AT.RANDOMIZE_BOARD: {
+    case SETTING.RANDOMIZE_BOARD: {
       return randomizeBoard();
     }
 
-    case AT.SET_SHIP: {
+    case SETTING.SET_SHIP: {
       //Clears old position
       const stateCopy = state.map((row) => {
         return row.map((cell) => {
@@ -50,7 +50,7 @@ const boardReducer: Reducer<SettingBoard, BoardAction> = (
       return stateCopy;
     }
 
-    case AT.UNSET_SHIP: {
+    case SETTING.UNSET_SHIP: {
       //Clears old position
       return state.map((row) => {
         return row.map((col) => {

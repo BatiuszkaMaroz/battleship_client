@@ -1,7 +1,7 @@
 import { Action, Reducer } from 'redux';
 
 import { GameBoard } from '../../../models/Board';
-import * as AT from '../../actions/actionTypes';
+import { GAME } from '../../actions/actionTypes';
 
 type PlayerBoardState = GameBoard | null;
 export type PlayerBoardAction = Action & {
@@ -15,10 +15,10 @@ const playerBoardReducer: Reducer<PlayerBoardState, PlayerBoardAction> = (
   { type, board },
 ) => {
   switch (type) {
-    case AT.SET_GAME_BOARDS:
+    case GAME.SET_BOARDS:
       return board!;
 
-    case AT.RESET_GAME_FULL:
+    case GAME.RESET_FULL:
       return initialState;
 
     default: {

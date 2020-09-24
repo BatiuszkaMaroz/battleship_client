@@ -1,5 +1,5 @@
 import { Action, Reducer } from 'redux';
-import * as AT from '../../actions/actionTypes';
+import { GAME } from '../../actions/actionTypes';
 
 export type TurnAction = Action & { turnId?: number; yourTurn?: boolean };
 type TurnState = { turnId: number | null; yourTurn: boolean | null };
@@ -11,14 +11,14 @@ const turnReducer: Reducer<TurnState, TurnAction> = (
   { type, turnId, yourTurn },
 ) => {
   switch (type) {
-    case AT.SET_TURN_ID:
+    case GAME.SET_TURN_ID:
       return { ...state, turnId: turnId! };
 
-    case AT.TURN_CHANGE:
+    case GAME.TURN_CHANGE:
       return { ...state, yourTurn: yourTurn! };
 
-    case AT.RESET_GAME:
-    case AT.RESET_GAME_FULL:
+    case GAME.RESET:
+    case GAME.RESET_FULL:
       return initialState;
 
     default: {

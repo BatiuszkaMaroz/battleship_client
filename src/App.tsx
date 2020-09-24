@@ -9,7 +9,7 @@ import Spinner from './shared/components/Spinner/Spinner';
 
 import useTypedSelector from './shared/hooks/useTypedSelector';
 import { establishConnection } from './store/actions/connect';
-import { STAGE } from './store/reducers/stages';
+import { STAGES } from './store/reducers/stages';
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -21,14 +21,14 @@ const App: React.FC = () => {
 
   const renderContent = useMemo(() => {
     switch (stage) {
-      case STAGE.CONNECT_STAGE:
+      case STAGES.CONNECT:
         return <Connect />;
 
-      case STAGE.SETTING_STAGE:
+      case STAGES.SETTING:
         return <Setting />;
 
-      case STAGE.MATCHMAKING_STAGE:
-      case STAGE.GAME_STAGE:
+      case STAGES.MATCHMAKING:
+      case STAGES.GAME:
         return <Game />;
 
       default:

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { STAGE } from '../../store/reducers/stages';
+import { STAGES } from '../../store/reducers/stages';
 import useTypedSelector from '../../shared/hooks/useTypedSelector';
 
 import Card from '../../shared/components/Card/Card';
@@ -16,7 +16,7 @@ const Game: React.FC = () => {
 
   const renderContent = () => {
     switch (stage) {
-      case STAGE.GAME_STAGE:
+      case STAGES.GAME:
         return (
           <Card center className={styles.Game}>
             <PlayerBoard />

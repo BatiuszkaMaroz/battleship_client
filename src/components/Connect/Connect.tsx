@@ -1,4 +1,4 @@
-import React, { useEffect, useState, FormEvent } from 'react';
+import React, { useEffect, useState, FormEvent, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 
 import Modal from '../../shared/components/Modal/Modal';
@@ -23,6 +23,8 @@ const Connect: React.FC = () => {
 
   const submitHandler = (e: FormEvent) => {
     e.preventDefault();
+
+    //TODO Basic Validation
     if (name.length >= 1 && name.length <= 15) {
       emitter(name);
     }
@@ -39,28 +41,36 @@ const Connect: React.FC = () => {
 
   // ! FIXME TO REMOVE
   // **************************************************
-  useEffect(() => {
-    emitter(
-      `USER ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
-    );
-  }, [emitter]);
+  // useEffect(() => {
+  //   emitter(
+  //     `USER ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
+  //   );
+  // }, [emitter]);
   // **************************************************
 
-  return (
-    <>
-      {error && (
+  const renderErrorModal = useMemo(() => {
+    if (error) {
+      return (
         <Modal onClose={acceptError} onCloseText='Retry'>
           {error}
         </Modal>
-      )}
-      <Card center className={styles.Connect}>
+      );
+    } else {
+      return null;
+    }
+  }, [error, acceptError]);
+
+  return (
+    <>
+      {renderErrorModal}
+      <Card center className={styles.connect}>
         <form onSubmit={submitHandler}>
-          <label htmlFor='room'>Type your name: </label>
+          <label htmlFor='username'>Type your name: </label>
           <input
             onChange={(e) => setName(e.target.value)}
             value={name}
             type='text'
-            id='room'
+            id='username'
           />
           <button>Connect</button>
         </form>

@@ -1,29 +1,29 @@
 import { ThunkAction } from 'redux-thunk';
-import * as AT from './actionTypes';
+import { STAGES } from './actionTypes';
 import { resetGameFull, resetGame } from './game';
 
 export const connectStage = () => ({
-  type: AT.CONNECT_STAGE,
+  type: STAGES.CONNECT,
 });
 
 export const settingStage = (): ThunkAction<any, any, any, any> => (
   dispatch,
 ) => {
-  dispatch({
-    type: AT.SETTING_STAGE,
-  });
   dispatch(resetGameFull());
+  dispatch({
+    type: STAGES.SETTING,
+  });
 };
 
 export const matchmakingStage = (): ThunkAction<any, any, any, any> => (
   dispatch,
 ) => {
-  dispatch({
-    type: AT.MATCHMAKING_STAGE,
-  });
   dispatch(resetGame());
+  dispatch({
+    type: STAGES.MATCHMAKING,
+  });
 };
 
 export const gameStage = () => ({
-  type: AT.GAME_STAGE,
+  type: STAGES.GAME,
 });

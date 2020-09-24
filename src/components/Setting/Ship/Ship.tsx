@@ -229,12 +229,12 @@ const Ship: React.FC<Props> = ({ dock, shipId }) => {
     };
   }, [board, shipId, dock, size]);
 
-  const shipBody = useMemo(() => {
-    const body = [];
+  const renderShip = useMemo(() => {
+    const ship: JSX.Element[] = [];
     for (let i = 0; i < size; i++) {
-      body.push(<div key={i} className={styles.Segment}></div>);
+      ship.push(<div key={i} className={styles.Segment}></div>);
     }
-    return body;
+    return ship;
   }, [size]);
 
   return (
@@ -244,7 +244,7 @@ const Ship: React.FC<Props> = ({ dock, shipId }) => {
       onMouseDown={pickUpShip}
       className={styles.Ship}
     >
-      {shipBody}
+      {renderShip}
     </div>
   );
 };

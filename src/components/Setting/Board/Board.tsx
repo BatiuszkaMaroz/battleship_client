@@ -23,7 +23,7 @@ const Board: React.FC = () => {
       </ul>
     ));
 
-  return <div className={styles.Board}>{renderBoard()}</div>;
+  return <div>{renderBoard()}</div>;
 };
 
 export default Board;

@@ -1,20 +1,20 @@
 import { useEffect, useState, useCallback } from 'react';
 import useTypedSelector from './useTypedSelector';
 
-const useSocket = <T extends object = {}>(endpoint: string) => {
+const useSocket = <T extends {}>(endpoint: string) => {
   const [data, setData] = useState<T | {}>({});
   const [error, setError] = useState<any | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [locked, setLocked] = useState<boolean>(false);
   const io = useTypedSelector((state) => state.connect.io)!;
 
   const emitter = useCallback(
     (...args: any[]) => {
-      if (loading) return;
+      if (locked) return;
 
-      setLoading(true);
+      setLocked(true);
       io.emit(endpoint, ...args);
     },
-    [io, setLoading, endpoint, loading],
+    [io, setLocked, endpoint, locked],
   );
 
   const listener = useCallback(
@@ -36,11 +36,11 @@ const useSocket = <T extends object = {}>(endpoint: string) => {
   );
 
   const unlocker = useCallback(() => {
-    setLoading(false);
-  }, [setLoading]);
+    setLocked(false);
+  }, [setLocked]);
 
   const acceptError = useCallback(() => {
-    setLoading(false);
+    setLocked(false);
     setError(null);
   }, [setError]);
 

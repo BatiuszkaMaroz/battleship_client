@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo } from 'react';
-import { useDispatch } from 'react-redux';
 import { Route, Redirect, Switch } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
-import Setting from './components/Setting/Setting';
 import Connect from './components/Connect/Connect';
+import Setting from './components/Setting/Setting';
 import Game from './components/Game/Game';
 import Spinner from './shared/components/Spinner/Spinner';
 
@@ -11,7 +11,7 @@ import useTypedSelector from './shared/hooks/useTypedSelector';
 import { establishConnection } from './store/actions/connect';
 import { STAGE } from './store/reducers/stages';
 
-function App() {
+const App: React.FC = () => {
   const dispatch = useDispatch();
   const stage = useTypedSelector((state) => state.stage);
 
@@ -44,6 +44,6 @@ function App() {
       <Redirect to='/' />
     </Switch>
   );
-}
+};
 
 export default App;

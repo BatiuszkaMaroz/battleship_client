@@ -1,4 +1,4 @@
-.Modal {
+.modal {
   z-index: var(--modalIndex);
   position: fixed;
   display: flex;
@@ -8,15 +8,15 @@
   min-width: 30rem;
   background-color: var(--main1);
 
-  .Text {
+  .text {
     font-size: 3rem;
     margin-bottom: 2rem;
   }
 
-  .Controls {
+  .controls {
     display: flex;
 
-    .Button {
+    .button {
       &:not(:last-child) {
         margin-right: 1rem;
       }

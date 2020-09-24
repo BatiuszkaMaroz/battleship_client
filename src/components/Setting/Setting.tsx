@@ -59,32 +59,29 @@ const Setting: React.FC = () => {
     }
   }, [dispatch, data]);
 
-  //**************************************************
-  //**************************************************
-  //**************************************************
-  const [ready, setReady] = useState<boolean>(false);
-  useEffect(() => {
-    dispatch(randomizeBoard());
-    setReady(true);
-  }, [dispatch]);
-  useEffect(() => {
-    if (ready) {
-      emitter(board);
-    }
-  }, [ready, board, emitter]);
-  //**************************************************
-  //**************************************************
-  //**************************************************
+  // ! FIXME TO REMOVE
+  // **************************************************
+  // const [ready, setReady] = useState<boolean>(false);
+  // useEffect(() => {
+  //   dispatch(randomizeBoard());
+  //   setReady(true);
+  // }, [dispatch]);
+  // useEffect(() => {
+  //   if (ready) {
+  //     emitter(board);
+  //   }
+  // }, [ready, board, emitter]);
+  // **************************************************
 
   return (
     <>
       {error && <Modal onClose={acceptError}>{error}</Modal>}
-      <Card center className={styles.Setting}>
-        <div className={styles.Setting__Container}>
+      <Card center className={styles.setting}>
+        <div className={styles.setting__container}>
           <Harbor />
           <Board />
         </div>
-        <div className={styles.Setting__Controls}>
+        <div className={styles.setting__controls}>
           <Button disabled={!allShipsSettled} onClick={applySetting}>
             Play
           </Button>

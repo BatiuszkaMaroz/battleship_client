@@ -1,7 +1,7 @@
 import { Action, Reducer } from 'redux';
 
 import * as AT from '../../actions/actionTypes';
-import { Board, createBoard } from '../../../models/Board';
+import { SettingBoard, createSettingBoard } from '../../../models/Board';
 import randomizeBoard from '../../../shared/utils/randomizeBoard';
 
 export type BoardAction = Action & {
@@ -12,13 +12,13 @@ export type BoardAction = Action & {
   orientation?: 'vertical' | 'horizontal';
 };
 
-const boardReducer: Reducer<Board, BoardAction> = (
-  state = createBoard(),
+const boardReducer: Reducer<SettingBoard, BoardAction> = (
+  state = createSettingBoard(),
   { type, col, orientation, row, shipId, shipSize },
 ) => {
   switch (type) {
     case AT.RESET_BOARD: {
-      return createBoard();
+      return createSettingBoard();
     }
 
     case AT.RANDOMIZE_BOARD: {

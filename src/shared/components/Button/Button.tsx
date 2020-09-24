@@ -24,11 +24,13 @@ const Button: React.FC<Props> = ({
     const top = clientY - y;
 
     const ripple = document.createElement('div');
-    ripple.className = styles.Ripple;
+    ripple.className = styles.ripple;
     ripple.style.left = left + 'px';
     ripple.style.top = top + 'px';
 
     button.append(ripple);
+
+    console.log('E');
 
     setTimeout(() => {
       ripple.remove();
@@ -36,14 +38,14 @@ const Button: React.FC<Props> = ({
   };
 
   return (
-    <button className={`${styles.Button} ${className}`} {...rest}>
-      <div onClick={animate} className={styles.Ripple__Container}></div>
+    <button className={`${styles.button} ${className}`} {...rest}>
+      <div onClick={animate} className={`${styles.ripple__container}`}></div>
       {Icon && (
-        <div className={styles.Icon}>
+        <div className={styles.icon}>
           <Icon />
         </div>
       )}
-      <div className={styles.Text}>{children}</div>
+      <div className={styles.text}>{children}</div>
     </button>
   );
 };

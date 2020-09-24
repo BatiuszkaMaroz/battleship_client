@@ -28,21 +28,21 @@ const Modal: React.FC<Props> = ({
   return ReactDOM.createPortal(
     <>
       <Backdrop onClick={onClose} />
-      <Card center className={styles.Modal}>
-        <h1 className={styles.Text}>{children}</h1>
-        <div className={styles.Controls}>
+      <Card center className={styles.modal}>
+        <h1 className={styles.text}>{children}</h1>
+        <div className={styles.controls}>
           {onClose && (
-            <Button className={styles.Button} onClick={onClose}>
+            <Button className={styles.button} onClick={onClose}>
               {onCloseText}
             </Button>
           )}
           {onProceed && (
-            <Button className={styles.Button} onClick={onProceed}>
+            <Button className={styles.button} onClick={onProceed}>
               {onProceedText}
             </Button>
           )}
           {onReject && (
-            <Button className={styles.Button} onClick={onReject}>
+            <Button className={styles.button} onClick={onReject}>
               {onRejectText}
             </Button>
           )}

@@ -7,7 +7,7 @@ const isPlaceFree = (
   orientation: 'horizontal' | 'vertical',
 ) => {
   if (orientation === 'horizontal') {
-    //If cell don't exists or cell is busied by other ship
+    // * If cell don't exists or cell is busied by other ship * //
     for (let k = col; k < size + col; k++) {
       if (
         !board[row][k] ||
@@ -17,7 +17,7 @@ const isPlaceFree = (
       }
     }
 
-    //If cell exists and is busied by other ship
+    // * If cell exists and is busied by other ship * //
     for (let k = row - 1; k < row + 2; k++) {
       for (let l = col - 1; l < col + size + 1; l++) {
         if (
@@ -31,7 +31,7 @@ const isPlaceFree = (
       }
     }
   } else if (orientation === 'vertical') {
-    //If cell don't exists or cell is busied by other ship
+    // * If cell don't exists or cell is busied by other ship * //
     for (let k = row; k < row + size; k++) {
       if (
         !board[k] ||
@@ -42,7 +42,7 @@ const isPlaceFree = (
       }
     }
 
-    //If cell exists and is busied by other ship
+    // * If cell exists and is busied by other ship * //
     for (let k = row - 1; k < row + size + 1; k++) {
       for (let l = col - 1; l < col + 2; l++) {
         if (

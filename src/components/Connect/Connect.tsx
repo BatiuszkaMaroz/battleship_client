@@ -37,17 +37,14 @@ const Connect: React.FC = () => {
     }
   }, [data, dispatch, unlocker]);
 
-  //**************************************************
-  //**************************************************
-  //**************************************************
+  // ! FIXME TO REMOVE
+  // **************************************************
   useEffect(() => {
     emitter(
       `USER ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
     );
   }, [emitter]);
-  //**************************************************
-  //**************************************************
-  //**************************************************
+  // **************************************************
 
   return (
     <>
@@ -58,7 +55,7 @@ const Connect: React.FC = () => {
       )}
       <Card center className={styles.Connect}>
         <form onSubmit={submitHandler}>
-          <label htmlFor='room'>Type the your name: </label>
+          <label htmlFor='room'>Type your name: </label>
           <input
             onChange={(e) => setName(e.target.value)}
             value={name}

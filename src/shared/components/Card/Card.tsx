@@ -14,7 +14,7 @@ const Card: React.FC<Props> = ({
 }) => {
   return (
     <div
-      className={`${styles.Card} ${center && styles.Center} ${className}`}
+      className={`${styles.card} ${center && styles.center} ${className}`}
       {...rest}
     >
       {children}

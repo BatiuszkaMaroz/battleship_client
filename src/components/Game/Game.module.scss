@@ -1,0 +1,8 @@
+.Game {
+  display: flex;
+  flex-flow: row;
+
+  & > *:first-child {
+    margin-right: 10rem;
+  }
+}

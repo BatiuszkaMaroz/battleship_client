@@ -6,9 +6,10 @@ import useTypedSelector from '../../shared/hooks/useTypedSelector';
 import Card from '../../shared/components/Card/Card';
 import PlayerBoard from './PlayerBoard/PlayerBoard';
 import EnemyBoard from './EnemyBoard/EnemyBoard';
-import Hits from './Controls/Hits';
-import Matchmaking from './Controls/Matchmaking';
-import Turn from './Controls/Turn';
+import Disconnect from './Controls/Disconnect';
+import ErrorHandler from './Controls/ErrorHandler';
+import GameController from './Controls/GameController';
+import TurnController from './Controls/TurnController';
 
 import styles from './Game.module.scss';
 
@@ -32,9 +33,10 @@ const Game: React.FC = () => {
 
   return (
     <>
-      <Hits />
-      <Turn />
-      <Matchmaking />
+      <Disconnect />
+      <ErrorHandler />
+      <GameController />
+      <TurnController />
       {renderContent()}
     </>
   );

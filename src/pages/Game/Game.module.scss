@@ -63,14 +63,14 @@
   cursor: pointer;
 }
 
-.hitted {
-  background-color: gray;
+.ship {
+  background-color: var(--ship);
 }
 
-.ship {
-  background-color: lightskyblue;
+.hitted {
+  background-color: var(--hitted);
 }
 
 .ship.hitted {
-  background-color: red;
+  background-color: var(--shipHitted);
 }

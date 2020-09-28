@@ -56,7 +56,7 @@ const Setting: React.FC = () => {
   }, [dispatch, data]);
 
   // ! FIXME TO REMOVE
-  // **************************************************
+  //! **************************************************
   const [ready, setReady] = useState<boolean>(false);
   useEffect(() => {
     dispatch(randomizeBoard());
@@ -67,7 +67,7 @@ const Setting: React.FC = () => {
       emitter(board);
     }
   }, [ready, board, emitter]);
-  // **************************************************
+  //! **************************************************
 
   return (
     <>

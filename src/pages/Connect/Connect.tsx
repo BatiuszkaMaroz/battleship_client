@@ -25,7 +25,7 @@ const Connect: React.FC = () => {
     e.preventDefault();
 
     //TODO Basic Validation
-    if (name.length >= 1 && name.length <= 15) {
+    if (name.length >= 3 && name.length <= 15) {
       emitter(name);
     }
   };
@@ -38,14 +38,14 @@ const Connect: React.FC = () => {
     }
   }, [data, dispatch, unlocker]);
 
-  // ! FIXME TO REMOVE
-  // **************************************************
+  //! FIXME TO REMOVE
+  //! ************************************************** //
   useEffect(() => {
     emitter(
       `USER ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
     );
   }, [emitter]);
-  // **************************************************
+  //! ************************************************** //
 
   const renderErrorModal = useMemo(() => {
     if (error) {
@@ -70,6 +70,8 @@ const Connect: React.FC = () => {
             value={name}
             type='text'
             id='username'
+            minLength={3}
+            maxLength={15}
           />
           <button>Connect</button>
         </form>

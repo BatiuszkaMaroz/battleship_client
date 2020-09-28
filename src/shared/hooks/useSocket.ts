@@ -19,6 +19,10 @@ const useSocket = <T extends {}>(endpoint: string) => {
 
   const listener = useCallback(
     (resData: any) => {
+      if (resData.message) {
+        console.log(resData.message);
+      }
+
       setData(resData);
     },
     [setData],
@@ -29,7 +33,7 @@ const useSocket = <T extends {}>(endpoint: string) => {
       if (error.message) {
         setError(error.message);
       } else {
-        setError('An unexpected error occurred');
+        setError('An unexpected error occurred.');
       }
     },
     [setError],

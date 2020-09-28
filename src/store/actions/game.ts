@@ -2,24 +2,34 @@ import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
 import { TurnAction } from '../reducers/game/turn';
-import { GameBoard } from '../../models/Board';
+import { GameBoard, EnemyBoard } from '../../models/Board';
 import { RootState } from '../reducers/index';
 import { PlayerBoardAction } from '../reducers/game/playerBoard';
+import { EnemyBoardAction } from '../reducers/game/enemyBoard';
 import { GAME } from './actionTypes';
 import { matchmakingStage } from './stages';
 
-export const setGameBoard = (
+export const setPlayerBoard = (
   board: GameBoard,
-  matchmaking: boolean,
+  matchmaking: boolean = false,
 ): ThunkAction<any, RootState, any, PlayerBoardAction> => (dispatch) => {
   dispatch({
-    type: GAME.SET_BOARDS,
+    type: GAME.SET_PLAYER_BOARD,
     board,
   });
 
   if (matchmaking) {
     dispatch(matchmakingStage());
   }
+};
+
+export const setEnemyBoard = (
+  board: EnemyBoard,
+): ThunkAction<any, RootState, any, EnemyBoardAction> => (dispatch) => {
+  dispatch({
+    type: GAME.SET_ENEMY_BOARD,
+    board,
+  });
 };
 
 export const setTurnId = (turnId: number): TurnAction => ({

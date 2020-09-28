@@ -2,9 +2,9 @@ import React, { useEffect, useMemo } from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import Connect from './components/Connect/Connect';
-import Setting from './components/Setting/Setting';
-import Game from './components/Game/Game';
+import Connect from './pages/Connect/Connect';
+import Setting from './pages/Setting/Setting';
+import Game from './pages/Game/Game';
 import Spinner from './shared/components/Spinner/Spinner';
 
 import useTypedSelector from './shared/hooks/useTypedSelector';

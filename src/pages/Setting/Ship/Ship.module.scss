@@ -1,4 +1,4 @@
-.Ship {
+.ship {
   z-index: 300;
   position: absolute;
   top: 0;
@@ -9,7 +9,7 @@
   background-color: rgba(blue, 0.5);
   display: flex;
 
-  .Segment {
+  .segment {
     height: var(--cellSize);
     width: var(--cellSize);
   }

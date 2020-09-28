@@ -32,7 +32,6 @@ const Connect: React.FC = () => {
 
   useEffect(() => {
     if (data.player) {
-      console.log(data.message);
       dispatch(connectPlayer(data.player));
     } else {
       unlocker();
@@ -41,11 +40,11 @@ const Connect: React.FC = () => {
 
   // ! FIXME TO REMOVE
   // **************************************************
-  // useEffect(() => {
-  //   emitter(
-  //     `USER ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
-  //   );
-  // }, [emitter]);
+  useEffect(() => {
+    emitter(
+      `USER ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
+    );
+  }, [emitter]);
   // **************************************************
 
   const renderErrorModal = useMemo(() => {

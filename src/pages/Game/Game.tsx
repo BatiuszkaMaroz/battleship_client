@@ -6,8 +6,9 @@ import useTypedSelector from '../../shared/hooks/useTypedSelector';
 import Card from '../../shared/components/Card/Card';
 import PlayerBoard from './PlayerBoard/PlayerBoard';
 import EnemyBoard from './EnemyBoard/EnemyBoard';
-import Matchmaking from './Controls/Matchmaking/Matchmaking';
-import Turn from './Controls/Turn/Turn';
+import Hits from './Controls/Hits';
+import Matchmaking from './Controls/Matchmaking';
+import Turn from './Controls/Turn';
 
 import styles from './Game.module.scss';
 
@@ -18,7 +19,7 @@ const Game: React.FC = () => {
     switch (stage) {
       case STAGES.GAME:
         return (
-          <Card center className={styles.Game}>
+          <Card center className={styles.game}>
             <PlayerBoard />
             <EnemyBoard />
           </Card>
@@ -31,6 +32,7 @@ const Game: React.FC = () => {
 
   return (
     <>
+      <Hits />
       <Turn />
       <Matchmaking />
       {renderContent()}

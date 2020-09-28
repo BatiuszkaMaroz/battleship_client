@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './EnemyCell.module.scss';
+import styles from '../../Game.module.scss';
 
 type Props = {
   col: number;
@@ -18,18 +18,19 @@ const EnemyCell: React.FC<Props> = ({
   onShot,
   className,
 }) => {
-  const onClickHandler = () => {
+  const clickHandler = () => {
     if (hit) return;
-
     onShot(row, col);
   };
 
-  return (
-    <div
-      onClick={onClickHandler}
-      className={`${styles.EnemyCell} ${className}`}
-    ></div>
-  );
+  const classes = `
+  ${styles.enemyCell}
+  ${className}
+  ${hit ? styles.hitted : null}
+  ${ship ? styles.shipHitted : null}
+  `;
+
+  return <div onClick={clickHandler} className={classes}></div>;
 };
 
 export default EnemyCell;

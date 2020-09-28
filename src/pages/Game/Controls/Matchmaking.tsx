@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import Spinner from '../../../../shared/components/Spinner/Spinner';
-import Modal from '../../../../shared/components/Modal/Modal';
-import useSocket from '../../../../shared/hooks/useSocket';
+import Spinner from 'shared/components/Spinner/Spinner';
+import Modal from 'shared/components/Modal/Modal';
+import useSocket from 'shared/hooks/useSocket';
+import { GameBoard } from 'models/Board';
 import {
   settingStage,
   matchmakingStage,
   gameStage,
-} from '../../../../store/actions/stages';
+} from 'store/actions/stages';
+import { setPlayerBoard } from 'store/actions/game';
 
 const Matchmaking: React.FC = () => {
+  const [boardDefault, setBoardDefault] = useState<GameBoard | null>(null);
   const dispatch = useDispatch();
   const [userDisconnected, setUserDisconnected] = useState<boolean>(false);
 
@@ -18,19 +21,20 @@ const Matchmaking: React.FC = () => {
     message?: string;
     readyToPlay?: boolean;
     playerLeft?: boolean;
+    board?: GameBoard;
   }>('matchmaking');
 
   useEffect(() => {
-    if (data.message) {
-      console.log(data.message);
-    }
-
     if (data.readyToPlay) {
       dispatch(gameStage());
     }
 
     if (data.playerLeft) {
       setUserDisconnected(true);
+    }
+
+    if (data.board) {
+      setBoardDefault(data.board);
     }
   }, [data, dispatch]);
 
@@ -42,6 +46,7 @@ const Matchmaking: React.FC = () => {
     acceptError();
     unlocker();
     emitter();
+    dispatch(setPlayerBoard(boardDefault!, false));
     dispatch(matchmakingStage());
     setUserDisconnected(false);
   };

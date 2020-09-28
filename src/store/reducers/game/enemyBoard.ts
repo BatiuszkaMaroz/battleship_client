@@ -4,15 +4,18 @@ import { EnemyBoard, createEnemyBoard } from '../../../models/Board';
 import { GAME } from '../../actions/actionTypes';
 
 type EnemyBoardState = EnemyBoard;
-export type EnemyBoardAction = Action & {};
+export type EnemyBoardAction = Action & { board?: EnemyBoard };
 
 const initialState: EnemyBoardState = createEnemyBoard();
 
 const gameReducer: Reducer<EnemyBoardState, EnemyBoardAction> = (
   state = initialState,
-  { type },
+  { type, board },
 ) => {
   switch (type) {
+    case GAME.SET_ENEMY_BOARD:
+      return board!;
+
     case GAME.RESET:
     case GAME.RESET_FULL:
       return createEnemyBoard();

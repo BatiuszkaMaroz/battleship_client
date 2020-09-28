@@ -14,15 +14,15 @@ import { setShip, unsetShip } from '../../../store/actions/setting';
 import styles from './Ship.module.scss';
 
 interface Props {
-  dock: HTMLDivElement;
   shipId: string;
+  dock: HTMLDivElement;
 }
 
-const Ship: React.FC<Props> = ({ dock, shipId }) => {
+const Ship: React.FC<Props> = ({ shipId, dock }) => {
   const dispatch = useDispatch();
   const [render, setRender] = useState<boolean>(false);
 
-  const { id, size } = useTypedSelector((state) =>
+  const { size } = useTypedSelector((state) =>
     state.settings.ships.find((ship) => ship.id === shipId),
   )!;
   const board = useTypedSelector((state) => state.settings.board);
@@ -87,20 +87,18 @@ const Ship: React.FC<Props> = ({ dock, shipId }) => {
   }, []);
 
   const dropShip = useCallback(() => {
+    inMotion.current = false;
+    clickCoords.current = { left: null, top: null };
+
     if (curPlace.current !== dock) {
       const row = +curPlace.current.getAttribute('data-row')!;
       const col = +curPlace.current.getAttribute('data-col')!;
 
-      dispatch(setShip(id, size, row, col, orientation.current));
+      dispatch(setShip(shipId, size, row, col, orientation.current));
     } else {
-      dispatch(unsetShip(id));
+      dispatch(unsetShip(shipId));
     }
-
-    inMotion.current = false;
-    clickCoords.current = { left: null, top: null };
-
-    setRender((prev) => !prev);
-  }, [dispatch, id, size, dock]);
+  }, [dispatch, shipId, size, dock]);
 
   const moveShip = useCallback(
     (e: MouseEvent) => {
@@ -123,7 +121,7 @@ const Ship: React.FC<Props> = ({ dock, shipId }) => {
 
         if (
           curPlace.current === cell ||
-          isPlaceFree(row, col, board, size, id, orientation.current)
+          isPlaceFree(row, col, board, size, shipId, orientation.current)
         ) {
           const { top, left } = cell.getBoundingClientRect();
 
@@ -144,7 +142,7 @@ const Ship: React.FC<Props> = ({ dock, shipId }) => {
         }
       }
     },
-    [dock, id, board, size],
+    [dock, shipId, board, size],
   );
 
   useEffect(() => {
@@ -232,7 +230,7 @@ const Ship: React.FC<Props> = ({ dock, shipId }) => {
   const renderShip = useMemo(() => {
     const ship: JSX.Element[] = [];
     for (let i = 0; i < size; i++) {
-      ship.push(<div key={i} className={styles.Segment}></div>);
+      ship.push(<div key={i} className={styles.segment}></div>);
     }
     return ship;
   }, [size]);
@@ -242,7 +240,7 @@ const Ship: React.FC<Props> = ({ dock, shipId }) => {
       onContextMenu={rotateShip}
       ref={shipRef}
       onMouseDown={pickUpShip}
-      className={styles.Ship}
+      className={styles.ship}
     >
       {renderShip}
     </div>

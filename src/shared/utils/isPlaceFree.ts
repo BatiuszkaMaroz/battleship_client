@@ -1,55 +1,58 @@
+import { SettingBoard } from 'models/Board';
+
 const isPlaceFree = (
   row: number,
   col: number,
-  board: any[][],
+  board: SettingBoard,
   size: number,
   shipId: string,
   orientation: 'horizontal' | 'vertical',
 ) => {
   if (orientation === 'horizontal') {
-    // * If cell don't exists or cell is busied by other ship * //
-    for (let k = col; k < size + col; k++) {
+    // * INNER If cell don't exists or cell is busied by other ship * //
+    for (let i = col; i < size + col; i++) {
       if (
-        !board[row][k] ||
-        (board[row][k].shipId !== shipId && board[row][k].shipId !== null)
+        !board[row] ||
+        !board[row][i] ||
+        (board[row][i].shipId !== shipId && board[row][i].shipId !== null)
       ) {
         return false;
       }
     }
 
-    // * If cell exists and is busied by other ship * //
-    for (let k = row - 1; k < row + 2; k++) {
-      for (let l = col - 1; l < col + size + 1; l++) {
+    // * OUTER If cell exists and is busied by other ship * //
+    for (let i = row - 1; i < row + 2; i++) {
+      for (let j = col - 1; j < col + size + 1; j++) {
         if (
-          board[k] &&
-          board[k][l] &&
-          board[k][l].shipId !== null &&
-          board[k][l].shipId !== shipId
+          board[i] &&
+          board[i][j] &&
+          board[i][j].shipId !== null &&
+          board[i][j].shipId !== shipId
         ) {
           return false;
         }
       }
     }
   } else if (orientation === 'vertical') {
-    // * If cell don't exists or cell is busied by other ship * //
-    for (let k = row; k < row + size; k++) {
+    // * INNER If cell don't exists or cell is busied by other ship * //
+    for (let i = row; i < row + size; i++) {
       if (
-        !board[k] ||
-        !board[k][col] ||
-        (board[k][col].shipId !== shipId && board[k][col].shipId !== null)
+        !board[i] ||
+        !board[i][col] ||
+        (board[i][col].shipId !== shipId && board[i][col].shipId !== null)
       ) {
         return false;
       }
     }
 
-    // * If cell exists and is busied by other ship * //
-    for (let k = row - 1; k < row + size + 1; k++) {
-      for (let l = col - 1; l < col + 2; l++) {
+    // * OUTER If cell exists and is busied by other ship * //
+    for (let i = row - 1; i < row + size + 1; i++) {
+      for (let j = col - 1; j < col + 2; j++) {
         if (
-          board[k] &&
-          board[k][l] &&
-          board[k][l].shipId !== shipId &&
-          board[k][l].shipId !== null
+          board[i] &&
+          board[i][j] &&
+          board[i][j].shipId !== shipId &&
+          board[i][j].shipId !== null
         ) {
           return false;
         }

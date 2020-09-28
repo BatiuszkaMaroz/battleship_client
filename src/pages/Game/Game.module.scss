@@ -1,7 +1,16 @@
-.Row {
+.game {
+  display: flex;
+  flex-flow: row;
+
+  & > *:first-child {
+    margin-right: 10rem;
+  }
+}
+
+.row {
   display: flex;
 
-  .Cell {
+  .cell {
     border: none;
 
     &::before {
@@ -26,7 +35,7 @@
   }
 
   &:first-child {
-    .Cell {
+    .cell {
       &::before {
         border-top: 2px solid black;
       }
@@ -34,10 +43,34 @@
   }
 
   &:last-child {
-    .Cell {
+    .cell {
       &::before {
         border-bottom: 2px solid black;
       }
     }
   }
+}
+
+.playerCell,
+.enemyCell {
+  position: relative;
+  width: var(--cellSize);
+  height: var(--cellSize);
+  user-select: none;
+}
+
+.enemyCell {
+  cursor: pointer;
+}
+
+.hitted {
+  background-color: gray;
+}
+
+.ship {
+  background-color: lightskyblue;
+}
+
+.ship.hitted {
+  background-color: red;
 }

@@ -30,8 +30,6 @@ const Button: React.FC<Props> = ({
 
     button.append(ripple);
 
-    console.log('E');
-
     setTimeout(() => {
       ripple.remove();
     }, 500);

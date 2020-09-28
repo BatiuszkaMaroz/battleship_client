@@ -15,7 +15,7 @@ const playerBoardReducer: Reducer<PlayerBoardState, PlayerBoardAction> = (
   { type, board },
 ) => {
   switch (type) {
-    case GAME.SET_BOARDS:
+    case GAME.SET_PLAYER_BOARD:
       return board!;
 
     case GAME.RESET_FULL:

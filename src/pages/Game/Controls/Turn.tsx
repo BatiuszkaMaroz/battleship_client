@@ -17,10 +17,6 @@ const Turn: React.FC = () => {
   }>('turn-controller');
 
   useEffect(() => {
-    if (data.message) {
-      console.log(data.message);
-    }
-
     if (data.turnId) {
       dispatch(setTurnId(data.turnId));
     }

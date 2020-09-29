@@ -1,23 +1,23 @@
 const rows = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 const cols = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-abstract class CellBase {
+abstract class Cell {
   id: string;
 
   constructor(public row: number, public col: number) {
     this.id = `${row * cols.length + col}`;
   }
 }
-class SettingCell extends CellBase {
+class SettingCell extends Cell {
   shipId?: string | null = null;
 }
 
-class GameCell extends CellBase {
+class GameCell extends Cell {
   shipId?: string | null = null;
   hit: boolean = false;
 }
 
-class EnemyCell extends CellBase {
+class EnemyCell extends Cell {
   ship: boolean = false;
   hit: boolean = false;
 }

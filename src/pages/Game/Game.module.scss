@@ -1,9 +1,24 @@
+@import 'index.scss';
+
 .game {
   display: flex;
   flex-flow: row;
 
   & > *:first-child {
     margin-right: 10rem;
+  }
+
+  @include respond-to('medium') {
+    flex-flow: column;
+    align-items: center;
+
+    & > * {
+      margin: 0 !important;
+
+      &:first-child {
+        margin-bottom: 2rem !important;
+      }
+    }
   }
 }
 

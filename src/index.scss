@@ -1,5 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400&display=swap');
 
+$breakpoints: (
+  'small': 30em,
+  'medium': 70em,
+  'large': 100em,
+) !default;
+
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (max-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  } @else {
+    @warn "Breakpoint named \"#{$breakpoint}\" does not exists.";
+  }
+}
+
 :root {
   --ship: #3498db;
   --hitted: #bdc3c7;
@@ -12,6 +28,10 @@
 
   --backdropIndex: 100;
   --modalIndex: 200;
+
+  @include respond-to('medium') {
+    --cellSize: 40px;
+  }
 }
 
 *,

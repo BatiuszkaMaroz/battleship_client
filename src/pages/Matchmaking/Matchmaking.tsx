@@ -1,62 +1,17 @@
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React from 'react';
+import useTypedSelector from 'shared/hooks/useTypedSelector';
 
-import Spinner from 'shared/components/Spinner/Spinner';
-import Modal from 'shared/components/Modal/Modal';
-import useSocket from 'shared/hooks/useSocket';
-import { settingStage, gameStage } from 'store/actions/stages';
+import PrivateMatchmaking from './Private';
+import RandomMatchmaking from './Random';
 
-const Matchmaking: React.FC = () => {
-  const dispatch = useDispatch();
+const MatchmakingRouter: React.FC = () => {
+  const { mode } = useTypedSelector((state) => state.game.mode);
 
-  const { emitter, data, error, unlocker, acceptError } = useSocket<{
-    message?: string;
-    readyToPlay?: boolean;
-  }>('matchmaking');
-
-  useEffect(() => {
-    if (data.readyToPlay) {
-      dispatch(gameStage());
-    }
-  }, [data, dispatch]);
-
-  useEffect(() => {
-    emitter();
-  }, [emitter, unlocker]);
-
-  const onProceed = () => {
-    acceptError();
-    unlocker();
-    emitter();
-  };
-
-  const onReject = () => {
-    dispatch(settingStage());
-  };
-
-  const errorModal = () => {
-    if (error) {
-      return (
-        <Modal
-          onProceed={onProceed}
-          onProceedText='Retry'
-          onReject={onReject}
-          onRejectText='Back to settings'
-        >
-          {error ? error : 'Matchmaking error.'}
-        </Modal>
-      );
-    } else {
-      return null;
-    }
-  };
-
-  return (
-    <>
-      {data.readyToPlay ? null : <Spinner />}
-      {errorModal()}
-    </>
-  );
+  if (mode === 'random') {
+    return <RandomMatchmaking />;
+  } else {
+    return <PrivateMatchmaking />;
+  }
 };
 
-export default Matchmaking;
+export default MatchmakingRouter;

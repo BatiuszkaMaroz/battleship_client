@@ -5,7 +5,7 @@
   flex-flow: column;
   align-items: center;
   padding: 2rem;
-  min-width: 30rem;
+  min-width: 40rem;
   background-color: var(--main1);
 
   .text {
@@ -19,6 +19,48 @@
     .button {
       &:not(:last-child) {
         margin-right: 1rem;
+      }
+    }
+  }
+
+  .closeButton {
+    --size: 3rem;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: flex-end;
+    width: var(--size);
+    height: var(--size);
+    background-color: inherit;
+    transition: 100ms ease-in-out;
+    cursor: pointer;
+
+    &:before {
+      content: '';
+      position: absolute;
+      background-color: rgba(gray, 0.5);
+      height: 0;
+      width: 0;
+      border-radius: 50%;
+      transition: 100ms ease-in-out;
+    }
+
+    svg {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      fill: red;
+    }
+
+    &:hover {
+      transform: rotateZ(90deg);
+    }
+
+    &:active {
+      &:before {
+        height: 100%;
+        width: 100%;
       }
     }
   }

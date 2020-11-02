@@ -1,20 +1,16 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import styles from './Button.module.scss';
 
 interface Props {
   className?: string;
-  icon?: React.FC;
   [x: string]: any;
 }
 
-const Button: React.FC<Props> = ({
-  children,
-  className = '',
-  icon: Icon,
-  ...rest
-}) => {
-  const animate = (e: React.MouseEvent) => {
+const Button: React.FC<Props> = ({ className = '', children, ...rest }) => {
+  const lastRipple = useRef<any>(null);
+
+  const animateDown = (e: React.MouseEvent) => {
     const button = e.currentTarget as HTMLButtonElement;
 
     const { x, y } = button.getBoundingClientRect();
@@ -24,26 +20,59 @@ const Button: React.FC<Props> = ({
     const top = clientY - y;
 
     const ripple = document.createElement('div');
-    ripple.className = styles.ripple;
+    ripple.className = `${styles.ripple} ${styles.rippleDown}`;
     ripple.style.left = left + 'px';
     ripple.style.top = top + 'px';
 
     button.append(ripple);
 
-    setTimeout(() => {
-      ripple.remove();
-    }, 500);
+    const rippleObject = {
+      ripple,
+      animationend: false,
+    };
+
+    ripple.addEventListener('animationend', () => {
+      rippleObject.animationend = true;
+    });
+
+    lastRipple.current = rippleObject;
+  };
+
+  const animateUp = (e: React.MouseEvent) => {
+    const animationTime = 300;
+
+    if (!lastRipple.current) {
+      return;
+    }
+
+    const { ripple, animationend } = lastRipple.current as {
+      ripple: HTMLDivElement;
+      animationend: boolean;
+    };
+    if (animationend) {
+      ripple.className = `${styles.ripple} ${styles.rippleUp}`;
+      setTimeout(() => {
+        ripple.remove();
+      }, animationTime);
+    } else {
+      ripple.addEventListener('animationend', () => {
+        ripple.className = `${styles.ripple} ${styles.rippleUp}`;
+        setTimeout(() => {
+          ripple.remove();
+        }, animationTime);
+      });
+    }
   };
 
   return (
     <button className={`${styles.button} ${className}`} {...rest}>
-      <div onClick={animate} className={`${styles.ripple__container}`}></div>
-      {Icon && (
-        <div className={styles.icon}>
-          <Icon />
-        </div>
-      )}
       <div className={styles.text}>{children}</div>
+      <div
+        onMouseDown={animateDown}
+        onMouseUp={animateUp}
+        onMouseLeave={animateUp}
+        className={`${styles.rippleContainer}`}
+      ></div>
     </button>
   );
 };

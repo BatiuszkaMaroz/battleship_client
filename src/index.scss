@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@700&display=swap');
 
 $breakpoints: (
   'small': 30em,
@@ -6,9 +7,14 @@ $breakpoints: (
   'large': 100em,
 ) !default;
 
-@mixin respond-to($breakpoint) {
+$types: (
+  'min': 'min-width',
+  'max': 'max-width',
+) !default;
+
+@mixin respond-to($breakpoint, $type: 'max') {
   @if map-has-key($breakpoints, $breakpoint) {
-    @media (max-width: map-get($breakpoints, $breakpoint)) {
+    @media (map-get($types, $type): map-get($breakpoints, $breakpoint)) {
       @content;
     }
   } @else {
@@ -28,6 +34,10 @@ $breakpoints: (
 
   --backdropIndex: 100;
   --modalIndex: 200;
+
+  --c1: #fdd377;
+  --c2: #f3db01;
+  --c3: #b98a46;
 
   @include respond-to('medium') {
     --cellSize: 40px;
@@ -52,22 +62,33 @@ $breakpoints: (
 html {
   box-sizing: border-box;
   font-size: 62.5%;
-  font-family: 'Nunito', sans-serif;
-  font-weight: 400;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  height: 100%;
+
+  @include respond-to('large', 'min') {
+    font-size: 72.5%;
+  }
 }
 
 body {
-  $gradient: linear-gradient(
-    100deg,
-    rgba(white, 0.65) 70%,
-    rgba(white, 0.75) 30%
-  );
-
+  --opacity: 0.35;
+  height: 100%;
   font-size: 1.6rem;
-  background-attachment: fixed;
-  background-image: $gradient, url('./assets/images/bg.jpg');
-  background-position: left top;
+  overflow: hidden;
+
   background-size: cover;
+  background-position: center top;
+  background-attachment: fixed;
+  background-image: linear-gradient(
+      rgba(black, var(--opacity)),
+      rgba(black, var(--opacity))
+    ),
+    url('./assets/images/bg.jpg');
+}
+
+#root {
+  height: 100%;
 }
 
 ol,

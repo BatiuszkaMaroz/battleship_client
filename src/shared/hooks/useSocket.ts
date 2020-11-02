@@ -1,10 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import useTypedSelector from './useTypedSelector';
 
-const useSocket = <T extends {}>(
-  endpoint: string,
-  handleErrors: boolean = true,
-) => {
+const useSocket = <T extends {}>(endpoint: string) => {
   const [data, setData] = useState<T | {}>({});
   const [error, setError] = useState<any | null>(null);
   const [locked, setLocked] = useState<boolean>(false);
@@ -53,15 +50,14 @@ const useSocket = <T extends {}>(
 
   useEffect(() => {
     io.on(endpoint, listener);
-    if (handleErrors) {
-      io.on('error', errorListener);
-    }
+
+    io.on('error', errorListener);
 
     return () => {
       io.off(endpoint, listener);
       io.off('error', errorListener);
     };
-  }, [io, endpoint, listener, errorListener, handleErrors]);
+  }, [io, endpoint, listener, errorListener]);
 
   return {
     data: data as T,

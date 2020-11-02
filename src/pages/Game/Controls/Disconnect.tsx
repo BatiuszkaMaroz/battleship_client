@@ -3,19 +3,19 @@ import { useDispatch } from 'react-redux';
 
 import Modal from 'shared/components/Modal/Modal';
 import useSocket from 'shared/hooks/useSocket';
-import { GameBoard } from 'models/Board';
+import { PlayerBoard } from 'models/Board';
 import { settingStage, matchmakingStage } from 'store/actions/stages';
 import { setPlayerBoard } from 'store/actions/game';
 
 const Disconnect: React.FC = () => {
   const dispatch = useDispatch();
-  const [boardDefault, setBoardDefault] = useState<GameBoard | null>(null);
+  const [boardDefault, setBoardDefault] = useState<PlayerBoard | null>(null);
   const [userDisconnected, setUserDisconnected] = useState<boolean>(false);
 
   const { data } = useSocket<{
     message?: string;
     playerLeft?: boolean;
-    board?: GameBoard;
+    board?: PlayerBoard;
   }>('disconnect');
 
   useEffect(() => {

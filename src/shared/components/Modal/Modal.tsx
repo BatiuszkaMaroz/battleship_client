@@ -5,11 +5,12 @@ import Backdrop from '../Backdrop/Backdrop';
 import Button from '../Button/Button';
 import Card from '../Card/Card';
 
+import { ReactComponent as Icon } from 'assets/svg/clear.svg';
+
 import styles from './Modal.module.scss';
 
 interface Props {
   onClose?: () => void;
-  onCloseText?: string;
   onProceed?: () => void;
   onProceedText?: string;
   onReject?: () => void;
@@ -19,7 +20,6 @@ interface Props {
 const Modal: React.FC<Props> = ({
   children,
   onClose,
-  onCloseText = 'Close',
   onProceed,
   onProceedText = 'Proceed',
   onReject,
@@ -29,13 +29,13 @@ const Modal: React.FC<Props> = ({
     <>
       <Backdrop onClick={onClose} />
       <Card center className={styles.modal}>
+        {onClose && (
+          <button className={styles.closeButton} onClick={onClose}>
+            <Icon />
+          </button>
+        )}
         <h1 className={styles.text}>{children}</h1>
         <div className={styles.controls}>
-          {onClose && (
-            <Button className={styles.button} onClick={onClose}>
-              {onCloseText}
-            </Button>
-          )}
           {onProceed && (
             <Button className={styles.button} onClick={onProceed}>
               {onProceedText}

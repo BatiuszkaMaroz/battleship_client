@@ -1,11 +1,11 @@
 import { Action, Reducer } from 'redux';
 
-import { GameBoard } from '../../../models/Board';
+import { PlayerBoard } from '../../../models/Board';
 import { GAME } from '../../actions/actionTypes';
 
-type PlayerBoardState = GameBoard | null;
+type PlayerBoardState = PlayerBoard | null;
 export type PlayerBoardAction = Action & {
-  board?: GameBoard;
+  board?: PlayerBoard;
 };
 
 const initialState: PlayerBoardState = null;

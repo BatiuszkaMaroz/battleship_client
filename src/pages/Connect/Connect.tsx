@@ -2,7 +2,7 @@ import React, { useEffect, useState, FormEvent, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 
 import Modal from '../../shared/components/Modal/Modal';
-import Card from '../../shared/components/Card/Card';
+import Button from '../../shared/components/Button/Button';
 
 import useSocket from '../../shared/hooks/useSocket';
 import { connectPlayer } from '../../store/actions/connect';
@@ -17,14 +17,13 @@ type Response = {
 const Connect: React.FC = () => {
   const dispatch = useDispatch();
   const [name, setName] = useState<string>('');
-  const { data, emitter, unlocker, error, acceptError } = useSocket<Response>(
+  const { data, emitter, error, acceptError } = useSocket<Response>(
     'connect-player',
   );
 
   const submitHandler = (e: FormEvent) => {
     e.preventDefault();
 
-    //TODO Basic Validation
     if (name.length >= 3 && name.length <= 15) {
       emitter(name);
     }
@@ -33,12 +32,10 @@ const Connect: React.FC = () => {
   useEffect(() => {
     if (data.player) {
       dispatch(connectPlayer(data.player));
-    } else {
-      unlocker();
     }
-  }, [data, dispatch, unlocker]);
+  }, [data, dispatch]);
 
-  //! FIXME TO REMOVE
+  //! FIXME AUTO-CONNECT
   //! ************************************************** //
   useEffect(() => {
     emitter(
@@ -50,7 +47,7 @@ const Connect: React.FC = () => {
   const renderErrorModal = useMemo(() => {
     if (error) {
       return (
-        <Modal onClose={acceptError} onCloseText='Retry'>
+        <Modal onClose={acceptError} onProceed={() => {}} onProceedText='Retry'>
           {error}
         </Modal>
       );
@@ -62,20 +59,21 @@ const Connect: React.FC = () => {
   return (
     <>
       {renderErrorModal}
-      <Card center className={styles.connect}>
+      <section className={styles.connect}>
+        <h1>WARSHIP</h1>
         <form onSubmit={submitHandler}>
-          <label htmlFor='username'>Type your name: </label>
+          <label htmlFor='username'>Type your name:</label>
           <input
+            // autoComplete='off'
             onChange={(e) => setName(e.target.value)}
             value={name}
-            type='text'
             id='username'
             minLength={3}
             maxLength={15}
           />
-          <button>Connect</button>
+          <Button>Play</Button>
         </form>
-      </Card>
+      </section>
     </>
   );
 };

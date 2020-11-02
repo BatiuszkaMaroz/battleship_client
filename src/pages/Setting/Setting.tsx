@@ -6,20 +6,20 @@ import Button from '../../shared/components/Button/Button';
 import Card from '../../shared/components/Card/Card';
 import Board from './Board/Board';
 import Harbor from './Harbor/Harbor';
+import PrivateRoom from './PrivateRoom/PrivateRoom';
 
 import useSocket from '../../shared/hooks/useSocket';
 import useTypedSelector from '../../shared/hooks/useTypedSelector';
 import styles from './Setting.module.scss';
+
+import { toggleMode } from 'store/actions/game';
 import { resetBoard, randomizeBoard } from '../../store/actions/setting';
 import { setPlayerBoard } from '../../store/actions/game';
 
 const Setting: React.FC = () => {
   const dispatch = useDispatch();
-  const { emitter, data, acceptError, error } = useSocket<{
-    validatedBoard: any;
-    message: string;
-  }>('apply-setting');
 
+  const mode = useTypedSelector((state) => state.game.mode.mode);
   const board = useTypedSelector((state) => state.settings.board);
   const allShipsSettled = useTypedSelector((state) =>
     state.settings.ships.reduce((prev, cur) => {
@@ -34,6 +34,11 @@ const Setting: React.FC = () => {
       }
     }, true),
   );
+
+  const { emitter, data, acceptError, error } = useSocket<{
+    validatedBoard: any;
+    message: string;
+  }>('apply-setting');
 
   const applySetting = () => {
     if (allShipsSettled) {
@@ -55,18 +60,18 @@ const Setting: React.FC = () => {
     }
   }, [dispatch, data]);
 
-  // ! FIXME TO REMOVE
+  // ! FIXME AUTO SETTING
   //! **************************************************
   const [ready, setReady] = useState<boolean>(false);
   useEffect(() => {
     dispatch(randomizeBoard());
-    setReady(true);
+    // setReady(true);
   }, [dispatch]);
-  useEffect(() => {
-    if (ready) {
-      emitter(board);
-    }
-  }, [ready, board, emitter]);
+  // useEffect(() => {
+  //   if (ready) {
+  //     emitter(board);
+  //   }
+  // }, [ready, board, emitter]);
   //! **************************************************
 
   return (
@@ -81,9 +86,13 @@ const Setting: React.FC = () => {
           <Button disabled={!allShipsSettled} onClick={applySetting}>
             Play
           </Button>
+          {mode !== 'invited' && (
+            <Button onClick={() => dispatch(toggleMode())}>Mode: {mode}</Button>
+          )}
           <Button onClick={resetSetting}>Reset</Button>
           <Button onClick={randomizeSetting}>Randomize</Button>
         </div>
+        {mode === 'private' && <PrivateRoom />}
       </Card>
     </>
   );

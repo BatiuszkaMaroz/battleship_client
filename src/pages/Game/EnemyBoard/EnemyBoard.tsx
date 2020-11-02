@@ -36,7 +36,7 @@ const EnemyBoard: React.FC = () => {
             col={cell.col}
             row={cell.row}
             hit={cell.hit}
-            ship={cell.ship}
+            shipId={!!cell.shipId}
             onShot={onShot}
             className={styles.cell}
           />

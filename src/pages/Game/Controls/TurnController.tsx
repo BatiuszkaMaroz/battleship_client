@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import Modal from 'shared/components/Modal/Modal';
-import { settingStage } from 'store/actions/stages';
 import { setTurnId, turnChange } from 'store/actions/game';
 import useSocket from 'shared/hooks/useSocket';
 

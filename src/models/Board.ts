@@ -12,19 +12,14 @@ class SettingCell extends Cell {
   shipId?: string | null = null;
 }
 
-class GameCell extends Cell {
-  shipId?: string | null = null;
-  hit: boolean = false;
-}
-
-class EnemyCell extends Cell {
-  ship: boolean = false;
+class GameCell<T> extends Cell {
+  shipId?: T | null = null;
   hit: boolean = false;
 }
 
 export type SettingBoard = SettingCell[][];
-export type GameBoard = GameCell[][];
-export type EnemyBoard = EnemyCell[][];
+export type PlayerBoard = GameCell<string>[][];
+export type EnemyBoard = GameCell<boolean>[][];
 
 export const createSettingBoard = (): SettingBoard => {
   const board = rows.map((row) => {
@@ -39,7 +34,7 @@ export const createSettingBoard = (): SettingBoard => {
 export const createEnemyBoard = (): EnemyBoard => {
   const board = rows.map((row) => {
     return cols.map((col) => {
-      return new EnemyCell(row, col);
+      return new GameCell<boolean>(row, col);
     });
   });
 

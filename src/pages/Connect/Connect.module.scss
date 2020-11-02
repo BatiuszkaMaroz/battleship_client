@@ -1,8 +1,64 @@
+@import 'index.scss';
+
 .connect {
-  text-align: center;
+  height: 100%;
+  padding: 5rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-flow: column;
+
+  animation: slideIn 400ms ease-out both;
+
+  @include respond-to('large', 'min') {
+    padding: 3.5rem 0;
+  }
+
+  h1 {
+    font-family: 'Merriweather', serif;
+    font-weight: 700;
+    color: var(--c1);
+    font-size: 12rem;
+    text-shadow: 8px 8px 4px rgba(black, 0.25), 2px 2px 0 var(--c3);
+  }
 
   form {
     display: flex;
     flex-flow: column;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  label {
+    font-size: 2.2rem;
+    color: var(--c2);
+    text-shadow: 4px 4px 4px rgba(black, 0.25);
+    margin-bottom: 1rem;
+  }
+
+  input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: 4px solid var(--c2);
+    background: transparent;
+    color: var(--c2);
+    width: 25rem;
+    height: 4.5rem;
+    margin-bottom: 4rem;
+    font-size: 2.2rem;
+    text-shadow: 4px 4px 4px rgba(black, 0.25);
+    box-shadow: 4px 4px 4px rgba(black, 0.25);
+    backdrop-filter: blur(8px);
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateY(5%);
+  }
+  100% {
+    transform: translateY(0);
   }
 }

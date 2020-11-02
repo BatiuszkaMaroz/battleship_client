@@ -13,7 +13,7 @@ export const establishConnection = (): ThunkAction<
   RootState,
   unknown,
   Action<any>
-> => async (dispatch) => {
+> => (dispatch) => {
   const io = socketio('http://localhost:5000');
   dispatch({ type: CONNECT.ESTABLISH, io });
   dispatch(connectStage());
@@ -21,7 +21,7 @@ export const establishConnection = (): ThunkAction<
 
 export const connectPlayer = (
   player: Player,
-): ThunkAction<any, RootState, any, ConnectAction> => (dispatch) => {
+): ThunkAction<void, RootState, unknown, ConnectAction> => (dispatch) => {
   dispatch({
     type: CONNECT.PLAYER,
     player,

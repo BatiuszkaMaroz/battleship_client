@@ -5,7 +5,7 @@ type Props = {
   col: number;
   row: number;
   hit: boolean;
-  ship: boolean;
+  shipId: boolean;
   onShot: (row: number, col: number) => void;
   className?: string;
 };
@@ -14,7 +14,7 @@ const EnemyCell: React.FC<Props> = ({
   col,
   row,
   hit,
-  ship,
+  shipId,
   onShot,
   className,
 }) => {
@@ -27,7 +27,7 @@ const EnemyCell: React.FC<Props> = ({
   ${styles.enemyCell}
   ${className}
   ${hit ? styles.hitted : null}
-  ${ship ? styles.shipHitted : null}
+  ${shipId ? styles.ship : null}
   `;
 
   return <div onClick={clickHandler} className={classes}></div>;

@@ -37,11 +37,11 @@ const Connect: React.FC = () => {
 
   //! FIXME AUTO-CONNECT
   //! ************************************************** //
-  useEffect(() => {
-    emitter(
-      `USER ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
-    );
-  }, [emitter]);
+  // useEffect(() => {
+  //   emitter(
+  //     `USER ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
+  //   );
+  // }, [emitter]);
   //! ************************************************** //
 
   const renderErrorModal = useMemo(() => {
@@ -60,7 +60,7 @@ const Connect: React.FC = () => {
     <>
       {renderErrorModal}
       <section className={styles.connect}>
-        <h1>WARSHIP</h1>
+        <h1>BATTLESHIP</h1>
         <form onSubmit={submitHandler}>
           <label htmlFor='username'>Type your name:</label>
           <input

@@ -62,16 +62,16 @@ const Setting: React.FC = () => {
 
   // ! FIXME AUTO SETTING
   //! **************************************************
-  const [ready, setReady] = useState<boolean>(false);
-  useEffect(() => {
-    dispatch(randomizeBoard());
-    // setReady(true);
-  }, [dispatch]);
+  // const [ready, setReady] = useState<boolean>(false);
   // useEffect(() => {
-  //   if (ready) {
-  //     emitter(board);
-  //   }
-  // }, [ready, board, emitter]);
+  //   dispatch(randomizeBoard());
+  //   // setReady(true);
+  // }, [dispatch]);
+  // // useEffect(() => {
+  // //   if (ready) {
+  // //     emitter(board);
+  // //   }
+  // // }, [ready, board, emitter]);
   //! **************************************************
 
   return (

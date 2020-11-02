@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  useEffect,
+  // useState
+} from 'react';
 import { useDispatch } from 'react-redux';
 
 import Modal from '../../shared/components/Modal/Modal';

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { Route, Switch, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import Matchmaking from 'pages/Matchmaking/Matchmaking';

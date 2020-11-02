@@ -14,7 +14,7 @@ export const establishConnection = (): ThunkAction<
   unknown,
   Action<any>
 > => (dispatch) => {
-  const io = socketio('http://localhost:5000');
+  const io = socketio(process.env.REACT_APP_SOCKET_ENDPOINT as string);
   dispatch({ type: CONNECT.ESTABLISH, io });
   dispatch(connectStage());
 };

@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import useTypedSelector from './useTypedSelector';
 
 const useSocket = <T extends {}>(endpoint: string) => {
@@ -50,7 +50,6 @@ const useSocket = <T extends {}>(endpoint: string) => {
 
   useEffect(() => {
     io.on(endpoint, listener);
-
     io.on('error', errorListener);
 
     return () => {

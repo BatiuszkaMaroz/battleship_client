@@ -1,15 +1,15 @@
 import { Action, Reducer } from 'redux';
-
-import { CONNECT } from '../actions/actionTypes';
+import { Socket } from 'socket.io-client';
 import { Player } from '../../models/Player';
+import { CONNECT } from '../actions/actionTypes';
 
 type ConnectState = {
-  io: null | SocketIOClient.Socket;
+  io: null | Socket;
   player: null | Player;
 };
 
 export type ConnectAction = Action & {
-  io?: SocketIOClient.Socket;
+  io?: Socket;
   player?: null | Player;
 };
 

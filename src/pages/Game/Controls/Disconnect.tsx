@@ -1,11 +1,10 @@
+import { PlayerBoard } from 'models/Board';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-
 import Modal from 'shared/components/Modal/Modal';
 import useSocket from 'shared/hooks/useSocket';
-import { PlayerBoard } from 'models/Board';
-import { settingStage, matchmakingStage } from 'store/actions/stages';
 import { setPlayerBoard } from 'store/actions/game';
+import { matchmakingStage, settingStage } from 'store/actions/stages';
 
 const Disconnect: React.FC = () => {
   const dispatch = useDispatch();
@@ -16,7 +15,7 @@ const Disconnect: React.FC = () => {
     message?: string;
     playerLeft?: boolean;
     board?: PlayerBoard;
-  }>('disconnect');
+  }>('enemy-disconnected');
 
   useEffect(() => {
     if (data.playerLeft) {

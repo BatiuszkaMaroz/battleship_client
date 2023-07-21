@@ -5,7 +5,7 @@ import Backdrop from '../Backdrop/Backdrop';
 import Button from '../Button/Button';
 import Card from '../Card/Card';
 
-import { ReactComponent as Icon } from 'assets/svg/clear.svg';
+import Icon from 'assets/svg/clear.svg';
 
 import styles from './Modal.module.scss';
 

@@ -9,7 +9,7 @@ import { connectStage, settingStage } from './stages';
 
 export const establishConnection =
   (): ThunkAction<void, RootState, unknown, Action<any>> => (dispatch) => {
-    const io = socketio(process.env.REACT_APP_SOCKET_ENDPOINT!);
+    const io = socketio(process.env.SOCKET_ENDPOINT!);
     dispatch({ type: CONNECT.ESTABLISH, io });
     dispatch(connectStage());
   };

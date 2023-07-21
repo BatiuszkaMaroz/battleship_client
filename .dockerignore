@@ -3,9 +3,9 @@
 dist/
 node_modules/
 
-.env
 .dockerignore
+.env
 .gitignore
+docker-compose.yml
 Dockerfile
 README.md
-docker-compose.yml

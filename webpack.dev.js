@@ -17,5 +17,5 @@ module.exports = merge(common, {
     },
     historyApiFallback: true,
   },
-  plugins: [new Dotenv({ path: './.env.dev' })],
+  plugins: [new Dotenv()],
 });

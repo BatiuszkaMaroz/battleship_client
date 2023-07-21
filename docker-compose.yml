@@ -1,0 +1,8 @@
+services:
+  frontend:
+    build:
+      context: .
+    environment:
+      SOCKET_ENDPOINT: http://localhost:8080
+    ports:
+      - '3000:80'

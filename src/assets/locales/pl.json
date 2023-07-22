@@ -1,5 +1,6 @@
 {
   "start-page": {
-    "title": "Witaj w grze Battleship."
+    "title": "Witaj w grze Battleship",
+    "text": "Podaj swój nick"
   }
 }

@@ -1,6 +1,10 @@
-import StartPage from 'home/StartPage';
+import { ThemeProvider } from '@emotion/react';
+import { CssBaseline } from '@mui/material';
 import React from 'react';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
+
+import { theme } from 'config/theme';
+import StartPage from 'home/StartPage';
 
 const router = createBrowserRouter([
   {
@@ -16,5 +20,10 @@ const router = createBrowserRouter([
 ]);
 
 export default function Root() {
-  return <RouterProvider router={router} />;
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <RouterProvider router={router} />
+    </ThemeProvider>
+  );
 }

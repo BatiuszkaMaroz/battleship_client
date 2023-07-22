@@ -24,3 +24,4 @@
 ## Tips
 
 1. Source maps are required for debugging.
+1. https://www.developerway.com/posts/how-to-handle-errors-in-react#part5

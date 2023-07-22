@@ -5,11 +5,13 @@ import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 
 import { theme } from 'config/theme';
 import StartPage from 'home/StartPage';
+import ErrorPage from 'security/ErrorPage';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Outlet />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: '',

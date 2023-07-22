@@ -9,7 +9,7 @@ import Icon from 'assets/svg/clear.svg';
 
 import styles from './Modal.module.scss';
 
-interface Props {
+interface ModalProps {
   onClose?: () => void;
   onProceed?: () => void;
   onProceedText?: string;
@@ -17,14 +17,14 @@ interface Props {
   onRejectText?: string;
 }
 
-const Modal: React.FC<Props> = ({
+export default function Modal({
   children,
   onClose,
   onProceed,
   onProceedText = 'Proceed',
   onReject,
   onRejectText = 'Reject',
-}) => {
+}: React.PropsWithChildren<ModalProps>) {
   return ReactDOM.createPortal(
     <>
       <Backdrop onClick={onClose} />
@@ -49,8 +49,6 @@ const Modal: React.FC<Props> = ({
         </div>
       </Card>
     </>,
-    document.getElementById('modal-hook')!,
+    document.getElementById('modal-root') as HTMLElement,
   );
-};
-
-export default Modal;
+}

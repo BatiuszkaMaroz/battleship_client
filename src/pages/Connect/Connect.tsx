@@ -1,12 +1,11 @@
-import React, { useEffect, useState, FormEvent, useMemo } from 'react';
+import React, { FormEvent, useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import Modal from '../../shared/components/Modal/Modal';
+import { Player } from '../../models/Player';
 import Button from '../../shared/components/Button/Button';
-
+import Modal from '../../shared/components/Modal/Modal';
 import useSocket from '../../shared/hooks/useSocket';
 import { connectPlayer } from '../../store/actions/connect';
-import { Player } from '../../models/Player';
 import styles from './Connect.module.scss';
 
 type Response = {
@@ -14,12 +13,11 @@ type Response = {
   player?: Player;
 };
 
-const Connect: React.FC = () => {
+export default function Connect() {
   const dispatch = useDispatch();
   const [name, setName] = useState<string>('');
-  const { data, emitter, error, acceptError } = useSocket<Response>(
-    'connect-player',
-  );
+  const { data, emitter, error, acceptError } =
+    useSocket<Response>('connect-player');
 
   const submitHandler = (e: FormEvent) => {
     e.preventDefault();
@@ -43,11 +41,16 @@ const Connect: React.FC = () => {
   //   );
   // }, [emitter]);
   //! ************************************************** //
-
   const renderErrorModal = useMemo(() => {
     if (error) {
       return (
-        <Modal onClose={acceptError} onProceed={() => {}} onProceedText='Retry'>
+        <Modal
+          onClose={acceptError}
+          onProceed={() => {
+            // why it is here?
+          }}
+          onProceedText='Retry'
+        >
           {error}
         </Modal>
       );
@@ -76,6 +79,4 @@ const Connect: React.FC = () => {
       </section>
     </>
   );
-};
-
-export default Connect;
+}

@@ -1,6 +1,6 @@
-import isPlaceFree from './isPlaceFree';
 import { createSettingBoard } from '../../models/Board';
 import { createShips } from '../../models/Ship';
+import isPlaceFree from './isPlaceFree';
 
 function randomizeBoard() {
   const board = createSettingBoard();

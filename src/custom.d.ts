@@ -4,45 +4,56 @@ declare namespace NodeJS {
   }
 }
 
+interface Window {
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: Function;
+}
+
+/* ============================================================ */
+
 declare module '*.avif' {
-  const src: string;
-  export default src;
+  const content: string;
+  export default content;
 }
 
 declare module '*.bmp' {
-  const src: string;
-  export default src;
+  const content: string;
+  export default content;
 }
 
 declare module '*.gif' {
-  const src: string;
-  export default src;
+  const content: string;
+  export default content;
 }
 
 declare module '*.jpg' {
-  const src: string;
-  export default src;
+  const content: string;
+  export default content;
 }
 
 declare module '*.jpeg' {
-  const src: string;
-  export default src;
+  const content: string;
+  export default content;
 }
 
 declare module '*.png' {
-  const src: string;
-  export default src;
+  const content: string;
+  export default content;
 }
 
 declare module '*.webp' {
-  const src: string;
-  export default src;
+  const content: string;
+  export default content;
 }
+
+/* ============================================================ */
 
 declare module '*.svg' {
   const content: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
   export default content;
 }
+
+/* ============================================================ */
 
 declare module '*.module.css' {
   const classes: { readonly [key: string]: string };

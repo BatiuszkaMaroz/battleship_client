@@ -14,7 +14,7 @@ class SettingCell extends Cell {
 
 class GameCell<T> extends Cell {
   shipId?: T | null = null;
-  hit: boolean = false;
+  hit = false;
 }
 
 export type SettingBoard = SettingCell[][];

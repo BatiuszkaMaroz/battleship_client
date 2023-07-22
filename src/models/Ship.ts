@@ -1,6 +1,6 @@
 class Ship {
   id: string;
-  settled: boolean = false;
+  settled = false;
 
   constructor(id: number, public size: number) {
     this.id = `ship-${id}`;

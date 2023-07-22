@@ -1,18 +1,18 @@
 import { useCallback, useEffect, useState } from 'react';
 import useTypedSelector from './useTypedSelector';
 
-const useSocket = <T extends {}>(endpoint: string) => {
-  const [data, setData] = useState<T | {}>({});
+const useSocket = <T extends object>(endpoint: string) => {
+  const [data, setData] = useState<T | object>({});
   const [error, setError] = useState<any | null>(null);
   const [locked, setLocked] = useState<boolean>(false);
-  const io = useTypedSelector((state) => state.connect.io)!;
+  const io = useTypedSelector((state) => state.connect.io);
 
   const emitter = useCallback(
     (...args: any[]) => {
       if (locked) return;
 
       setLocked(true);
-      io.emit(endpoint, ...args);
+      io?.emit(endpoint, ...args);
     },
     [io, setLocked, endpoint, locked],
   );
@@ -49,12 +49,12 @@ const useSocket = <T extends {}>(endpoint: string) => {
   }, [setError]);
 
   useEffect(() => {
-    io.on(endpoint, listener);
-    io.on('error', errorListener);
+    io?.on(endpoint, listener);
+    io?.on('error', errorListener);
 
     return () => {
-      io.off(endpoint, listener);
-      io.off('error', errorListener);
+      io?.off(endpoint, listener);
+      io?.off('error', errorListener);
     };
   }, [io, endpoint, listener, errorListener]);
 

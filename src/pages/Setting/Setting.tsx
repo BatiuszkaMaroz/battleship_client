@@ -1,12 +1,9 @@
-import React, {
-  useEffect,
-  // useState
-} from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import Modal from '../../shared/components/Modal/Modal';
 import Button from '../../shared/components/Button/Button';
 import Card from '../../shared/components/Card/Card';
+import Modal from '../../shared/components/Modal/Modal';
 import Board from './Board/Board';
 import Harbor from './Harbor/Harbor';
 import PrivateRoom from './PrivateRoom/PrivateRoom';
@@ -16,8 +13,8 @@ import useTypedSelector from '../../shared/hooks/useTypedSelector';
 import styles from './Setting.module.scss';
 
 import { toggleMode } from 'store/actions/game';
-import { resetBoard, randomizeBoard } from '../../store/actions/setting';
 import { setPlayerBoard } from '../../store/actions/game';
+import { randomizeBoard, resetBoard } from '../../store/actions/setting';
 
 const Setting: React.FC = () => {
   const dispatch = useDispatch();
@@ -27,7 +24,7 @@ const Setting: React.FC = () => {
   const allShipsSettled = useTypedSelector((state) =>
     state.settings.ships.reduce((prev, cur) => {
       if (prev) {
-        if (cur && cur.settled) {
+        if (cur?.settled) {
           return true;
         } else {
           return false;

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import Ship from '../Ship/Ship';
 
@@ -13,8 +13,8 @@ const Dock: React.FC<Props> = ({ shipId }) => {
   const dockRef = useRef<null | HTMLDivElement>(null);
 
   const spawnShip = useMemo(() => {
-    if (settled) {
-      return <Ship shipId={shipId} dock={dockRef.current!} />;
+    if (settled && dockRef.current) {
+      return <Ship shipId={shipId} dock={dockRef.current} />;
     } else {
       return null;
     }

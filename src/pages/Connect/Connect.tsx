@@ -17,13 +17,13 @@ export default function Connect() {
   const dispatch = useDispatch();
   const [name, setName] = useState<string>('');
   const { data, emitter, error, acceptError } =
-    useSocket<Response>('connect-player');
+    useSocket<Response>('user-join');
 
   const submitHandler = (e: FormEvent) => {
     e.preventDefault();
 
-    if (name.length >= 3 && name.length <= 15) {
-      emitter(name);
+    if (name.length >= 1 && name.length <= 32) {
+      emitter({ name });
     }
   };
 
@@ -71,8 +71,8 @@ export default function Connect() {
             onChange={(e) => setName(e.target.value)}
             value={name}
             id='username'
-            minLength={3}
-            maxLength={15}
+            minLength={1}
+            maxLength={32}
           />
           <Button>Play</Button>
         </form>

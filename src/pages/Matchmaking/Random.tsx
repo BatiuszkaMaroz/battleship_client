@@ -1,13 +1,17 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import Spinner from 'shared/components/Spinner/Spinner';
 import Modal from 'shared/components/Modal/Modal';
+import Spinner from 'shared/components/Spinner/Spinner';
 import useSocket from 'shared/hooks/useSocket';
-import { settingStage, gameStage } from 'store/actions/stages';
+import { gameStage, settingStage } from 'store/actions/stages';
 
 const RandomMatchmaking: React.FC = () => {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log('RERENDER');
+  });
 
   const { emitter, data, error, unlocker, acceptError } = useSocket<{
     message?: string;
@@ -22,7 +26,7 @@ const RandomMatchmaking: React.FC = () => {
 
   useEffect(() => {
     emitter();
-  }, [emitter, unlocker]);
+  }, []);
 
   const onProceed = () => {
     acceptError();

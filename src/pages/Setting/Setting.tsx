@@ -42,7 +42,7 @@ const Setting: React.FC = () => {
 
   const applySetting = () => {
     if (allShipsSettled) {
-      emitter(board);
+      emitter({ board });
     }
   };
 

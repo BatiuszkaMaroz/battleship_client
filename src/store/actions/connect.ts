@@ -7,8 +7,14 @@ import { ConnectAction } from '../reducers/connect';
 import { CONNECT } from './actionTypes';
 import { connectStage, settingStage } from './stages';
 
+let called = false;
+
 export const establishConnection =
   (): ThunkAction<void, RootState, unknown, Action<any>> => (dispatch) => {
+    if (called) return;
+    called = true;
+
+    console.log('establishing connection');
     const io = socketio(process.env.SOCKET_ENDPOINT!);
     dispatch({ type: CONNECT.ESTABLISH, io });
     dispatch(connectStage());

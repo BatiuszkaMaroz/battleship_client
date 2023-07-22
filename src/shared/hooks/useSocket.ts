@@ -12,6 +12,7 @@ const useSocket = <T extends object>(endpoint: string) => {
       if (locked) return;
 
       setLocked(true);
+      console.log(`emitter: ${endpoint}`);
       io?.emit(endpoint, ...args);
     },
     [io, setLocked, endpoint, locked],

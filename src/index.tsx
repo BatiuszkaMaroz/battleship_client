@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 
 import 'config/i18n';
 import Root from 'Root';
+import 'services/socket';
 
 const container = document.getElementById('root');
 

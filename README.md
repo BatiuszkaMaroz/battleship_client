@@ -24,4 +24,5 @@
 ## Tips
 
 1. Source maps are required for debugging.
-1. https://www.developerway.com/posts/how-to-handle-errors-in-react#part5
+1. [Handling errors in React, part 5 and 6 are most informative.](https://www.developerway.com/posts/show-to-handle-errors-in-react)
+1. Double execution of useEffect is because of React.StrictMode.

@@ -1,6 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
+import 'assets/styles/index.css';
 import 'config/i18n';
 import Root from 'Root';
 import 'services/socket';

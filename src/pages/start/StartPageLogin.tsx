@@ -4,9 +4,12 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { socket } from 'services/socket';
+import { usePlayerStore } from 'stores/usePlayerStore';
 
-export default function StartPage() {
+export default function StartPageLogin() {
   const { t } = useTranslation();
+  const playerStore = usePlayerStore();
+
   const [username, setUsername] = useState(
     `user-${Math.floor(Math.random() * 100000)}`,
   );
@@ -18,8 +21,10 @@ export default function StartPage() {
   };
 
   useEffect(() => {
-    const handler = (response: unknown) => {
-      console.log(response);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handler = (response: any) => {
+      playerStore.setId(response.player.id as string);
+      playerStore.setUsername(response.player.username as string);
     };
 
     socket.on('user-join', handler);
@@ -27,7 +32,7 @@ export default function StartPage() {
     return () => {
       socket.off('user-join', handler);
     };
-  }, []);
+  }, [playerStore]);
 
   return (
     <Box

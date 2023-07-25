@@ -82,7 +82,7 @@ export function validateShipPlacement(
   const startRow = Math.floor(cellIndex / BOARD_SIZE);
   const startCol = cellIndex % BOARD_SIZE;
   const endRow = shipOrientation === 'h' ? startRow : startRow + shipSize - 1;
-  const endCol = shipOrientation === 'h' ? startCol + shipSize : startCol - 1;
+  const endCol = shipOrientation === 'h' ? startCol + shipSize - 1 : startCol;
 
   return (
     0 <= startRow && //
@@ -133,4 +133,23 @@ export function validateShipBoardAvailability(
   }
 
   return true;
+}
+
+export function createRandomizedShips() {
+  const ships: Partial<Ship>[] = [
+    { id: '0', size: 4 },
+    { id: '1', size: 3 },
+    { id: '2', size: 3 },
+    { id: '3', size: 2 },
+    { id: '4', size: 2 },
+    { id: '5', size: 2 },
+    { id: '6', size: 1 },
+    { id: '7', size: 1 },
+    { id: '8', size: 1 },
+    { id: '9', size: 1 },
+  ];
+
+  ships.forEach((s) => {
+    //
+  });
 }

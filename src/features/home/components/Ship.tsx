@@ -1,4 +1,5 @@
-import { Box } from '@mui/material';
+import LoopIcon from '@mui/icons-material/Loop';
+import { Box, IconButton } from '@mui/material';
 import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -12,18 +13,24 @@ type ShipProps = {
 };
 
 export default function ShipComponent({ ship, cellSize }: ShipProps) {
-  const { placeShip, validateShipPlacement } = useShipStore();
+  const { placeShip, validateShipPlacement, validateShipRotation, rotateShip } =
+    useShipStore();
 
   const ref = useRef<HTMLDivElement>(null);
   const [shipPicked, setShipPicked] = React.useState(false);
   const [shipPosition, setShipPosition] = React.useState<Coords | null>(null);
   const [clickOffset, setClickOffset] = React.useState({ x: 0, y: 0 });
+  const [canRotate, setCanRotate] = React.useState(false);
 
   // handle cellIndex change
   useEffect(() => {
     const coords = getCellCoords(ship.cellIndex);
     setShipPosition(coords);
   }, [ship.cellIndex]);
+
+  useEffect(() => {
+    setCanRotate(validateShipRotation(ship.id));
+  }, [ship.cellIndex, ship.id, validateShipRotation]);
 
   // handle styling when ship picked
   useEffect(() => {
@@ -49,6 +56,11 @@ export default function ShipComponent({ ship, cellSize }: ShipProps) {
       x: e.clientX - shipPosition!.x,
       y: e.clientY - shipPosition!.y,
     });
+  };
+
+  const rotateShipHandler = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (validateShipRotation(ship.id)) rotateShip(ship.id);
   };
 
   useEffect(() => {
@@ -108,7 +120,9 @@ export default function ShipComponent({ ship, cellSize }: ShipProps) {
       onMouseDown={pickShipHandler}
       ref={ref}
       sx={{
-        display: shipPosition ? null : 'none',
+        display: shipPosition ? 'flex' : 'none',
+        justifyContent: 'center',
+        alignItems: 'center',
         position: 'absolute',
         left: shipPosition?.x ?? 0,
         top: shipPosition?.y ?? 0,
@@ -120,7 +134,20 @@ export default function ShipComponent({ ship, cellSize }: ShipProps) {
         transform: ship.orientation === 'h' ? null : 'rotate(90deg)',
         transformOrigin: cellSize / 2 + 'px ' + cellSize / 2 + 'px',
       }}
-    />,
+    >
+      {canRotate && (
+        <IconButton
+          size='small'
+          onMouseDown={rotateShipHandler}
+          sx={{
+            transform: ship.orientation === 'v' ? 'rotate(-90deg)' : null,
+            transition: 'transform 0.2s ease-in-out',
+          }}
+        >
+          <LoopIcon />
+        </IconButton>
+      )}
+    </Box>,
     document.getElementById('ship-root') as HTMLElement,
   );
 }

@@ -102,10 +102,7 @@ export function createShipBoard(ships: Ship[]): string[][] {
 /**
  * Checks if ship can be placed in proposed place according to board borders.
  */
-export function validateShipWithinBoardBorders(
-  proposedCellIndex: number,
-  ship: Ship,
-) {
+function validateShipWithinBoardBorders(proposedCellIndex: number, ship: Ship) {
   const { row: startRow, col: startCol } =
     convertCellIndexToRowCol(proposedCellIndex);
   const endRow = ship.orientation === 'h' ? startRow : startRow + ship.size - 1;
@@ -122,7 +119,7 @@ export function validateShipWithinBoardBorders(
 /**
  * Checks if ship can be placed in proposed place according to board availability.
  */
-export function validateShipBoardAvailability(
+function validateShipBoardAvailability(
   proposedCellIndex: number,
   ship: Ship,
   helperBoard: string[][],
@@ -166,6 +163,15 @@ export function validateShipPlacement(
   );
 }
 
+export function validateShipRotation(ship: Ship, board: string[][]) {
+  const proposedShip: Ship = {
+    ...ship,
+    orientation: ship.orientation === 'h' ? 'v' : 'h',
+  };
+
+  return validateShipPlacement(ship.cellIndex, proposedShip, board);
+}
+
 /* ============================================================ */
 
 function getRandomOrientation(): Ship['orientation'] {
@@ -176,7 +182,7 @@ function getRandomCellIndex(): Ship['cellIndex'] {
   return Math.floor(Math.random() * BOARD_SIZE ** 2);
 }
 
-export function createRandomizedShipsAndBoard(): {
+export function generateRandomizedShipsAndBoard(): {
   ships: Ship[];
   board: string[][];
 } {

@@ -2,24 +2,17 @@ import { Box } from '@mui/material';
 import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
-import { getCellCoords, getCellIndex } from './helpers';
-import { Coords } from './types';
-import { useShipStore } from './useShipStore';
+import { getCellCoords, getCellIndex } from '../utils/helpers';
+import { Coords, Ship } from '../utils/types';
+import { useShipStore } from '../utils/useShipStore';
 
 type ShipProps = {
-  shipId: string;
-  shipSize: number;
-  shipCellIndex: number;
+  ship: Ship;
   cellSize: number;
 };
 
-export default function Ship({
-  shipId,
-  shipSize,
-  shipCellIndex,
-  cellSize,
-}: ShipProps) {
-  const { placeShip: setShipCellIndex, validateShipPlacement } = useShipStore();
+export default function ShipComponent({ ship, cellSize }: ShipProps) {
+  const { placeShip, validateShipPlacement } = useShipStore();
 
   const ref = useRef<HTMLDivElement>(null);
   const [shipPicked, setShipPicked] = React.useState(false);
@@ -28,9 +21,9 @@ export default function Ship({
 
   // handle cellIndex change
   useEffect(() => {
-    const coords = getCellCoords(shipCellIndex);
+    const coords = getCellCoords(ship.cellIndex);
     setShipPosition(coords);
-  }, [shipCellIndex]);
+  }, [ship.cellIndex]);
 
   // handle styling when ship picked
   useEffect(() => {
@@ -64,7 +57,7 @@ export default function Ship({
         .elementFromPoint(left + cellSize / 2, top + cellSize / 2)
         ?.closest('#cell') as HTMLDivElement;
 
-      if (cell && validateShipPlacement(shipId, getCellIndex(cell))) {
+      if (cell && validateShipPlacement(ship.id, getCellIndex(cell))) {
         left = cell.offsetLeft;
         top = cell.offsetTop;
       }
@@ -81,8 +74,8 @@ export default function Ship({
         .elementFromPoint(left + cellSize / 2, top + cellSize / 2)
         ?.closest('#cell') as HTMLDivElement;
 
-      if (cell && validateShipPlacement(shipId, getCellIndex(cell))) {
-        setShipCellIndex(shipId, +(cell.dataset.index as string));
+      if (cell && validateShipPlacement(ship.id, getCellIndex(cell))) {
+        placeShip(ship.id, +(cell.dataset.index as string));
       }
 
       setShipPicked(false);
@@ -98,13 +91,13 @@ export default function Ship({
       document.removeEventListener('mouseup', dropShipHandler);
     };
   }, [
-    validateShipPlacement,
     cellSize,
     clickOffset.x,
     clickOffset.y,
-    setShipCellIndex,
-    shipId,
+    placeShip,
+    ship.id,
     shipPicked,
+    validateShipPlacement,
   ]);
 
   return createPortal(
@@ -116,7 +109,7 @@ export default function Ship({
         position: 'absolute',
         left: shipPosition?.x ?? 0,
         top: shipPosition?.y ?? 0,
-        width: shipSize * cellSize + (shipSize - 1),
+        width: ship.size * cellSize + (ship.size - 1),
         height: cellSize,
         background: 'lightblue',
         cursor: 'grab',

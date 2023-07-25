@@ -5,7 +5,7 @@ import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 
 import ErrorPage from 'components/ErrorPage';
 import { theme } from 'config/theme';
-import StartPage from 'pages/start/StartPage';
+import HomePage from 'features/home/components/HomePage';
 
 const router = createBrowserRouter([
   {
@@ -15,7 +15,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '',
-        element: <StartPage />,
+        element: <HomePage />,
       },
     ],
   },

@@ -3,11 +3,11 @@ import React from 'react';
 
 import Layout from 'components/Layout';
 import { BOARD_SIZE } from 'config/constants';
-import Ship from './Ship';
+import { useShipStore } from '../utils/useShipStore';
+import ShipComponent from './Ship';
 import ShipGrid from './ShipGrid';
-import { useShipStore } from './useShipStore';
 
-export default function StartPageMenu() {
+export default function HomePage() {
   const cellSizePx = 50;
 
   const { ships, randomizeShips } = useShipStore();
@@ -28,13 +28,7 @@ export default function StartPageMenu() {
         </Box>
       </Layout>
       {ships.map((s) => (
-        <Ship
-          key={s.id}
-          shipId={s.id}
-          shipSize={s.size}
-          cellSize={cellSizePx}
-          shipCellIndex={s.cellIndex}
-        />
+        <ShipComponent key={s.id} ship={s} cellSize={cellSizePx} />
       ))}
     </>
   );

@@ -194,10 +194,9 @@ export function createRandomizedShipsAndBoard(): {
   ];
 
   const board = createEmptyShipBoard();
-  let orientation = getRandomOrientation();
 
   ships.forEach((s) => {
-    s.orientation = orientation;
+    s.orientation = getRandomOrientation();
 
     while (true) {
       const proposedCellIndex = getRandomCellIndex();
@@ -211,8 +210,6 @@ export function createRandomizedShipsAndBoard(): {
         break;
       }
     }
-
-    orientation = orientation === 'h' ? 'v' : 'h';
   });
 
   return {

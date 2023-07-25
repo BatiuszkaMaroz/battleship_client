@@ -29,12 +29,15 @@ export default function ShipComponent({ ship, cellSize }: ShipProps) {
   useEffect(() => {
     if (shipPicked) {
       ref.current!.style.pointerEvents = 'none';
+      ref.current!.style.transition =
+        'left 0.025s ease-in-out, top 0.05s ease-in-out';
       document.body.style.userSelect = 'none';
       document.body.style.cursor = 'grabbing';
     } else {
-      ref.current!.style.pointerEvents = '';
       ref.current!.style.left = '';
       ref.current!.style.top = '';
+      ref.current!.style.pointerEvents = '';
+      ref.current!.style.transition = '';
       document.body.style.userSelect = '';
       document.body.style.cursor = '';
     }
@@ -113,7 +116,9 @@ export default function ShipComponent({ ship, cellSize }: ShipProps) {
         height: cellSize,
         background: 'lightblue',
         cursor: 'grab',
-        transition: shipPosition ? 'all 0.05s ease-in-out' : null,
+        transition: 'all 0.2s ease-in-out',
+        transform: ship.orientation === 'h' ? null : 'rotate(90deg)',
+        transformOrigin: cellSize / 2 + 'px ' + cellSize / 2 + 'px',
       }}
     />,
     document.getElementById('ship-root') as HTMLElement,

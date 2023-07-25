@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 
 import {
-  createHelperBoard,
-  validateShipBoardAvailability,
+  createRandomizedShipsAndBoard,
+  createShipBoard,
   validateShipPlacement,
 } from './helpers';
 import { Ship } from './types';
@@ -22,16 +22,18 @@ const shipsDefault: Ship[] = [
 
 interface ShipState {
   ships: Ship[];
-  helperBoard: string[][];
+  board: string[][];
 
   rotateShip: (shipId: string) => void;
-  setShipCellIndex: (shipId: string, cellIndex: number) => void;
-  canShipBePlaced: (shipId: string, cellIndex: number) => boolean;
+  placeShip: (shipId: string, cellIndex: number) => void;
+
+  randomizeShips: () => void;
+  validateShipPlacement: (shipId: string, cellIndex: number) => boolean;
 }
 
 export const useShipStore = create<ShipState>()((set, get) => ({
   ships: shipsDefault,
-  helperBoard: createHelperBoard(shipsDefault),
+  board: createShipBoard(shipsDefault), // acts as a helper in ship placement
 
   rotateShip: (shipId: string) =>
     set((state) => {
@@ -45,11 +47,11 @@ export const useShipStore = create<ShipState>()((set, get) => ({
 
       return {
         ships: updatedShips,
-        helperBoard: createHelperBoard(updatedShips),
+        board: createShipBoard(updatedShips),
       };
     }),
 
-  setShipCellIndex: (shipId: string, cellIndex: number) =>
+  placeShip: (shipId: string, cellIndex: number) =>
     set((state) => {
       const updatedShips = state.ships.map((s) => {
         if (s.id === shipId) {
@@ -61,24 +63,20 @@ export const useShipStore = create<ShipState>()((set, get) => ({
 
       return {
         ships: updatedShips,
-        helperBoard: createHelperBoard(updatedShips),
+        board: createShipBoard(updatedShips),
       };
     }),
 
-  canShipBePlaced: (shipId: string, cellIndex: number) => {
-    const { ships, helperBoard } = get();
-    const ship = ships.find((s) => s.id === shipId);
-    if (!ship) return false;
+  randomizeShips: () =>
+    set(() => {
+      const { ships, board } = createRandomizedShipsAndBoard();
+      return { ships, board };
+    }),
 
-    return (
-      validateShipPlacement(cellIndex, ship.size, ship.orientation) &&
-      validateShipBoardAvailability(
-        cellIndex,
-        helperBoard,
-        ship.id,
-        ship.size,
-        ship.orientation,
-      )
-    );
+  validateShipPlacement: (shipId: string, proposedCellIndex: number) => {
+    const { ships, board } = get();
+    const ship = ships.find((s) => s.id === shipId);
+
+    return !!ship && validateShipPlacement(proposedCellIndex, ship, board);
   },
 }));

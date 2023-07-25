@@ -21,68 +21,95 @@ export function getCellCoords(cellIndex: number): Coords {
 }
 
 /**
- * Extract cell index value from data-index.
+ * Extracts cell index value from data-index.
  */
 export function getCellIndex(cell: HTMLElement): number {
   return +(cell.dataset.index as string);
 }
 
 /**
- * Creates a helper board to assist with ship placement by marking cells and their
- * surroundings with ship id.
+ * Converts cellIndex to row and col.
  */
-export function createHelperBoard(ships: Ship[]): string[][] {
-  const matrix: string[][] = Array.from({ length: 10 }, () =>
-    Array(10).fill(''),
-  );
+export function convertCellIndexToRowCol(cellIndex: number) {
+  const row = Math.floor(cellIndex / BOARD_SIZE);
+  const col = cellIndex % BOARD_SIZE;
 
-  function markCellWithSurroundingsAsUnavailable(
-    row: number,
-    col: number,
-    shipId: string,
-  ) {
-    for (let i = row - 1; i <= row + 1; i++) {
-      for (let j = col - 1; j <= col + 1; j++) {
-        if (matrix[i] !== undefined && matrix[i][j] !== undefined) {
-          matrix[i][j] = shipId;
-        }
+  return { row, col };
+}
+
+/* ============================================================ */
+
+/**
+ * Marks cell and it's surroundings with given shipId.
+ */
+function markCellWithSurroundings(
+  row: number,
+  col: number,
+  shipId: string,
+  board: string[][],
+): void {
+  for (let i = row - 1; i <= row + 1; i++) {
+    for (let j = col - 1; j <= col + 1; j++) {
+      if (board[i]?.[j] !== undefined) {
+        if (!board[i][j].includes(shipId)) board[i][j] += shipId;
       }
     }
   }
-
-  ships.forEach((s) => {
-    const startRow = Math.floor(s.cellIndex / BOARD_SIZE);
-    const startCol = s.cellIndex % BOARD_SIZE;
-
-    if (s.orientation === 'h') {
-      for (let i = startCol; i < startCol + s.size; i++) {
-        markCellWithSurroundingsAsUnavailable(startRow, i, s.id);
-      }
-    }
-
-    if (s.orientation === 'v') {
-      for (let i = startRow; i < startRow + s.size; i++) {
-        markCellWithSurroundingsAsUnavailable(i, startCol, s.id);
-      }
-    }
-  });
-
-  return matrix;
 }
 
 /**
- * Checks if ship with given size and orientation can be placed in the board.
- * More specifically it checks if ship will be within board borders.
+ * Marks ship and it's surroundings on the board using ship id.
  */
-export function validateShipPlacement(
-  cellIndex: number,
-  shipSize: number,
-  shipOrientation: 'h' | 'v',
+function markShipOnBoard(ship: Ship, board: string[][]): void {
+  const { row, col } = convertCellIndexToRowCol(ship.cellIndex);
+
+  if (ship.orientation === 'h') {
+    for (let i = col; i < col + ship.size; i++) {
+      markCellWithSurroundings(row, i, ship.id, board);
+    }
+  }
+
+  if (ship.orientation === 'v') {
+    for (let i = row; i < row + ship.size; i++) {
+      markCellWithSurroundings(i, col, ship.id, board);
+    }
+  }
+}
+
+/**
+ * Creates empty board.
+ */
+function createEmptyShipBoard(): string[][] {
+  return Array.from({ length: 10 }, () => Array(10).fill(''));
+}
+
+/**
+ * Creates a helper board to assist with ship placement by marking cells and their
+ * surroundings with ship id.
+ */
+export function createShipBoard(ships: Ship[]): string[][] {
+  const board = createEmptyShipBoard();
+
+  ships.forEach((s) => {
+    markShipOnBoard(s, board);
+  });
+
+  return board;
+}
+
+/* ============================================================ */
+
+/**
+ * Checks if ship can be placed in proposed place according to board borders.
+ */
+export function validateShipWithinBoardBorders(
+  proposedCellIndex: number,
+  ship: Ship,
 ) {
-  const startRow = Math.floor(cellIndex / BOARD_SIZE);
-  const startCol = cellIndex % BOARD_SIZE;
-  const endRow = shipOrientation === 'h' ? startRow : startRow + shipSize - 1;
-  const endCol = shipOrientation === 'h' ? startCol + shipSize - 1 : startCol;
+  const { row: startRow, col: startCol } =
+    convertCellIndexToRowCol(proposedCellIndex);
+  const endRow = ship.orientation === 'h' ? startRow : startRow + ship.size - 1;
+  const endCol = ship.orientation === 'h' ? startCol + ship.size - 1 : startCol;
 
   return (
     0 <= startRow && //
@@ -93,25 +120,18 @@ export function validateShipPlacement(
 }
 
 /**
- * Checks if there are available cells for placing ship with given size and
- * orientation based on helperBoard.
+ * Checks if ship can be placed in proposed place according to board availability.
  */
 export function validateShipBoardAvailability(
-  cellIndex: number,
+  proposedCellIndex: number,
+  ship: Ship,
   helperBoard: string[][],
-  shipId: string,
-  shipSize: number,
-  shipOrientation: 'h' | 'v',
 ) {
-  const startRow = Math.floor(cellIndex / BOARD_SIZE);
-  const startCol = cellIndex % BOARD_SIZE;
+  const { row, col } = convertCellIndexToRowCol(proposedCellIndex);
 
-  if (shipOrientation === 'h') {
-    for (let i = startCol; i < startCol + shipSize; i++) {
-      if (
-        helperBoard[startRow][i] === '' ||
-        helperBoard[startRow][i] === shipId
-      ) {
+  if (ship.orientation === 'h') {
+    for (let i = col; i < col + ship.size; i++) {
+      if (helperBoard[row][i] === '' || helperBoard[row][i] === ship.id) {
         continue;
       } else {
         return false;
@@ -119,12 +139,9 @@ export function validateShipBoardAvailability(
     }
   }
 
-  if (shipOrientation === 'v') {
-    for (let i = startRow; i < startRow + shipSize; i++) {
-      if (
-        helperBoard[i][startCol] === '' ||
-        helperBoard[i][startCol] === shipId
-      ) {
+  if (ship.orientation === 'v') {
+    for (let i = row; i < row + ship.size; i++) {
+      if (helperBoard[i][col] === '' || helperBoard[i][col] === ship.id) {
         continue;
       } else {
         return false;
@@ -135,7 +152,34 @@ export function validateShipBoardAvailability(
   return true;
 }
 
-export function createRandomizedShips() {
+/**
+ * Checks if ship can be placed in proposed place.
+ */
+export function validateShipPlacement(
+  proposedCellIndex: number,
+  ship: Ship,
+  board: string[][],
+) {
+  return (
+    validateShipWithinBoardBorders(proposedCellIndex, ship) &&
+    validateShipBoardAvailability(proposedCellIndex, ship, board)
+  );
+}
+
+/* ============================================================ */
+
+function getRandomOrientation(): Ship['orientation'] {
+  return Math.random() > 0.5 ? 'v' : 'h';
+}
+
+function getRandomCellIndex(): Ship['cellIndex'] {
+  return Math.floor(Math.random() * BOARD_SIZE ** 2);
+}
+
+export function createRandomizedShipsAndBoard(): {
+  ships: Ship[];
+  board: string[][];
+} {
   const ships: Partial<Ship>[] = [
     { id: '0', size: 4 },
     { id: '1', size: 3 },
@@ -149,7 +193,30 @@ export function createRandomizedShips() {
     { id: '9', size: 1 },
   ];
 
+  const board = createEmptyShipBoard();
+  let orientation = getRandomOrientation();
+
   ships.forEach((s) => {
-    //
+    s.orientation = orientation;
+
+    while (true) {
+      const proposedCellIndex = getRandomCellIndex();
+      const { row, col } = convertCellIndexToRowCol(proposedCellIndex);
+
+      if (board[row][col] !== '') continue;
+
+      if (validateShipPlacement(proposedCellIndex, s as Ship, board)) {
+        s.cellIndex = proposedCellIndex;
+        markShipOnBoard(s as Ship, board);
+        break;
+      }
+    }
+
+    orientation = orientation === 'h' ? 'v' : 'h';
   });
+
+  return {
+    ships: ships as Ship[],
+    board,
+  };
 }

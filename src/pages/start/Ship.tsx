@@ -19,7 +19,7 @@ export default function Ship({
   shipCellIndex,
   cellSize,
 }: ShipProps) {
-  const { setShipCellIndex, canShipBePlaced } = useShipStore();
+  const { placeShip: setShipCellIndex, validateShipPlacement } = useShipStore();
 
   const ref = useRef<HTMLDivElement>(null);
   const [shipPicked, setShipPicked] = React.useState(false);
@@ -64,7 +64,7 @@ export default function Ship({
         .elementFromPoint(left + cellSize / 2, top + cellSize / 2)
         ?.closest('#cell') as HTMLDivElement;
 
-      if (cell && canShipBePlaced(shipId, getCellIndex(cell))) {
+      if (cell && validateShipPlacement(shipId, getCellIndex(cell))) {
         left = cell.offsetLeft;
         top = cell.offsetTop;
       }
@@ -81,7 +81,7 @@ export default function Ship({
         .elementFromPoint(left + cellSize / 2, top + cellSize / 2)
         ?.closest('#cell') as HTMLDivElement;
 
-      if (cell && canShipBePlaced(shipId, getCellIndex(cell))) {
+      if (cell && validateShipPlacement(shipId, getCellIndex(cell))) {
         setShipCellIndex(shipId, +(cell.dataset.index as string));
       }
 
@@ -98,7 +98,7 @@ export default function Ship({
       document.removeEventListener('mouseup', dropShipHandler);
     };
   }, [
-    canShipBePlaced,
+    validateShipPlacement,
     cellSize,
     clickOffset.x,
     clickOffset.y,
@@ -114,8 +114,8 @@ export default function Ship({
       sx={{
         display: shipPosition ? null : 'none',
         position: 'absolute',
-        left: shipPosition?.x || 0,
-        top: shipPosition?.y || 0,
+        left: shipPosition?.x ?? 0,
+        top: shipPosition?.y ?? 0,
         width: shipSize * cellSize + (shipSize - 1),
         height: cellSize,
         background: 'lightblue',

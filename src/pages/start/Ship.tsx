@@ -2,68 +2,69 @@ import { Box } from '@mui/material';
 import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
+import { getCellCoords, getCellIndex } from './helpers';
+import { Coords } from './types';
+import { useShipStore } from './useShipStore';
+
 type ShipProps = {
-  size: number;
+  shipId: string;
+  shipSize: number;
+  shipCellIndex: number;
   cellSize: number;
-  initialPosition?: { x: number; y: number };
 };
 
 export default function Ship({
-  size,
+  shipId,
+  shipSize,
+  shipCellIndex,
   cellSize,
-  initialPosition = { x: 0, y: 0 },
 }: ShipProps) {
+  const { setShipCellIndex, canShipBePlaced } = useShipStore();
+
   const ref = useRef<HTMLDivElement>(null);
-  const [cellId, setCellId] = React.useState<string | null>(null);
   const [shipPicked, setShipPicked] = React.useState(false);
-  const [shipPosition, setShipPosition] = React.useState(initialPosition);
-  const [clickPosition, setClickPosition] = React.useState({ x: 0, y: 0 });
+  const [shipPosition, setShipPosition] = React.useState<Coords | null>(null);
+  const [clickOffset, setClickOffset] = React.useState({ x: 0, y: 0 });
 
-  const width = size * cellSize + (size - 1);
-  const height = cellSize;
-
+  // handle cellIndex change
   useEffect(() => {
-    const cell = document.querySelector(
-      `#ship-cell[data-index="${cellId}"]`,
-    ) as HTMLDivElement;
+    const coords = getCellCoords(shipCellIndex);
+    setShipPosition(coords);
+  }, [shipCellIndex]);
 
-    if (cell) {
-      setShipPosition({
-        x: cell.offsetLeft,
-        y: cell.offsetTop,
-      });
-    }
-  }, [cellId]);
-
+  // handle styling when ship picked
   useEffect(() => {
     if (shipPicked) {
-      // Prevents the ship from being selected using elementFromPoint(x,y).
       ref.current!.style.pointerEvents = 'none';
+      document.body.style.userSelect = 'none';
+      document.body.style.cursor = 'grabbing';
     } else {
+      ref.current!.style.pointerEvents = '';
       ref.current!.style.left = '';
       ref.current!.style.top = '';
-      ref.current!.style.pointerEvents = '';
+      document.body.style.userSelect = '';
+      document.body.style.cursor = '';
     }
   }, [shipPicked]);
 
-  const pickShip = (e: React.MouseEvent) => {
+  const pickShipHandler = (e: React.MouseEvent) => {
     setShipPicked(true);
-    setClickPosition({
-      x: e.clientX - shipPosition.x,
-      y: e.clientY - shipPosition.y,
+    setClickOffset({
+      x: e.clientX - shipPosition!.x,
+      y: e.clientY - shipPosition!.y,
     });
   };
 
   useEffect(() => {
-    const moveShip = (e: MouseEvent) => {
-      let left = e.clientX - clickPosition.x;
-      let top = e.clientY - clickPosition.y;
+    const moveShipHandler = (e: MouseEvent) => {
+      let left = e.clientX - clickOffset.x;
+      let top = e.clientY - clickOffset.y;
 
       const cell = document
         .elementFromPoint(left + cellSize / 2, top + cellSize / 2)
-        ?.closest('#ship-cell') as HTMLDivElement;
+        ?.closest('#cell') as HTMLDivElement;
 
-      if (cell) {
+      if (cell && canShipBePlaced(shipId, getCellIndex(cell))) {
         left = cell.offsetLeft;
         top = cell.offsetTop;
       }
@@ -72,45 +73,54 @@ export default function Ship({
       ref.current!.style.top = top + 'px';
     };
 
-    const dropShip = (e: MouseEvent) => {
-      const left = e.clientX - clickPosition.x;
-      const top = e.clientY - clickPosition.y;
+    const dropShipHandler = (e: MouseEvent) => {
+      const left = e.clientX - clickOffset.x;
+      const top = e.clientY - clickOffset.y;
 
       const cell = document
         .elementFromPoint(left + cellSize / 2, top + cellSize / 2)
-        ?.closest('#ship-cell') as HTMLDivElement;
+        ?.closest('#cell') as HTMLDivElement;
 
-      if (cell) {
-        setCellId(cell.dataset.index as string);
+      if (cell && canShipBePlaced(shipId, getCellIndex(cell))) {
+        setShipCellIndex(shipId, +(cell.dataset.index as string));
       }
 
       setShipPicked(false);
     };
 
     if (shipPicked) {
-      document.addEventListener('mousemove', moveShip);
-      document.addEventListener('mouseup', dropShip);
+      document.addEventListener('mousemove', moveShipHandler);
+      document.addEventListener('mouseup', dropShipHandler);
     }
 
     return () => {
-      document.removeEventListener('mousemove', moveShip);
-      document.removeEventListener('mouseup', dropShip);
+      document.removeEventListener('mousemove', moveShipHandler);
+      document.removeEventListener('mouseup', dropShipHandler);
     };
-  }, [cellSize, clickPosition.x, clickPosition.y, shipPicked]);
+  }, [
+    canShipBePlaced,
+    cellSize,
+    clickOffset.x,
+    clickOffset.y,
+    setShipCellIndex,
+    shipId,
+    shipPicked,
+  ]);
 
   return createPortal(
     <Box
-      onMouseDown={pickShip}
+      onMouseDown={pickShipHandler}
       ref={ref}
       sx={{
+        display: shipPosition ? null : 'none',
         position: 'absolute',
-        top: shipPosition.y,
-        left: shipPosition.x,
+        left: shipPosition?.x || 0,
+        top: shipPosition?.y || 0,
+        width: shipSize * cellSize + (shipSize - 1),
+        height: cellSize,
         background: 'lightblue',
-        width,
-        height,
         cursor: 'grab',
-        transition: 'all 0.05s ease-in-out',
+        transition: shipPosition ? 'all 0.05s ease-in-out' : null,
       }}
     />,
     document.getElementById('ship-root') as HTMLElement,

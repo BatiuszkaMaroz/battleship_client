@@ -31,7 +31,12 @@ const ShipGrid = ({ cellSize, gridSize }: GridProps) => {
   return (
     <Box style={gridContainerStyle}>
       {cellIndexes.map((index) => (
-        <Box key={index} id='ship-cell' sx={cellStyle} data-index={index} />
+        <Box //
+          key={index}
+          id='cell'
+          data-index={index}
+          sx={cellStyle}
+        />
       ))}
     </Box>
   );

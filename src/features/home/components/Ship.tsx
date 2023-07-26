@@ -1,5 +1,5 @@
 import LoopIcon from '@mui/icons-material/Loop';
-import { Box, IconButton } from '@mui/material';
+import { Box, IconButton, useTheme } from '@mui/material';
 import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -12,6 +12,11 @@ type ShipProps = {
   cellSize: number;
 };
 
+const shadowHorizontal =
+  '0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)';
+const shadowVertical =
+  '3px 0px 1px -2px rgba(0,0,0,0.2), 2px 0px 2px 0px rgba(0,0,0,0.14), 1px 0px 5px 0px rgba(0,0,0,0.12)';
+
 export default function ShipComponent({ ship, cellSize }: ShipProps) {
   const {
     ships,
@@ -20,6 +25,7 @@ export default function ShipComponent({ ship, cellSize }: ShipProps) {
     validateShipPlacement,
     validateShipRotation,
   } = useShipStore();
+  const { palette } = useTheme();
 
   const ref = useRef<HTMLDivElement>(null);
   const [shipPicked, setShipPicked] = React.useState(false);
@@ -41,20 +47,23 @@ export default function ShipComponent({ ship, cellSize }: ShipProps) {
   // handle styling when ship picked
   useEffect(() => {
     if (shipPicked) {
+      ref.current!.style.zIndex = '100';
+      ref.current!.style.transitionDuration = '0.025s';
       ref.current!.style.pointerEvents = 'none';
-      ref.current!.style.transition =
-        'left 0.025s ease-in-out, top 0.05s ease-in-out';
+
       document.body.style.userSelect = 'none';
       document.body.style.cursor = 'grabbing';
     } else {
+      ref.current!.style.zIndex = '';
       ref.current!.style.left = '';
       ref.current!.style.top = '';
+      ref.current!.style.transitionDuration = '';
       ref.current!.style.pointerEvents = '';
-      ref.current!.style.transition = '';
+
       document.body.style.userSelect = '';
       document.body.style.cursor = '';
     }
-  }, [shipPicked]);
+  }, [palette.primary.main, shipPicked]);
 
   const pickShipHandler = (e: React.MouseEvent) => {
     setShipPicked(true);
@@ -130,22 +139,26 @@ export default function ShipComponent({ ship, cellSize }: ShipProps) {
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',
-        left: shipPosition?.x ?? 0,
-        top: shipPosition?.y ?? 0,
+        left: shipPosition?.x,
+        top: shipPosition?.y,
         width: ship.size * cellSize + (ship.size - 1),
         height: cellSize,
-        background: 'lightblue',
+        backgroundColor: palette.primary.light,
+        boxShadow: ship.orientation === 'h' ? shadowHorizontal : shadowVertical,
         cursor: 'grab',
-        transition: 'all 0.2s ease-in-out',
+        transitionProperty:
+          'left, top, transform, box-shadow, background-color',
+        transitionDuration: '0.3s',
+        transitionTimingFunction: 'ease-in-out',
         transform: ship.orientation === 'h' ? 'none' : 'rotate(90deg)',
         transformOrigin: cellSize / 2 + 'px ' + cellSize / 2 + 'px',
       }}
     >
       <IconButton
         sx={{
-          pointerEvents: !shipPicked && canRotate ? 'all' : 'none',
           opacity: !shipPicked && canRotate ? 1 : 0,
           transition: 'opacity 0.1s ease-in-out',
+          pointerEvents: !shipPicked && canRotate ? 'all' : 'none',
         }}
         size='small'
         onMouseDown={rotateShipHandler}

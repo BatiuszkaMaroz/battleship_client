@@ -13,8 +13,13 @@ type ShipProps = {
 };
 
 export default function ShipComponent({ ship, cellSize }: ShipProps) {
-  const { placeShip, validateShipPlacement, validateShipRotation, rotateShip } =
-    useShipStore();
+  const {
+    ships,
+    placeShip,
+    rotateShip,
+    validateShipPlacement,
+    validateShipRotation,
+  } = useShipStore();
 
   const ref = useRef<HTMLDivElement>(null);
   const [shipPicked, setShipPicked] = React.useState(false);
@@ -28,9 +33,10 @@ export default function ShipComponent({ ship, cellSize }: ShipProps) {
     setShipPosition(coords);
   }, [ship.cellIndex]);
 
+  // handle rotation validation, watches for changes in ships array
   useEffect(() => {
     setCanRotate(validateShipRotation(ship.id));
-  }, [ship.cellIndex, ship.id, validateShipRotation]);
+  }, [ships, ship.cellIndex, ship.id, validateShipRotation]);
 
   // handle styling when ship picked
   useEffect(() => {
@@ -131,22 +137,21 @@ export default function ShipComponent({ ship, cellSize }: ShipProps) {
         background: 'lightblue',
         cursor: 'grab',
         transition: 'all 0.2s ease-in-out',
-        transform: ship.orientation === 'h' ? null : 'rotate(90deg)',
+        transform: ship.orientation === 'h' ? 'none' : 'rotate(90deg)',
         transformOrigin: cellSize / 2 + 'px ' + cellSize / 2 + 'px',
       }}
     >
-      {canRotate && (
-        <IconButton
-          size='small'
-          onMouseDown={rotateShipHandler}
-          sx={{
-            transform: ship.orientation === 'v' ? 'rotate(-90deg)' : null,
-            transition: 'transform 0.2s ease-in-out',
-          }}
-        >
-          <LoopIcon />
-        </IconButton>
-      )}
+      <IconButton
+        sx={{
+          pointerEvents: !shipPicked && canRotate ? 'all' : 'none',
+          opacity: !shipPicked && canRotate ? 1 : 0,
+          transition: 'opacity 0.1s ease-in-out',
+        }}
+        size='small'
+        onMouseDown={rotateShipHandler}
+      >
+        <LoopIcon />
+      </IconButton>
     </Box>,
     document.getElementById('ship-root') as HTMLElement,
   );

@@ -9,7 +9,7 @@ import { useShipStore } from '../utils/useShipStore';
 
 type ShipProps = {
   ship: Ship;
-  cellSize: number;
+  cellPxSize: number;
 };
 
 const shadowHorizontal =
@@ -17,7 +17,7 @@ const shadowHorizontal =
 const shadowVertical =
   '3px 0px 1px -2px rgba(0,0,0,0.2), 2px 0px 2px 0px rgba(0,0,0,0.14), 1px 0px 5px 0px rgba(0,0,0,0.12)';
 
-export default function ShipComponent({ ship, cellSize }: ShipProps) {
+export default function ShipComponent({ ship, cellPxSize }: ShipProps) {
   const {
     ships,
     placeShip,
@@ -84,7 +84,7 @@ export default function ShipComponent({ ship, cellSize }: ShipProps) {
       let top = e.clientY - clickOffset.y;
 
       const cell = document
-        .elementFromPoint(left + cellSize / 2, top + cellSize / 2)
+        .elementFromPoint(left + cellPxSize / 2, top + cellPxSize / 2)
         ?.closest('#cell') as HTMLDivElement;
 
       if (cell && validateShipPlacement(ship.id, getCellIndex(cell))) {
@@ -101,7 +101,7 @@ export default function ShipComponent({ ship, cellSize }: ShipProps) {
       const top = e.clientY - clickOffset.y;
 
       const cell = document
-        .elementFromPoint(left + cellSize / 2, top + cellSize / 2)
+        .elementFromPoint(left + cellPxSize / 2, top + cellPxSize / 2)
         ?.closest('#cell') as HTMLDivElement;
 
       if (cell && validateShipPlacement(ship.id, getCellIndex(cell))) {
@@ -121,7 +121,7 @@ export default function ShipComponent({ ship, cellSize }: ShipProps) {
       document.removeEventListener('mouseup', dropShipHandler);
     };
   }, [
-    cellSize,
+    cellPxSize,
     clickOffset.x,
     clickOffset.y,
     placeShip,
@@ -141,8 +141,8 @@ export default function ShipComponent({ ship, cellSize }: ShipProps) {
         position: 'absolute',
         left: shipPosition?.x,
         top: shipPosition?.y,
-        width: ship.size * cellSize + (ship.size - 1),
-        height: cellSize,
+        width: ship.size * cellPxSize + (ship.size - 1),
+        height: cellPxSize,
         backgroundColor: palette.primary.light,
         boxShadow: ship.orientation === 'h' ? shadowHorizontal : shadowVertical,
         cursor: 'grab',
@@ -151,7 +151,7 @@ export default function ShipComponent({ ship, cellSize }: ShipProps) {
         transitionDuration: '0.3s',
         transitionTimingFunction: 'ease-in-out',
         transform: ship.orientation === 'h' ? 'none' : 'rotate(90deg)',
-        transformOrigin: cellSize / 2 + 'px ' + cellSize / 2 + 'px',
+        transformOrigin: cellPxSize / 2 + 'px ' + cellPxSize / 2 + 'px',
       }}
     >
       <IconButton

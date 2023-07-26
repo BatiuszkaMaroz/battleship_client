@@ -1,23 +1,23 @@
 import { Box } from '@mui/material';
+import { BOARD_SIZE } from 'config/constants';
 import React from 'react';
 
-type GridProps = {
-  gridSize: number;
-  cellSizePx: number;
+type ShipProps = {
+  cellPxSize: number;
 };
 
-const ShipGrid = ({ cellSizePx, gridSize }: GridProps) => {
-  const gridContainerStyle = {
+const Board = ({ cellPxSize }: ShipProps) => {
+  const boardContainerStyle = {
     display: 'grid',
-    gridTemplateColumns: `repeat(${gridSize}, ${cellSizePx}px)`,
-    gridTemplateRows: `repeat(${gridSize}, ${cellSizePx}px)`,
+    gridTemplateColumns: `repeat(${BOARD_SIZE}, ${cellPxSize}px)`,
+    gridTemplateRows: `repeat(${BOARD_SIZE}, ${cellPxSize}px)`,
     gap: '1px',
     padding: '5px',
   };
 
   const cellStyle = {
-    width: `${cellSizePx}px`,
-    height: `${cellSizePx}px`,
+    width: `${cellPxSize}px`,
+    height: `${cellPxSize}px`,
     backgroundColor: '#ffffff',
     display: 'flex',
     alignItems: 'center',
@@ -26,10 +26,13 @@ const ShipGrid = ({ cellSizePx, gridSize }: GridProps) => {
     fontWeight: 'bold',
   };
 
-  const cellIndexes = Array.from({ length: gridSize * gridSize }, (_, i) => i);
+  const cellIndexes = Array.from(
+    { length: BOARD_SIZE * BOARD_SIZE },
+    (_, i) => i,
+  );
 
   return (
-    <Box style={gridContainerStyle}>
+    <Box style={boardContainerStyle}>
       {cellIndexes.map((index) => (
         <Box //
           key={index}
@@ -42,4 +45,4 @@ const ShipGrid = ({ cellSizePx, gridSize }: GridProps) => {
   );
 };
 
-export default ShipGrid;
+export default Board;

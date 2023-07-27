@@ -1,18 +1,20 @@
 import { Box } from '@mui/material';
-import { BOARD_SIZE } from 'config/constants';
+import { BOARD_COLS, BOARD_ROWS } from 'config/constants';
 import React from 'react';
 
 type ShipProps = {
   cellPxSize: number;
+  cellId?: string;
 };
 
-const Board = ({ cellPxSize }: ShipProps) => {
+export default function Board({ cellPxSize, cellId = '' }: ShipProps) {
   const boardContainerStyle = {
     display: 'grid',
-    gridTemplateColumns: `repeat(${BOARD_SIZE}, ${cellPxSize}px)`,
-    gridTemplateRows: `repeat(${BOARD_SIZE}, ${cellPxSize}px)`,
+    gridTemplateColumns: `repeat(${BOARD_COLS}, ${cellPxSize}px)`,
+    gridTemplateRows: `repeat(${BOARD_ROWS}, ${cellPxSize}px)`,
     gap: '1px',
     padding: '5px',
+    backgroundColor: '#f0f0f0',
   };
 
   const cellStyle = {
@@ -27,7 +29,7 @@ const Board = ({ cellPxSize }: ShipProps) => {
   };
 
   const cellIndexes = Array.from(
-    { length: BOARD_SIZE * BOARD_SIZE },
+    { length: BOARD_ROWS * BOARD_COLS },
     (_, i) => i,
   );
 
@@ -36,13 +38,11 @@ const Board = ({ cellPxSize }: ShipProps) => {
       {cellIndexes.map((index) => (
         <Box //
           key={index}
-          id='cell'
+          id={cellId}
           data-index={index}
           sx={cellStyle}
         />
       ))}
     </Box>
   );
-};
-
-export default Board;
+}

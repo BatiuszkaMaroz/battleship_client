@@ -16,14 +16,15 @@ export default function HomePage() {
       <Layout>
         <Box
           sx={{
-            mt: 8,
             display: 'flex',
-            width: '100%',
-            backgroundColor: '#f0f0f0',
+            flexDirection: 'column',
+            alignItems: 'center',
           }}
         >
-          <Board cellPxSize={cellPxSize} />
-          <Button onClick={randomizeShips}>RANDOMIZE</Button>
+          <Board cellId='setting-cell' cellPxSize={cellPxSize} />
+          <Button sx={{ mt: 2 }} onClick={randomizeShips}>
+            RANDOMIZE
+          </Button>
         </Box>
       </Layout>
       {ships.map((s) => (

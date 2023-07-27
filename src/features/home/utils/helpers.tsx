@@ -1,13 +1,12 @@
+import { BOARD_COLS, BOARD_ROWS } from 'config/constants';
 import { Coords, Ship } from './types';
-
-const BOARD_SIZE = 10;
 
 /**
  * Returns coordinates of cell html element with given cellIndex.
  */
 export function getCellCoords(cellIndex: number): Coords {
   const cell = document.querySelector(
-    `#cell[data-index="${cellIndex}"]`,
+    `#setting-cell[data-index="${cellIndex}"]`,
   ) as HTMLDivElement;
 
   if (!cell) {
@@ -31,8 +30,8 @@ export function getCellIndex(cell: HTMLElement): number {
  * Converts cellIndex to row and col.
  */
 export function convertCellIndexToRowCol(cellIndex: number) {
-  const row = Math.floor(cellIndex / BOARD_SIZE);
-  const col = cellIndex % BOARD_SIZE;
+  const row = Math.floor(cellIndex / BOARD_COLS);
+  const col = cellIndex - row * BOARD_COLS;
 
   return { row, col };
 }
@@ -110,9 +109,9 @@ function validateShipWithinBoardBorders(proposedCellIndex: number, ship: Ship) {
 
   return (
     0 <= startRow && //
-    endRow < BOARD_SIZE &&
+    endRow < BOARD_ROWS &&
     0 <= startCol &&
-    endCol < BOARD_SIZE
+    endCol < BOARD_COLS
   );
 }
 
@@ -179,7 +178,7 @@ function getRandomOrientation(): Ship['orientation'] {
 }
 
 function getRandomCellIndex(): Ship['cellIndex'] {
-  return Math.floor(Math.random() * BOARD_SIZE ** 2);
+  return Math.floor(Math.random() * BOARD_COLS * BOARD_ROWS);
 }
 
 export function generateRandomizedShipsAndBoard(): {

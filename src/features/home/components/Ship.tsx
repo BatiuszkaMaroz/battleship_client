@@ -85,7 +85,7 @@ export default function ShipComponent({ ship, cellPxSize }: ShipProps) {
 
       const cell = document
         .elementFromPoint(left + cellPxSize / 2, top + cellPxSize / 2)
-        ?.closest('#cell') as HTMLDivElement;
+        ?.closest('#setting-cell') as HTMLDivElement;
 
       if (cell && validateShipPlacement(ship.id, getCellIndex(cell))) {
         left = cell.offsetLeft;
@@ -102,7 +102,7 @@ export default function ShipComponent({ ship, cellPxSize }: ShipProps) {
 
       const cell = document
         .elementFromPoint(left + cellPxSize / 2, top + cellPxSize / 2)
-        ?.closest('#cell') as HTMLDivElement;
+        ?.closest('#setting-cell') as HTMLDivElement;
 
       if (cell && validateShipPlacement(ship.id, getCellIndex(cell))) {
         placeShip(ship.id, +(cell.dataset.index as string));

@@ -1,7 +1,7 @@
 import { Box, Button } from '@mui/material';
 import React from 'react';
 
-import Layout from 'components/Layout';
+import Layout from 'shared/components/Layout';
 import Board from './components/Board';
 import ShipComponent from './components/Ship';
 import { useShipStore } from './utils/useShipStore';

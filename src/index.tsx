@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client';
 import Root from 'Root';
 import 'assets/styles/index.css';
 import 'config/i18n';
-import 'services/socket';
+import 'shared/services/socket';
 
 const container = document.getElementById('root');
 

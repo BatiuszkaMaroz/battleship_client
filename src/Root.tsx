@@ -3,9 +3,9 @@ import { CssBaseline } from '@mui/material';
 import React from 'react';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 
-import ErrorPage from 'components/ErrorPage';
 import { theme } from 'config/theme';
-import HomePage from 'features/home/HomePage';
+import HomePage from 'pages/home/HomePage';
+import ErrorPage from 'shared/components/ErrorPage';
 
 const router = createBrowserRouter([
   {

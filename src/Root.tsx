@@ -5,7 +5,7 @@ import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 
 import ErrorPage from 'components/ErrorPage';
 import { theme } from 'config/theme';
-import HomePage from 'features/home/components/HomePage';
+import HomePage from 'features/home/HomePage';
 
 const router = createBrowserRouter([
   {

@@ -142,6 +142,20 @@ export default function ShipComponent({ ship, cellPxSize }: ShipProps) {
     validateShipPlacement,
   ]);
 
+  // handle resizing window
+  useEffect(() => {
+    const windowResizeHandler = () => {
+      const coords = getCellCoordsFromRowCol(ship.row, ship.col);
+      setShipPosition(coords);
+    };
+
+    window.addEventListener('resize', windowResizeHandler);
+
+    return () => {
+      window.removeEventListener('resize', windowResizeHandler);
+    };
+  }, [ship.col, ship.row]);
+
   return createPortal(
     <Box
       onMouseDown={pickShipHandler}

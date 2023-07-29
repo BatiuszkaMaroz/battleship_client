@@ -2,6 +2,7 @@ import { Box, Button } from '@mui/material';
 import React from 'react';
 
 import Layout from 'shared/components/Layout';
+import { socket } from 'shared/services/socket';
 import Board from './components/Board';
 import ShipComponent from './components/Ship';
 import { useShipStore } from './services/useShipStore';
@@ -11,7 +12,7 @@ export default function HomePage() {
   const { ships, randomizeShips } = useShipStore();
 
   const startGame = () => {
-    console.log('start game');
+    socket.emit('matchmaking', { ships });
   };
 
   return (

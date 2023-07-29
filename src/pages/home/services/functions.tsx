@@ -99,7 +99,7 @@ function markShipOnBoard(ship: Ship, board: string[][]): void {
  * Creates empty board.
  */
 function createEmptyShipBoard(): string[][] {
-  return Array.from({ length: 10 }, () => Array(10).fill(''));
+  return Array.from({ length: BOARD_ROWS }, () => Array(BOARD_COLS).fill(''));
 }
 
 /**

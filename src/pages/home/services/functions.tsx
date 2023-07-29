@@ -1,10 +1,47 @@
 import { BOARD_COLS, BOARD_ROWS } from 'config/constants';
-import { Coords, Ship } from './types';
+import { Ship } from './types';
+
+/* ========================= CONVERTING ========================= */
+
+/**
+ * Converts cellIndex to row and col.
+ */
+function convertCellIndexToRowCol(cellIndex: number) {
+  const row = Math.floor(cellIndex / BOARD_COLS);
+  const col = cellIndex - row * BOARD_COLS;
+
+  return { row, col };
+}
+
+/**
+ * Converts row and col to cellIndex.
+ */
+function convertRowColToCellIndex(row: number, col: number) {
+  const cellIndex = row * BOARD_COLS + col;
+  return cellIndex;
+}
+
+/* ========================= HTML ========================= */
+
+/**
+ * Extracts cell index value from data-index.
+ */
+export function getCellIndexFromCellElement(cell: HTMLElement) {
+  return +(cell.dataset.index as string);
+}
+
+/**
+ * Extracts cell index value from data-index.
+ */
+export function getRowColFromCellElement(cell: HTMLElement) {
+  return convertCellIndexToRowCol(getCellIndexFromCellElement(cell));
+}
 
 /**
  * Returns coordinates of cell html element with given cellIndex.
  */
-export function getCellCoords(cellIndex: number): Coords {
+export function getCellCoordsFromRowCol(row: number, col: number) {
+  const cellIndex = convertRowColToCellIndex(row, col);
   const cell = document.querySelector(
     `#setting-cell[data-index="${cellIndex}"]`,
   ) as HTMLDivElement;
@@ -14,29 +51,12 @@ export function getCellCoords(cellIndex: number): Coords {
   }
 
   return {
-    x: cell.offsetLeft,
-    y: cell.offsetTop,
+    left: cell.offsetLeft,
+    top: cell.offsetTop,
   };
 }
 
-/**
- * Extracts cell index value from data-index.
- */
-export function getCellIndex(cell: HTMLElement): number {
-  return +(cell.dataset.index as string);
-}
-
-/**
- * Converts cellIndex to row and col.
- */
-export function convertCellIndexToRowCol(cellIndex: number) {
-  const row = Math.floor(cellIndex / BOARD_COLS);
-  const col = cellIndex - row * BOARD_COLS;
-
-  return { row, col };
-}
-
-/* ============================================================ */
+/* ========================= BOARD ========================= */
 
 /**
  * Marks cell and it's surroundings with given shipId.
@@ -60,7 +80,7 @@ function markCellWithSurroundings(
  * Marks ship and it's surroundings on the board using ship id.
  */
 function markShipOnBoard(ship: Ship, board: string[][]): void {
-  const { row, col } = convertCellIndexToRowCol(ship.cellIndex);
+  const { row, col } = ship;
 
   if (ship.orientation === 'h') {
     for (let i = col; i < col + ship.size; i++) {
@@ -96,14 +116,14 @@ export function createShipBoard(ships: Ship[]): string[][] {
   return board;
 }
 
-/* ============================================================ */
+/* ========================= VALIDATION ========================= */
 
 /**
  * Checks if ship can be placed in proposed place according to board borders.
  */
-function validateShipWithinBoardBorders(proposedCellIndex: number, ship: Ship) {
-  const { row: startRow, col: startCol } =
-    convertCellIndexToRowCol(proposedCellIndex);
+function validateShipWithinBoardBorders(row: number, col: number, ship: Ship) {
+  const startRow = row;
+  const startCol = col;
   const endRow = ship.orientation === 'h' ? startRow : startRow + ship.size - 1;
   const endCol = ship.orientation === 'h' ? startCol + ship.size - 1 : startCol;
 
@@ -119,12 +139,11 @@ function validateShipWithinBoardBorders(proposedCellIndex: number, ship: Ship) {
  * Checks if ship can be placed in proposed place according to board availability.
  */
 function validateShipBoardAvailability(
-  proposedCellIndex: number,
+  row: number,
+  col: number,
   ship: Ship,
   helperBoard: string[][],
 ) {
-  const { row, col } = convertCellIndexToRowCol(proposedCellIndex);
-
   if (ship.orientation === 'h') {
     for (let i = col; i < col + ship.size; i++) {
       if (helperBoard[row][i] === '' || helperBoard[row][i] === ship.id) {
@@ -152,33 +171,40 @@ function validateShipBoardAvailability(
  * Checks if ship can be placed in proposed place.
  */
 export function validateShipPlacement(
-  proposedCellIndex: number,
+  row: number,
+  col: number,
   ship: Ship,
   board: string[][],
 ) {
   return (
-    validateShipWithinBoardBorders(proposedCellIndex, ship) &&
-    validateShipBoardAvailability(proposedCellIndex, ship, board)
+    validateShipWithinBoardBorders(row, col, ship) &&
+    validateShipBoardAvailability(row, col, ship, board)
   );
 }
 
+/**
+ * Checks if ship can be rotated.
+ */
 export function validateShipRotation(ship: Ship, board: string[][]) {
   const proposedShip: Ship = {
     ...ship,
     orientation: ship.orientation === 'h' ? 'v' : 'h',
   };
 
-  return validateShipPlacement(ship.cellIndex, proposedShip, board);
+  return validateShipPlacement(ship.row, ship.col, proposedShip, board);
 }
 
-/* ============================================================ */
+/* ========================= RANDOMIZING ========================= */
 
 function getRandomOrientation(): Ship['orientation'] {
   return Math.random() > 0.5 ? 'v' : 'h';
 }
 
-function getRandomCellIndex(): Ship['cellIndex'] {
-  return Math.floor(Math.random() * BOARD_COLS * BOARD_ROWS);
+function getRandomRowCol() {
+  return {
+    row: Math.floor(Math.random() * BOARD_ROWS),
+    col: Math.floor(Math.random() * BOARD_COLS),
+  };
 }
 
 export function generateRandomizedShipsAndBoard(): {
@@ -204,13 +230,12 @@ export function generateRandomizedShipsAndBoard(): {
     s.orientation = getRandomOrientation();
 
     while (true) {
-      const proposedCellIndex = getRandomCellIndex();
-      const { row, col } = convertCellIndexToRowCol(proposedCellIndex);
-
+      const { row, col } = getRandomRowCol();
       if (board[row][col] !== '') continue;
 
-      if (validateShipPlacement(proposedCellIndex, s as Ship, board)) {
-        s.cellIndex = proposedCellIndex;
+      if (validateShipPlacement(row, col, s as Ship, board)) {
+        s.row = row;
+        s.col = col;
         markShipOnBoard(s as Ship, board);
         break;
       }

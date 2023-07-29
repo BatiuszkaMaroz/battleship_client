@@ -4,7 +4,7 @@ import React from 'react';
 import Layout from 'shared/components/Layout';
 import Board from './components/Board';
 import ShipComponent from './components/Ship';
-import { useShipStore } from './utils/useShipStore';
+import { useShipStore } from './services/useShipStore';
 
 export default function HomePage() {
   const cellPxSize = 50;

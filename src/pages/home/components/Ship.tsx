@@ -3,19 +3,22 @@ import { Box, IconButton, useTheme } from '@mui/material';
 import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
-import { getCellCoords, getCellIndex } from '../utils/helpers';
-import { Coords, Ship } from '../utils/types';
-import { useShipStore } from '../utils/useShipStore';
-
-type ShipProps = {
-  ship: Ship;
-  cellPxSize: number;
-};
+import {
+  getCellCoordsFromRowCol,
+  getRowColFromCellElement,
+} from '../services/functions';
+import { Ship } from '../services/types';
+import { useShipStore } from '../services/useShipStore';
 
 const shadowHorizontal =
   '0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)';
 const shadowVertical =
   '3px 0px 1px -2px rgba(0,0,0,0.2), 2px 0px 2px 0px rgba(0,0,0,0.14), 1px 0px 5px 0px rgba(0,0,0,0.12)';
+
+type ShipProps = {
+  ship: Ship;
+  cellPxSize: number;
+};
 
 export default function ShipComponent({ ship, cellPxSize }: ShipProps) {
   const {
@@ -29,20 +32,23 @@ export default function ShipComponent({ ship, cellPxSize }: ShipProps) {
 
   const ref = useRef<HTMLDivElement>(null);
   const [shipPicked, setShipPicked] = React.useState(false);
-  const [shipPosition, setShipPosition] = React.useState<Coords | null>(null);
+  const [shipPosition, setShipPosition] = React.useState<{
+    left: number;
+    top: number;
+  } | null>(null);
   const [clickOffset, setClickOffset] = React.useState({ x: 0, y: 0 });
   const [canRotate, setCanRotate] = React.useState(false);
 
   // handle cellIndex change
   useEffect(() => {
-    const coords = getCellCoords(ship.cellIndex);
+    const coords = getCellCoordsFromRowCol(ship.row, ship.col);
     setShipPosition(coords);
-  }, [ship.cellIndex]);
+  }, [ship.col, ship.row]);
 
   // handle rotation validation, watches for changes in ships array
   useEffect(() => {
     setCanRotate(validateShipRotation(ship.id));
-  }, [ships, ship.cellIndex, ship.id, validateShipRotation]);
+  }, [ships, ship.id, validateShipRotation]);
 
   // handle styling when ship picked
   useEffect(() => {
@@ -68,8 +74,8 @@ export default function ShipComponent({ ship, cellPxSize }: ShipProps) {
   const pickShipHandler = (e: React.MouseEvent) => {
     setShipPicked(true);
     setClickOffset({
-      x: e.clientX - shipPosition!.x,
-      y: e.clientY - shipPosition!.y,
+      x: e.clientX - shipPosition!.left,
+      y: e.clientY - shipPosition!.top,
     });
   };
 
@@ -87,9 +93,12 @@ export default function ShipComponent({ ship, cellPxSize }: ShipProps) {
         .elementFromPoint(left + cellPxSize / 2, top + cellPxSize / 2)
         ?.closest('#setting-cell') as HTMLDivElement;
 
-      if (cell && validateShipPlacement(ship.id, getCellIndex(cell))) {
-        left = cell.offsetLeft;
-        top = cell.offsetTop;
+      if (cell) {
+        const { row, col } = getRowColFromCellElement(cell);
+        if (validateShipPlacement(ship.id, row, col)) {
+          left = cell.offsetLeft;
+          top = cell.offsetTop;
+        }
       }
 
       ref.current!.style.left = left + 'px';
@@ -104,8 +113,11 @@ export default function ShipComponent({ ship, cellPxSize }: ShipProps) {
         .elementFromPoint(left + cellPxSize / 2, top + cellPxSize / 2)
         ?.closest('#setting-cell') as HTMLDivElement;
 
-      if (cell && validateShipPlacement(ship.id, getCellIndex(cell))) {
-        placeShip(ship.id, +(cell.dataset.index as string));
+      if (cell) {
+        const { row, col } = getRowColFromCellElement(cell);
+        if (validateShipPlacement(ship.id, row, col)) {
+          placeShip(ship.id, row, col);
+        }
       }
 
       setShipPicked(false);
@@ -139,26 +151,26 @@ export default function ShipComponent({ ship, cellPxSize }: ShipProps) {
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',
-        left: shipPosition?.x,
-        top: shipPosition?.y,
+        left: shipPosition?.left,
+        top: shipPosition?.top,
         width: ship.size * cellPxSize + (ship.size - 1),
         height: cellPxSize,
         backgroundColor: palette.primary.light,
         boxShadow: ship.orientation === 'h' ? shadowHorizontal : shadowVertical,
         cursor: 'grab',
+        transform: ship.orientation === 'h' ? 'none' : 'rotate(90deg)',
+        transformOrigin: cellPxSize / 2 + 'px ' + cellPxSize / 2 + 'px',
         transitionProperty:
           'left, top, transform, box-shadow, background-color',
         transitionDuration: '0.3s',
         transitionTimingFunction: 'ease-in-out',
-        transform: ship.orientation === 'h' ? 'none' : 'rotate(90deg)',
-        transformOrigin: cellPxSize / 2 + 'px ' + cellPxSize / 2 + 'px',
       }}
     >
       <IconButton
         sx={{
           opacity: !shipPicked && canRotate ? 1 : 0,
-          transition: 'opacity 0.1s ease-in-out',
           pointerEvents: !shipPicked && canRotate ? 'all' : 'none',
+          transition: 'opacity 0.1s ease-in-out',
         }}
         size='small'
         onMouseDown={rotateShipHandler}

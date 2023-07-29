@@ -23,7 +23,7 @@ export default function Layout({ children }: React.PropsWithChildren) {
       <AppBar position='static'>
         <Toolbar>
           <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
-            Battleship
+            Material Ships
           </Typography>
           <IconButton
             size='large'

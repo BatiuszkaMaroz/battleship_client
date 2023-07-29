@@ -1,4 +1,4 @@
-# Battleship Client
+# Material Ships Client
 
 ## Setup
 

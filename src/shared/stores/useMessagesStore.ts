@@ -4,24 +4,21 @@ import { devtools } from 'zustand/middleware';
 export type Message = {
   title?: string;
   content: string;
+  severity: 'info' | 'error';
 };
 
 interface MessagesState {
-  readonly notifications: Message[];
-  readonly errors: Message[];
+  readonly messages: Message[];
+  addMessage: (message: Message) => void;
 }
 
 export const useMessagesStore = create<MessagesState>()(
   devtools((set) => ({
-    notifications: [],
-    errors: [],
+    messages: [],
 
-    addNotification: (notificationMessage: Message) =>
+    addMessage: (message) =>
       set((state) => ({
-        notifications: [...state.notifications, notificationMessage],
+        messages: [message, ...state.messages],
       })),
-
-    addError: (errorMessage: Message) =>
-      set((state) => ({ errors: [...state.errors, errorMessage] })),
   })),
 );

@@ -12,7 +12,7 @@ export default function HomePage() {
   const { ships, randomizeShips } = useShipStore();
 
   const startGame = () => {
-    socket.emit('matchmaking', { ships });
+    socket.emit('start-matchmaking', { ships });
   };
 
   return (

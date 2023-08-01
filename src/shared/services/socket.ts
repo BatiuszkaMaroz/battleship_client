@@ -1,9 +1,10 @@
+import { Message, useMessagesStore } from 'shared/stores/useMessagesStore';
 import { io } from 'socket.io-client';
 
 export const socket = io(process.env.SOCKET_ENDPOINT, {
-  query: {
-    userId: '123',
-  },
+  // query: {
+  // userId: '123',
+  // },
 });
 
 socket.on('connect', () => {
@@ -14,15 +15,9 @@ socket.on('disconnect', () => {
   console.log(`User disconnected (socket.id=${socket.id}).`);
 });
 
-type Message = {
-  message: string;
-  [key: string]: unknown;
-};
+socket.on('message-channel', (message: Message) => {
+  console.log('Received message: ', message);
 
-socket.on('notification-channel', (notification: Message) => {
-  console.log('Notification received:', notification);
-});
-
-socket.on('error-channel', (error: Message) => {
-  console.log('Error received:', error);
+  const store = useMessagesStore.getState();
+  store.addMessage(message);
 });

@@ -9,3 +9,16 @@ socket.on('connect', () => {
 socket.on('disconnect', () => {
   console.log('User disconnected.');
 });
+
+type Message = {
+  message: string;
+  [key: string]: unknown;
+};
+
+socket.on('notification-channel', (notification: Message) => {
+  console.log('notification:', notification);
+});
+
+socket.on('error-channel', (error: Message) => {
+  console.log('error:', error);
+});

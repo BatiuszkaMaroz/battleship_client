@@ -54,7 +54,8 @@ export default function ShipComponent({ ship, cellPxSize }: ShipProps) {
   useEffect(() => {
     if (shipPicked) {
       ref.current!.style.zIndex = '100';
-      ref.current!.style.transitionDuration = '0.025s';
+      ref.current!.style.transition =
+        'ease-in-out left 0.01s, ease-in-out top 0.01s, ease-in-out opacity 0.01s';
       ref.current!.style.pointerEvents = 'none';
 
       document.body.style.userSelect = 'none';
@@ -63,7 +64,8 @@ export default function ShipComponent({ ship, cellPxSize }: ShipProps) {
       ref.current!.style.zIndex = '';
       ref.current!.style.left = '';
       ref.current!.style.top = '';
-      ref.current!.style.transitionDuration = '';
+      ref.current!.style.opacity = '';
+      ref.current!.style.transition = '';
       ref.current!.style.pointerEvents = '';
 
       document.body.style.userSelect = '';
@@ -89,16 +91,26 @@ export default function ShipComponent({ ship, cellPxSize }: ShipProps) {
       let left = e.clientX - clickOffset.x;
       let top = e.clientY - clickOffset.y;
 
-      const cell = document
-        .elementFromPoint(left + cellPxSize / 2, top + cellPxSize / 2)
-        ?.closest('#setting-cell') as HTMLDivElement;
+      // handle case when gap is targeted
+      const cell =
+        (document
+          .elementFromPoint(left + cellPxSize / 2, top + cellPxSize / 2)
+          ?.closest('#setting-cell') as HTMLDivElement) ??
+        (document
+          .elementFromPoint(left + cellPxSize / 2 + 1, top + cellPxSize / 2 + 1)
+          ?.closest('#setting-cell') as HTMLDivElement);
 
       if (cell) {
         const { row, col } = getRowColFromCellElement(cell);
         if (validateShipPlacement(ship.id, row, col)) {
           left = cell.offsetLeft;
           top = cell.offsetTop;
+          ref.current!.style.opacity = '1';
+        } else {
+          ref.current!.style.opacity = '0.5';
         }
+      } else {
+        ref.current!.style.opacity = '0.5';
       }
 
       ref.current!.style.left = left + 'px';
@@ -174,8 +186,7 @@ export default function ShipComponent({ ship, cellPxSize }: ShipProps) {
         cursor: 'grab',
         transform: ship.orientation === 'h' ? 'none' : 'rotate(90deg)',
         transformOrigin: cellPxSize / 2 + 'px ' + cellPxSize / 2 + 'px',
-        transitionProperty:
-          'left, top, transform, box-shadow, background-color',
+        transitionProperty: 'left, top, transform, box-shadow, opacity',
         transitionDuration: '0.3s',
         transitionTimingFunction: 'ease-in-out',
       }}

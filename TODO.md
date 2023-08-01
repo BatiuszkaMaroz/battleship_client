@@ -1,8 +1,6 @@
 # TODO
 
 1. Better mouse handling.
-1. Ship highlight.
-1. Change project name to material-ships.
 1. Player counter.
 1. Reset ships (move them to special "dock" consisting DIVs of "ship-id")
 1. Round timing.
@@ -13,4 +11,4 @@
 
 ## Later Later
 
-1. https://www.ultraboardgames.com/battleship/variations.php
+1. <https://www.ultraboardgames.com/battleship/variations.php>

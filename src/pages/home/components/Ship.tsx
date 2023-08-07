@@ -54,8 +54,7 @@ export default function ShipComponent({ ship, cellPxSize }: ShipProps) {
   useEffect(() => {
     if (shipPicked) {
       ref.current!.style.zIndex = '100';
-      ref.current!.style.transition =
-        'ease-in-out left 0.01s, ease-in-out top 0.01s, ease-in-out opacity 0.01s';
+      ref.current!.style.transition = 'opacity 0.1s ease-in-out';
       ref.current!.style.pointerEvents = 'none';
 
       document.body.style.userSelect = 'none';

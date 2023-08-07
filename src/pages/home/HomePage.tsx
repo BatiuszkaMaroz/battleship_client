@@ -1,8 +1,9 @@
 import { Box, Button } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import Layout from 'shared/components/Layout';
 import { socket } from 'shared/services/socket';
+import { useUserStore } from 'shared/stores/useUserStore';
 import Board from './components/Board';
 import ShipComponent from './components/Ship';
 import { useShipStore } from './services/useShipStore';
@@ -10,10 +11,15 @@ import { useShipStore } from './services/useShipStore';
 export default function HomePage() {
   const cellPxSize = 50;
   const { ships, randomizeShips } = useShipStore();
+  const { userId: id, username } = useUserStore();
 
   const startGame = () => {
     socket.emit('start-matchmaking', { ships });
   };
+
+  useEffect(() => {
+    console.log(id, username);
+  }, [id, username]);
 
   return (
     <>

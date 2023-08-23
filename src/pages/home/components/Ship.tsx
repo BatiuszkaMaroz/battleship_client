@@ -6,14 +6,9 @@ import { createPortal } from 'react-dom';
 import {
   getCellCoordsFromRowCol,
   getRowColFromCellElement,
-} from '../services/functions';
-import { Ship } from '../services/types';
-import { useShipStore } from '../services/useShipStore';
-
-const shadowHorizontal =
-  '0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)';
-const shadowVertical =
-  '3px 0px 1px -2px rgba(0,0,0,0.2), 2px 0px 2px 0px rgba(0,0,0,0.14), 1px 0px 5px 0px rgba(0,0,0,0.12)';
+} from '../utils/functions';
+import { Ship } from '../utils/types';
+import { useShipStore } from '../utils/useShipStore';
 
 type ShipProps = {
   ship: Ship;
@@ -205,3 +200,10 @@ export default function ShipComponent({ ship, cellPxSize }: ShipProps) {
     document.getElementById('ship-root') as HTMLElement,
   );
 }
+
+// shadows
+
+const shadowHorizontal =
+  '0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)';
+const shadowVertical =
+  '3px 0px 1px -2px rgba(0,0,0,0.2), 2px 0px 2px 0px rgba(0,0,0,0.14), 1px 0px 5px 0px rgba(0,0,0,0.12)';

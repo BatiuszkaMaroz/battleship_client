@@ -1,12 +1,12 @@
 import { Box, Button } from '@mui/material';
 import React, { useEffect } from 'react';
 
-import Layout from 'shared/components/Layout';
-import { socket } from 'shared/services/socket';
-import { useUserStore } from 'shared/stores/useUserStore';
+import Layout from 'components/Layout';
+import { socket } from 'services/socketService';
+import { useUserStore } from 'stores/useUserStore';
 import Board from './components/Board';
 import ShipComponent from './components/Ship';
-import { useShipStore } from './services/useShipStore';
+import { useShipStore } from './utils/useShipStore';
 
 export default function HomePage() {
   const cellPxSize = 50;
@@ -14,7 +14,7 @@ export default function HomePage() {
   const { userId: id, username } = useUserStore();
 
   const startGame = () => {
-    socket.emit('start-matchmaking', { ships });
+    socket.emit('room-join', { ships });
   };
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import * as React from 'react';
-import { useMessagesStore } from 'shared/stores/useMessagesStore';
+import { useMessagesStore } from 'stores/useMessagesStore';
 
 export default function MessagesSnackbar() {
   const [open, setOpen] = React.useState(false);

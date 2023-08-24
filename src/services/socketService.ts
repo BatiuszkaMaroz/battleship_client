@@ -1,6 +1,9 @@
 import { io } from 'socket.io-client';
 
-import { Message, useMessagesStore } from 'stores/useMessagesStore';
+import {
+  Notification,
+  useNotificationsStore,
+} from 'stores/useNotificationsStore';
 import { Stage, useStageStore } from 'stores/useStageStore';
 import { useUserStore } from 'stores/useUserStore';
 import { loadUserData, saveUserData } from './storageService';
@@ -44,9 +47,9 @@ socket.on('room-chat', (payload) => {
   console.log('[room-chat] Received payload: ', payload);
 });
 
-socket.on('message', (message: Message) => {
-  console.log('[message] Received message: ', message);
+socket.on('notification', (notification: Notification) => {
+  console.log('[notification] Received notification: ', notification);
 
-  const store = useMessagesStore.getState();
-  store.addMessage(message);
+  const store = useNotificationsStore.getState();
+  store.addNotification(notification);
 });

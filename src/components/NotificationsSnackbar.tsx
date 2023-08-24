@@ -1,11 +1,11 @@
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import * as React from 'react';
-import { useMessagesStore } from 'stores/useMessagesStore';
+import { useNotificationsStore } from 'stores/useNotificationsStore';
 
-export default function MessagesSnackbar() {
+export default function NotificationsSnackbar() {
   const [open, setOpen] = React.useState(false);
-  const { messages } = useMessagesStore();
+  const { notifications } = useNotificationsStore();
 
   const handleClose = (
     event: React.SyntheticEvent | Event,
@@ -19,13 +19,13 @@ export default function MessagesSnackbar() {
   };
 
   React.useEffect(() => {
-    if (messages.length > 0) {
+    if (notifications.length > 0) {
       setOpen(true);
     }
-  }, [messages]);
+  }, [notifications]);
 
-  const latestMessage = messages[0];
-  if (!latestMessage) {
+  const latest = notifications[0];
+  if (!latest) {
     return null;
   }
 
@@ -33,10 +33,10 @@ export default function MessagesSnackbar() {
     <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
       <Alert
         onClose={handleClose}
-        severity={latestMessage.severity}
+        severity={latest.severity}
         sx={{ width: '100%' }}
       >
-        {latestMessage.content}
+        {latest.content}
       </Alert>
     </Snackbar>
   );

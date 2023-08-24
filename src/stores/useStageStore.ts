@@ -2,7 +2,7 @@ import { create } from 'zustand';
 
 export enum Stage {
   HOME,
-  MATCHMAKING,
+  LOBBY,
   GAME,
 }
 
@@ -13,5 +13,6 @@ interface StageState {
 
 export const useStageStore = create<StageState>()((set) => ({
   stage: Stage.HOME,
+  // stage: Stage.LOBBY,
   setStage: (nextStage: Stage) => set(() => ({ stage: nextStage })),
 }));

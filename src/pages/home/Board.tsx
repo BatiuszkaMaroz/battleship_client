@@ -1,6 +1,7 @@
 import { Box } from '@mui/material';
-import { BOARD_COLS, BOARD_ROWS } from 'config/constants';
 import React from 'react';
+
+import { BOARD_COLS, BOARD_ROWS } from 'config/constants';
 
 type ShipProps = {
   cellPxSize: number;

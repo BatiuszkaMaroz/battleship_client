@@ -2,16 +2,23 @@
 
 ## High Priority
 
-1. Handle matchmaking with all required options.
-
 ## Medium Priority
 
-1. Round timing.
+1. Lock emitters.
+1. Big messages.
+1. Claim account.
+1. Logs (messages) preview in icon in appbar.
 
 ## Low Priority
 
+1. Setting theme, settings.
+1. Round timing.
 1. Phone touch handling and mobile design.
 1. Player counter.
-1. <https://www.ultraboardgames.com/battleship/variations.php>
 1. Reset ships (move them to special "dock" consisting DIVs of "ship-id")
 1. Save configs to local storage.
+
+## Future
+
+1. <https://www.ultraboardgames.com/battleship/variations.php>
+1. Ship skins + credit system.

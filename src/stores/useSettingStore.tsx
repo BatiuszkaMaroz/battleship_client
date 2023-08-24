@@ -1,16 +1,23 @@
-import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
-
 import {
   createShipBoard,
   generateRandomizedShipsAndBoard,
   validateShipPlacement,
   validateShipRotation,
-} from './functions';
-import { Ship } from './types';
+} from 'services/settingService';
+import { create } from 'zustand';
+import { devtools } from 'zustand/middleware';
 
 const { ships, board } = generateRandomizedShipsAndBoard();
-interface ShipState {
+
+export type Ship = {
+  readonly id: string;
+  readonly size: number;
+  row: number;
+  col: number;
+  orientation: 'h' | 'v';
+};
+
+interface SettingState {
   ships: Ship[];
   board: string[][];
 
@@ -22,7 +29,7 @@ interface ShipState {
   validateShipRotation: (shipId: string) => boolean;
 }
 
-export const useShipStore = create<ShipState>()(
+export const useSettingStore = create<SettingState>()(
   devtools((set, get) => ({
     ships,
     board, // acts as a helper in ship placement

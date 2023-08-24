@@ -6,9 +6,8 @@ import { createPortal } from 'react-dom';
 import {
   getCellCoordsFromRowCol,
   getRowColFromCellElement,
-} from '../utils/functions';
-import { Ship } from '../utils/types';
-import { useShipStore } from '../utils/useShipStore';
+} from 'services/settingService';
+import { Ship, useSettingStore } from 'stores/useSettingStore';
 
 type ShipProps = {
   ship: Ship;
@@ -22,7 +21,7 @@ export default function ShipComponent({ ship, cellPxSize }: ShipProps) {
     rotateShip,
     validateShipPlacement,
     validateShipRotation,
-  } = useShipStore();
+  } = useSettingStore();
   const { palette } = useTheme();
 
   const ref = useRef<HTMLDivElement>(null);

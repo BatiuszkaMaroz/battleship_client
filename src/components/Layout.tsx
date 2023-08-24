@@ -6,7 +6,6 @@ import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import React from 'react';
-import NotificationsSnackbar from './NotificationsSnackbar';
 
 export default function Layout({ children }: React.PropsWithChildren) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -59,7 +58,6 @@ export default function Layout({ children }: React.PropsWithChildren) {
         </AppBar>
         <Container>{children}</Container>
       </Box>
-      <NotificationsSnackbar />
     </>
   );
 }

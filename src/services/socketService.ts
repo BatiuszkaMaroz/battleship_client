@@ -1,5 +1,6 @@
 import { io } from 'socket.io-client';
 
+import { enqueueSnackbar } from 'notistack';
 import {
   Notification,
   useNotificationsStore,
@@ -52,4 +53,6 @@ socket.on('notification', (notification: Notification) => {
 
   const store = useNotificationsStore.getState();
   store.addNotification(notification);
+
+  enqueueSnackbar(notification.content, { variant: notification.severity });
 });

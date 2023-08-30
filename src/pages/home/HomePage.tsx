@@ -3,25 +3,29 @@ import React from 'react';
 
 import Layout from 'components/Layout';
 import { socket } from 'services/socketService';
-import { RoomStatus, useRoomStore } from 'stores/useRoomStore';
 import { useSettingStore } from 'stores/useSettingStore';
+import { UserStatus, useUserStore } from 'stores/useUserStore';
 import Board from './Board';
 import ShipComponent from './Ship';
 
 export default function HomePage() {
   const cellPxSize = 50;
   const { ships, randomizeShips } = useSettingStore();
-  const { roomStatus } = useRoomStore();
+  const { userStatus } = useUserStore();
 
-  const joinRoom = () => {
-    socket.emit('room-join', { ships });
+  const joinPool = () => {
+    socket.emit('pool-join', { ships });
+  };
+
+  const leavePool = () => {
+    socket.emit('pool-leave');
   };
 
   const leaveRoom = () => {
     socket.emit('room-leave');
   };
 
-  const settingsLocked = roomStatus !== RoomStatus.INACTIVE;
+  const settingsLocked = userStatus !== UserStatus.IDLE;
 
   return (
     <Layout>
@@ -50,12 +54,17 @@ export default function HomePage() {
           }}
         >
           <Board cellPxSize={cellPxSize} />
-          <Button sx={{ mt: 2 }} onClick={joinRoom}>
+          <Button sx={{ mt: 2 }} onClick={joinPool}>
             Play
           </Button>
-          {settingsLocked && (
+          {userStatus === UserStatus.POOL && (
+            <Button sx={{ mt: 2 }} onClick={leavePool}>
+              Leave pool
+            </Button>
+          )}
+          {userStatus === UserStatus.ROOM && (
             <Button sx={{ mt: 2 }} onClick={leaveRoom}>
-              Leave
+              Leave room
             </Button>
           )}
         </Box>

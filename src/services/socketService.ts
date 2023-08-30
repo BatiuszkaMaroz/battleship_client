@@ -6,7 +6,7 @@ import {
   useNotificationsStore,
 } from 'stores/useNotificationsStore';
 import { RoomStatus, useRoomStore } from 'stores/useRoomStore';
-import { useUserStore } from 'stores/useUserStore';
+import { UserStatus, useUserStore } from 'stores/useUserStore';
 import { loadUserData, saveUserData } from './storageService';
 
 export const socket = io(process.env.SOCKET_ENDPOINT, {
@@ -23,15 +23,41 @@ socket.on('disconnect', () => {
   console.log(`[disconnect] Socket disconnected.`);
 });
 
-socket.on('user-update', (payload) => {
+/* ========================= USER ========================= */
+
+type UserUpdatePayload = {
+  userStatus?: UserStatus;
+
+  userId?: string;
+  username?: string;
+};
+
+socket.on('user-update', (payload: UserUpdatePayload) => {
   console.log('[user-update] Received payload: ', payload);
 
   const store = useUserStore.getState();
-  store.setUserId(payload.userId);
-  store.setUsername(payload.username);
 
-  saveUserData(payload.userId);
+  if (payload.userId) {
+    store.setUserId(payload.userId);
+    saveUserData(payload.userId);
+  }
+  if (payload.username) {
+    store.setUsername(payload.username);
+  }
+  if (payload.userStatus) {
+    store.setUserStatus(payload.userStatus);
+
+    if (payload.userStatus === UserStatus.IDLE) {
+      const roomStore = useRoomStore.getState();
+      const gameStore = useRoomStore.getState();
+
+      roomStore.resetState();
+      gameStore.resetState();
+    }
+  }
 });
+
+/* ========================= ROOM ========================= */
 
 type RoomUpdatePayload = {
   roomStatus?: RoomStatus;
@@ -53,15 +79,15 @@ socket.on('room-update', (payload: RoomUpdatePayload) => {
   }
 });
 
-socket.on('room-chat', (payload) => {
-  console.log('[room-chat] Received payload: ', payload);
-});
+/* ========================= NOTIFICATION ========================= */
 
-socket.on('notification', (notification: Notification) => {
-  console.log('[notification] Received notification: ', notification);
+type NotificationPayload = Notification;
+
+socket.on('notification', (payload: NotificationPayload) => {
+  console.log('[notification] Received notification: ', payload);
 
   const store = useNotificationsStore.getState();
-  store.addNotification(notification);
+  store.addNotification(payload);
 
-  enqueueSnackbar(notification.content, { variant: notification.severity });
+  enqueueSnackbar(payload.content, { variant: payload.severity });
 });

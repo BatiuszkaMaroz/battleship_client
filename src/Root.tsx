@@ -6,7 +6,7 @@ import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ErrorPage from 'components/ErrorPage';
 import { theme } from 'config/theme';
 import { SnackbarProvider } from 'notistack';
-import StageRouter from 'pages/StageRouter';
+import HomePage from 'pages/home/HomePage';
 
 const router = createBrowserRouter([
   {
@@ -16,7 +16,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '',
-        element: <StageRouter />,
+        element: <HomePage />,
       },
     ],
   },

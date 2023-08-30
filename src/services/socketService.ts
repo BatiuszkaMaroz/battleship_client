@@ -5,7 +5,7 @@ import {
   Notification,
   useNotificationsStore,
 } from 'stores/useNotificationsStore';
-import { Stage, useStageStore } from 'stores/useStageStore';
+import { RoomStatus, useRoomStore } from 'stores/useRoomStore';
 import { useUserStore } from 'stores/useUserStore';
 import { loadUserData, saveUserData } from './storageService';
 
@@ -33,14 +33,23 @@ socket.on('user-update', (payload) => {
   saveUserData(payload.userId);
 });
 
-socket.on('room-update', (payload) => {
+type RoomUpdatePayload = {
+  roomStatus?: RoomStatus;
+  rivalData?: {
+    username: string;
+  };
+};
+
+socket.on('room-update', (payload: RoomUpdatePayload) => {
   console.log('[room-update] Received payload: ', payload);
 
-  const store = useStageStore.getState();
-  if (payload.gameReady === false) {
-    store.setStage(Stage.LOBBY);
-  } else {
-    store.setStage(Stage.GAME);
+  const store = useRoomStore.getState();
+
+  if (payload.roomStatus) {
+    store.setRoomStatus(payload.roomStatus);
+  }
+  if (payload.rivalData) {
+    store.setRivalData(payload.rivalData);
   }
 });
 

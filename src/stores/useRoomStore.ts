@@ -1,31 +1,45 @@
 import { create } from 'zustand';
 
-export enum RoomState {
-  INACTIVE,
-  AWAITING,
-  PLAYING,
+export enum RoomStatus {
+  INACTIVE = 'INACTIVE',
+  MATCHMAKING = 'MATCHMAKING',
+  READY = 'READY',
+  UNREADY = 'UNREADY',
+  PLAYING = 'PLAYING',
 }
 
-interface _RoomState {
-  state: RoomState;
-  mySetting?: unknown;
-  opponentData?: unknown;
-  chat?: unknown[];
+export type RivalData = {
+  username: string;
+};
+
+export type ChatMessage = {
+  username: string;
+  content: string;
+};
+
+interface RoomState {
+  roomStatus: RoomStatus;
+  rivalData?: RivalData;
+  chat: ChatMessage[];
+
+  setRoomStatus: (roomStatus: RoomStatus) => void;
+  setRivalData: (rivalData: RivalData) => void;
 
   resetState: () => void;
 }
 
-export const useRoomStore = create<_RoomState>()((set) => ({
-  state: RoomState.INACTIVE,
-  mySetting: undefined,
-  opponentData: undefined,
-  chat: undefined,
+export const useRoomStore = create<RoomState>()((set) => ({
+  roomStatus: RoomStatus.INACTIVE,
+  rivalData: undefined,
+  chat: [],
+
+  setRoomStatus: (roomStatus) => set(() => ({ roomStatus })),
+  setRivalData: (rivalData) => set(() => ({ rivalData })),
 
   resetState: () =>
     set(() => ({
-      state: RoomState.INACTIVE,
-      mySetting: undefined,
-      opponentData: undefined,
-      chat: undefined,
+      roomStatus: RoomStatus.INACTIVE,
+      rivalData: undefined,
+      chat: [],
     })),
 }));

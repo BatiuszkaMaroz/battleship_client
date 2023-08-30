@@ -12,9 +12,10 @@ import { Ship, useSettingStore } from 'stores/useSettingStore';
 type ShipProps = {
   ship: Ship;
   cellPxSize: number;
+  locked?: boolean;
 };
 
-export default function ShipComponent({ ship, cellPxSize }: ShipProps) {
+export default function ShipComponent({ ship, cellPxSize, locked }: ShipProps) {
   const {
     ships,
     placeShip,
@@ -67,6 +68,8 @@ export default function ShipComponent({ ship, cellPxSize }: ShipProps) {
   }, [palette.primary.main, shipPicked]);
 
   const pickShipHandler = (e: React.MouseEvent) => {
+    if (locked) return;
+
     setShipPicked(true);
     setClickOffset({
       x: e.clientX - shipPosition!.left,
@@ -76,11 +79,15 @@ export default function ShipComponent({ ship, cellPxSize }: ShipProps) {
 
   const rotateShipHandler = (e: React.MouseEvent) => {
     e.stopPropagation();
+
+    if (locked) return;
     if (validateShipRotation(ship.id)) rotateShip(ship.id);
   };
 
   useEffect(() => {
     const moveShipHandler = (e: MouseEvent) => {
+      if (locked) return;
+
       let left = e.clientX - clickOffset.x;
       let top = e.clientY - clickOffset.y;
 
@@ -111,6 +118,8 @@ export default function ShipComponent({ ship, cellPxSize }: ShipProps) {
     };
 
     const dropShipHandler = (e: MouseEvent) => {
+      if (locked) return;
+
       const left = e.clientX - clickOffset.x;
       const top = e.clientY - clickOffset.y;
 
@@ -141,6 +150,7 @@ export default function ShipComponent({ ship, cellPxSize }: ShipProps) {
     cellPxSize,
     clickOffset.x,
     clickOffset.y,
+    locked,
     placeShip,
     ship.id,
     shipPicked,
@@ -182,12 +192,13 @@ export default function ShipComponent({ ship, cellPxSize }: ShipProps) {
         transitionProperty: 'left, top, transform, box-shadow, opacity',
         transitionDuration: '0.3s',
         transitionTimingFunction: 'ease-in-out',
+        pointerEvents: locked ? 'none' : 'all',
       }}
     >
       <IconButton
         sx={{
-          opacity: !shipPicked && canRotate ? 1 : 0,
-          pointerEvents: !shipPicked && canRotate ? 'all' : 'none',
+          opacity: locked || shipPicked || !canRotate ? 0 : 1,
+          pointerEvents: locked || shipPicked || !canRotate ? 'none' : 'all',
           transition: 'opacity 0.1s ease-in-out',
         }}
         size='small'

@@ -24,9 +24,10 @@ interface SettingState {
   rotateShip: (shipId: string) => void;
   placeShip: (shipId: string, row: number, col: number) => void;
 
-  randomizeShips: () => void;
   validateShipPlacement: (shipId: string, row: number, col: number) => boolean;
   validateShipRotation: (shipId: string) => boolean;
+
+  randomizeShips: () => void;
 }
 
 export const useSettingStore = create<SettingState>()(
@@ -66,12 +67,6 @@ export const useSettingStore = create<SettingState>()(
         };
       }),
 
-    randomizeShips: () =>
-      set(() => {
-        const { ships, board } = generateRandomizedShipsAndBoard();
-        return { ships, board };
-      }),
-
     validateShipPlacement: (shipId, row, col) => {
       const { ships, board } = get();
       const ship = ships.find((s) => s.id === shipId);
@@ -85,5 +80,11 @@ export const useSettingStore = create<SettingState>()(
 
       return !!ship && validateShipRotation(ship, board);
     },
+
+    randomizeShips: () =>
+      set(() => {
+        const { ships, board } = generateRandomizedShipsAndBoard();
+        return { ships, board };
+      }),
   })),
 );

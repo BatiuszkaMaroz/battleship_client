@@ -1,27 +1,30 @@
 import { Box, Button } from '@mui/material';
-import React, { useEffect } from 'react';
+import React from 'react';
 
+import Layout from 'components/Layout';
 import { socket } from 'services/socketService';
+import { RoomStatus, useRoomStore } from 'stores/useRoomStore';
 import { useSettingStore } from 'stores/useSettingStore';
-import { useUserStore } from 'stores/useUserStore';
 import Board from './Board';
 import ShipComponent from './Ship';
 
 export default function HomePage() {
   const cellPxSize = 50;
   const { ships, randomizeShips } = useSettingStore();
-  const { userId: id, username } = useUserStore();
+  const { roomStatus } = useRoomStore();
 
-  const startGame = () => {
+  const joinRoom = () => {
     socket.emit('room-join', { ships });
   };
 
-  useEffect(() => {
-    console.log(id, username);
-  }, [id, username]);
+  const leaveRoom = () => {
+    socket.emit('room-leave');
+  };
+
+  const settingsLocked = roomStatus !== RoomStatus.INACTIVE;
 
   return (
-    <>
+    <Layout>
       <Box sx={{ mt: 8, display: 'flex', alignItems: 'flex-start', gap: 8 }}>
         <Box
           sx={{
@@ -31,7 +34,11 @@ export default function HomePage() {
           }}
         >
           <Board cellId='setting-cell' cellPxSize={cellPxSize} />
-          <Button sx={{ mt: 2 }} onClick={randomizeShips}>
+          <Button
+            sx={{ mt: 2 }}
+            onClick={randomizeShips}
+            disabled={settingsLocked}
+          >
             Randomize
           </Button>
         </Box>
@@ -43,14 +50,24 @@ export default function HomePage() {
           }}
         >
           <Board cellPxSize={cellPxSize} />
-          <Button sx={{ mt: 2 }} onClick={startGame}>
+          <Button sx={{ mt: 2 }} onClick={joinRoom}>
             Play
           </Button>
+          {settingsLocked && (
+            <Button sx={{ mt: 2 }} onClick={leaveRoom}>
+              Leave
+            </Button>
+          )}
         </Box>
       </Box>
       {ships.map((s) => (
-        <ShipComponent key={s.id} ship={s} cellPxSize={cellPxSize} />
+        <ShipComponent
+          key={s.id}
+          ship={s}
+          cellPxSize={cellPxSize}
+          locked={settingsLocked}
+        />
       ))}
-    </>
+    </Layout>
   );
 }

@@ -6,17 +6,21 @@ type SidebarProps = {
 };
 
 export default function Sidebar({ open }: SidebarProps) {
-  const drawerWidth = 240;
+  const drawerWidth = 340;
 
   return (
     <Drawer
       open={open}
       variant='persistent'
-      anchor='left'
+      anchor='right'
       sx={{
         width: drawerWidth,
         flexShrink: 0,
-        [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+        [`& .MuiDrawer-paper`]: {
+          width: drawerWidth,
+          boxSizing: 'border-box',
+          transition: 'all 0.3s ease-in-out !important',
+        },
       }}
     >
       <Toolbar />

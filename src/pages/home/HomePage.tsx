@@ -1,5 +1,5 @@
 import { Box, Button } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 
 import Layout from 'components/Layout';
 import { socket } from 'services/socketService';
@@ -7,11 +7,13 @@ import { useSettingStore } from 'stores/useSettingStore';
 import { UserStatus, useUserStore } from 'stores/useUserStore';
 import Board from './Board';
 import ShipComponent from './Ship';
+import Sidebar from './Sidebar';
 
 export default function HomePage() {
-  const cellPxSize = 50;
+  const cellPxSize = 45;
   const { ships, randomizeShips } = useSettingStore();
   const { userStatus } = useUserStore();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const joinPool = () => {
     socket.emit('pool-join', { ships });
@@ -29,7 +31,18 @@ export default function HomePage() {
 
   return (
     <Layout>
-      <Box sx={{ mt: 8, display: 'flex', alignItems: 'flex-start', gap: 8 }}>
+      <Sidebar open={sidebarOpen} />
+      <Box
+        sx={{
+          mt: 8,
+          display: 'flex',
+          alignItems: 'flex-start',
+          justifyContent: 'center',
+          gap: 8,
+          mr: sidebarOpen ? '340px' : undefined,
+          transition: 'margin-right 0.3s ease-in-out',
+        }}
+      >
         <Box
           sx={{
             display: 'flex',
@@ -76,6 +89,9 @@ export default function HomePage() {
               Leave room
             </Button>
           )}
+          <Button onClick={() => setSidebarOpen((v) => !v)}>
+            Open sidebar
+          </Button>
         </Box>
       </Box>
     </Layout>

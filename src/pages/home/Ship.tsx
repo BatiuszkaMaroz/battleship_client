@@ -1,5 +1,5 @@
 import LoopIcon from '@mui/icons-material/Loop';
-import { Box, IconButton, useTheme } from '@mui/material';
+import { Box, IconButton, alpha, useTheme } from '@mui/material';
 import React, { useEffect, useRef } from 'react';
 
 import {
@@ -178,8 +178,10 @@ export default function ShipComponent({ ship, cellPxSize, locked }: ShipProps) {
         top: shipPosition?.top,
         width: ship.size * cellPxSize + (ship.size - 1),
         height: cellPxSize,
-        backgroundColor: palette.primary.light,
-        boxShadow: ship.orientation === 'h' ? shadowHorizontal : shadowVertical,
+        border: '1px solid',
+        borderRadius: '4px',
+        borderColor: palette.primary.main,
+        backgroundColor: alpha(palette.primary.main, 0.1),
         cursor: 'grab',
         transform: ship.orientation === 'h' ? 'none' : 'rotate(90deg)',
         transformOrigin: cellPxSize / 2 + 'px ' + cellPxSize / 2 + 'px',
@@ -194,19 +196,13 @@ export default function ShipComponent({ ship, cellPxSize, locked }: ShipProps) {
           opacity: locked || shipPicked || !canRotate ? 0 : 1,
           pointerEvents: locked || shipPicked || !canRotate ? 'none' : 'all',
           transition: 'opacity 0.1s ease-in-out',
+          color: palette.primary.main,
         }}
         size='small'
         onMouseDown={rotateShipHandler}
       >
-        <LoopIcon />
+        <LoopIcon fontSize='small' />
       </IconButton>
     </Box>
   );
 }
-
-// shadows
-
-const shadowHorizontal =
-  '0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)';
-const shadowVertical =
-  '3px 0px 1px -2px rgba(0,0,0,0.2), 2px 0px 2px 0px rgba(0,0,0,0.14), 1px 0px 5px 0px rgba(0,0,0,0.12)';

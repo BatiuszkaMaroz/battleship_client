@@ -1,5 +1,6 @@
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import { IconButton, Menu, MenuItem } from '@mui/material';
+import Email from '@mui/icons-material/Email';
+import Notifications from '@mui/icons-material/Notifications';
+import { Button, Divider, IconButton } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -23,40 +24,29 @@ export default function Layout({ children }: React.PropsWithChildren) {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar
           position='relative'
-          sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          sx={{
+            zIndex: (theme) => theme.zIndex.drawer + 1,
+          }}
         >
           <Toolbar>
             <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
               Material Ships
             </Typography>
-            <IconButton
-              size='large'
-              aria-label='account of current user'
-              aria-controls='menu-appbar'
-              aria-haspopup='true'
-              onClick={handleMenu}
-              color='inherit'
-            >
-              <AccountCircle />
+            <IconButton size='large' color='inherit'>
+              <Notifications />
             </IconButton>
-            <Menu
-              id='menu-appbar'
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+            <IconButton size='large' color='inherit'>
+              <Email />
+            </IconButton>
+            <Divider
+              orientation='vertical'
+              sx={{
+                mx: 2,
+                height: 28,
+                borderColor: 'white',
               }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>My account</MenuItem>
-            </Menu>
+            />
+            <Button color='inherit'>Claim account</Button>
           </Toolbar>
         </AppBar>
         <Container>{children}</Container>

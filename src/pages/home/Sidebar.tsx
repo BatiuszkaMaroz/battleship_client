@@ -1,13 +1,20 @@
-import { Drawer, Toolbar } from '@mui/material';
+import { Send } from '@mui/icons-material';
+import {
+  Box,
+  Drawer,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Toolbar,
+} from '@mui/material';
 import React from 'react';
 
 type SidebarProps = {
+  drawerWidth: number;
   open: boolean;
 };
 
-export default function Sidebar({ open }: SidebarProps) {
-  const drawerWidth = 340;
-
+export default function Sidebar({ open, drawerWidth }: SidebarProps) {
   return (
     <Drawer
       open={open}
@@ -19,12 +26,36 @@ export default function Sidebar({ open }: SidebarProps) {
         [`& .MuiDrawer-paper`]: {
           width: drawerWidth,
           boxSizing: 'border-box',
-          transition: 'all 0.3s ease-in-out !important',
         },
       }}
     >
       <Toolbar />
-      <h1>HELLO!</h1>
+      <Box
+        sx={{
+          height: '100%',
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column-reverse',
+        }}
+      >
+        <Box sx={{ p: 2 }}>
+          <TextField
+            placeholder='Aa'
+            variant='outlined'
+            fullWidth
+            multiline
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position='end'>
+                  <IconButton sx={{ p: 0 }} disableRipple>
+                    <Send />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </Box>
+      </Box>
     </Drawer>
   );
 }

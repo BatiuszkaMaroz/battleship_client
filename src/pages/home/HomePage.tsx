@@ -11,9 +11,11 @@ import Sidebar from './Sidebar';
 
 export default function HomePage() {
   const cellPxSize = 45;
+  const drawerWidth = 380;
+
   const { ships, randomizeShips } = useSettingStore();
   const { userStatus } = useUserStore();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const joinPool = () => {
     socket.emit('pool-join', { ships });
@@ -31,7 +33,7 @@ export default function HomePage() {
 
   return (
     <Layout>
-      <Sidebar open={sidebarOpen} />
+      <Sidebar open={sidebarOpen} drawerWidth={drawerWidth} />
       <Box
         sx={{
           mt: 8,
@@ -39,8 +41,11 @@ export default function HomePage() {
           alignItems: 'flex-start',
           justifyContent: 'center',
           gap: 8,
-          mr: sidebarOpen ? '340px' : undefined,
-          transition: 'margin-right 0.3s ease-in-out',
+          mr: sidebarOpen ? `${drawerWidth}px` : undefined,
+          transitionProperty: 'margin-right',
+          transitionDuration: (theme) =>
+            theme.transitions.duration.enteringScreen + 'ms',
+          transitionTimingFunction: 'ease-in-out',
         }}
       >
         <Box

@@ -1,7 +1,6 @@
 import LoopIcon from '@mui/icons-material/Loop';
 import { Box, IconButton, useTheme } from '@mui/material';
 import React, { useEffect, useRef } from 'react';
-import { createPortal } from 'react-dom';
 
 import {
   getCellCoordsFromRowCol,
@@ -48,7 +47,7 @@ export default function ShipComponent({ ship, cellPxSize, locked }: ShipProps) {
   // handle styling when ship picked
   useEffect(() => {
     if (shipPicked) {
-      ref.current!.style.zIndex = '100';
+      ref.current!.style.zIndex = '1000';
       ref.current!.style.transition = 'opacity 0.1s ease-in-out';
       ref.current!.style.pointerEvents = 'none';
 
@@ -92,12 +91,19 @@ export default function ShipComponent({ ship, cellPxSize, locked }: ShipProps) {
       let top = e.clientY - clickOffset.y;
 
       // handle case when gap is targeted
+      const parentElement = ref.current!.parentElement!;
       const cell =
         (document
-          .elementFromPoint(left + cellPxSize / 2, top + cellPxSize / 2)
+          .elementFromPoint(
+            parentElement.offsetLeft + left + cellPxSize / 2,
+            parentElement.offsetTop + top + cellPxSize / 2,
+          )
           ?.closest('#setting-cell') as HTMLDivElement) ??
         (document
-          .elementFromPoint(left + cellPxSize / 2 + 1, top + cellPxSize / 2 + 1)
+          .elementFromPoint(
+            parentElement.offsetLeft + left + cellPxSize / 2 + 1,
+            parentElement.offsetTop + top + cellPxSize / 2 + 1,
+          )
           ?.closest('#setting-cell') as HTMLDivElement);
 
       if (cell) {
@@ -120,8 +126,9 @@ export default function ShipComponent({ ship, cellPxSize, locked }: ShipProps) {
     const dropShipHandler = (e: MouseEvent) => {
       if (locked) return;
 
-      const left = e.clientX - clickOffset.x;
-      const top = e.clientY - clickOffset.y;
+      const parentElement = ref.current!.parentElement!;
+      const left = parentElement.offsetLeft + e.clientX - clickOffset.x;
+      const top = parentElement.offsetTop + e.clientY - clickOffset.y;
 
       const cell = document
         .elementFromPoint(left + cellPxSize / 2, top + cellPxSize / 2)
@@ -157,21 +164,7 @@ export default function ShipComponent({ ship, cellPxSize, locked }: ShipProps) {
     validateShipPlacement,
   ]);
 
-  // handle resizing window
-  useEffect(() => {
-    const windowResizeHandler = () => {
-      const coords = getCellCoordsFromRowCol(ship.row, ship.col);
-      setShipPosition(coords);
-    };
-
-    window.addEventListener('resize', windowResizeHandler);
-
-    return () => {
-      window.removeEventListener('resize', windowResizeHandler);
-    };
-  }, [ship.col, ship.row]);
-
-  return createPortal(
+  return (
     <Box
       onMouseDown={pickShipHandler}
       ref={ref}
@@ -180,6 +173,7 @@ export default function ShipComponent({ ship, cellPxSize, locked }: ShipProps) {
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',
+        zIndex: 100,
         left: shipPosition?.left,
         top: shipPosition?.top,
         width: ship.size * cellPxSize + (ship.size - 1),
@@ -206,8 +200,7 @@ export default function ShipComponent({ ship, cellPxSize, locked }: ShipProps) {
       >
         <LoopIcon />
       </IconButton>
-    </Box>,
-    document.getElementById('ship-root') as HTMLElement,
+    </Box>
   );
 }
 

@@ -37,7 +37,16 @@ export default function HomePage() {
             alignItems: 'center',
           }}
         >
-          <Board cellId='setting-cell' cellPxSize={cellPxSize} />
+          <Board cellId='setting-cell' cellPxSize={cellPxSize}>
+            {ships.map((s) => (
+              <ShipComponent
+                key={s.id}
+                ship={s}
+                cellPxSize={cellPxSize}
+                locked={settingsLocked}
+              />
+            ))}
+          </Board>
           <Button
             sx={{ mt: 2 }}
             onClick={randomizeShips}
@@ -69,14 +78,6 @@ export default function HomePage() {
           )}
         </Box>
       </Box>
-      {ships.map((s) => (
-        <ShipComponent
-          key={s.id}
-          ship={s}
-          cellPxSize={cellPxSize}
-          locked={settingsLocked}
-        />
-      ))}
     </Layout>
   );
 }

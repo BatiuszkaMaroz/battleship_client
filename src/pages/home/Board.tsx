@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 
 import { BOARD_COLS, BOARD_ROWS } from 'config/constants';
 
@@ -8,8 +8,13 @@ type ShipProps = {
   cellId?: string;
 };
 
-export default function Board({ cellPxSize, cellId = '' }: ShipProps) {
+export default function Board({
+  cellPxSize,
+  cellId = '',
+  children,
+}: PropsWithChildren<ShipProps>) {
   const boardContainerStyle = {
+    position: 'relative',
     display: 'grid',
     gridTemplateColumns: `repeat(${BOARD_COLS}, ${cellPxSize}px)`,
     gridTemplateRows: `repeat(${BOARD_ROWS}, ${cellPxSize}px)`,
@@ -35,7 +40,7 @@ export default function Board({ cellPxSize, cellId = '' }: ShipProps) {
   );
 
   return (
-    <Box style={boardContainerStyle}>
+    <Box sx={boardContainerStyle}>
       {cellIndexes.map((index) => (
         <Box //
           key={index}
@@ -44,6 +49,7 @@ export default function Board({ cellPxSize, cellId = '' }: ShipProps) {
           sx={cellStyle}
         />
       ))}
+      {children}
     </Box>
   );
 }

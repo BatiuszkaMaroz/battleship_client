@@ -8,13 +8,17 @@ import {
 } from 'services/settingService';
 import { Ship, useSettingStore } from 'stores/useSettingStore';
 
-type ShipProps = {
+type SettingShipProps = {
   ship: Ship;
   cellPxSize: number;
   locked?: boolean;
 };
 
-export default function ShipComponent({ ship, cellPxSize, locked }: ShipProps) {
+export default function SettingShip({
+  ship,
+  cellPxSize,
+  locked,
+}: SettingShipProps) {
   const {
     ships,
     placeShip,

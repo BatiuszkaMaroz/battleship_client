@@ -3,16 +3,16 @@ import React, { PropsWithChildren } from 'react';
 
 import { BOARD_COLS, BOARD_ROWS } from 'config/constants';
 
-type ShipProps = {
+type SettingBoardProps = {
   cellPxSize: number;
   cellId?: string;
 };
 
-export default function Board({
+export default function SettingBoard({
   cellPxSize,
   cellId = '',
   children,
-}: PropsWithChildren<ShipProps>) {
+}: PropsWithChildren<SettingBoardProps>) {
   const boardContainerStyle = {
     position: 'relative',
     display: 'grid',

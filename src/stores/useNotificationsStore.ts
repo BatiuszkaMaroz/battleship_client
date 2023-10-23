@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
-export type Notification = {
+type Notification = {
   content: string;
-  severity: 'info' | 'error';
+  severity: 'success' | 'info' | 'warning' | 'error';
 };
 
 interface NotificationsState {

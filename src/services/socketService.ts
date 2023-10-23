@@ -1,10 +1,7 @@
 import { io } from 'socket.io-client';
 
 import { enqueueSnackbar } from 'notistack';
-import {
-  Notification,
-  useNotificationsStore,
-} from 'stores/useNotificationsStore';
+import { useNotificationsStore } from 'stores/useNotificationsStore';
 import { RoomStatus, useRoomStore } from 'stores/useRoomStore';
 import { UserStatus, useUserStore } from 'stores/useUserStore';
 import { loadUserData, saveUserData } from './storageService';
@@ -79,9 +76,18 @@ socket.on('room-update', (payload: RoomUpdatePayload) => {
   }
 });
 
+/* ========================= GAME ========================= */
+
+socket.on('game-update', (payload: unknown) => {
+  console.log('[game-update] Received payload: ', payload);
+});
+
 /* ========================= NOTIFICATION ========================= */
 
-type NotificationPayload = Notification;
+type NotificationPayload = {
+  content: string;
+  severity: 'success' | 'info' | 'warning' | 'error';
+};
 
 socket.on('notification', (payload: NotificationPayload) => {
   console.log('[notification] Received notification: ', payload);

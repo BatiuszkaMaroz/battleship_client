@@ -4,8 +4,6 @@
 
 ## Medium Priority
 
-1. Lock emitters.
-1. Big messages.
 1. Claim account.
 1. Logs (messages) preview in icon in appbar.
 
@@ -22,3 +20,5 @@
 
 1. <https://www.ultraboardgames.com/battleship/variations.php>
 1. Ship skins + credit system.
+1. Display ships with skins at the bottom.
+1. Add player avater frames for coins.

@@ -1,4 +1,4 @@
-# Battleship Client
+# Material Ships Client
 
 ## Setup
 
@@ -24,3 +24,7 @@
 ## Tips
 
 1. Source maps are required for debugging.
+1. [Handling errors in React, part 5 and 6 are most informative.](https://www.developerway.com/posts/show-to-handle-errors-in-react)
+1. Double execution of useEffect is because of React.StrictMode.
+1. `Object.freeze()` is not neccessary, prefer typescript `readonly`.
+1. [All elements from viewport coordinates](https://developer.mozilla.org/en-US/docs/Web/API/Document/elementsFromPoint).

@@ -1,0 +1,6 @@
+#ship-root,
+#modal-root {
+  position: absolute;
+  top: 0;
+  left: 0;
+}

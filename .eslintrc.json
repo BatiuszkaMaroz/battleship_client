@@ -23,7 +23,8 @@
   "plugins": ["react", "@typescript-eslint"],
   "rules": {
     "react/prop-types": "off", // prop-types are not needed when using typescript
-    "no-constant-condition": ["error", { "checkLoops": false }] // allows usage of while(true) loop
+    "no-constant-condition": ["error", { "checkLoops": false }], // allows usage of while(true) loop
+    "@typescript-eslint/no-unused-vars": "warn" // i do not want error here, just a warning
   },
   "ignorePatterns": ["/*", "!/src"]
 }
